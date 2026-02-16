@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { SERVICES, PACKAGES } from './constants';
-import { UserInput, GrowthStrategy as StrategyType } from './types';
-import { generateGrowthStrategy } from './services/geminiService';
+import { SERVICES, PACKAGES } from './constants.tsx';
+import { UserInput, GrowthStrategy as StrategyType } from './types.ts';
+import { generateGrowthStrategy } from './services/geminiService.ts';
 
 type View = 'home' | 'about';
 
@@ -286,9 +286,12 @@ const AIInsights = () => {
   const handleKeySelection = async () => {
     try {
       // @ts-ignore
-      await window.aistudio.openSelectKey();
-      setKeySelectionRequired(false);
-      setError(null);
+      if (window.aistudio && window.aistudio.openSelectKey) {
+        // @ts-ignore
+        await window.aistudio.openSelectKey();
+        setKeySelectionRequired(false);
+        setError(null);
+      }
     } catch (e) {
       console.error("Failed to open key selection", e);
     }
