@@ -9,8 +9,8 @@ type View = 'home' | 'about';
 const Header = ({ setView, currentView }: { setView: (v: View) => void, currentView: View }) => (
   <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
     <div className="max-w-[1440px] mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
-      <button onClick={() => setView('home')} className="flex items-center space-x-2 outline-none">
-        <div className="w-6 h-6 bg-black flex items-center justify-center">
+      <button onClick={() => setView('home')} className="flex items-center space-x-2 outline-none group">
+        <div className="w-6 h-6 bg-black flex items-center justify-center transition-transform group-hover:rotate-90">
           <span className="text-white font-black text-xs">O</span>
         </div>
         <span className="text-lg font-extrabold tracking-tighter uppercase">outgrow</span>
@@ -179,6 +179,9 @@ const AboutPage = () => (
             <li>Content creation & campaign execution</li>
             <li>Business development support</li>
           </ul>
+          <p className="mt-8 text-sm text-gray-400 font-medium italic">
+            Every solution we provide is customized to fit the client’s goals, market, and stage of growth.
+          </p>
         </div>
         <div className="border-t border-gray-100 pt-12">
           <h3 className="text-xs font-black uppercase tracking-[0.3em] text-emerald-600 mb-8">Our Approach</h3>
@@ -211,16 +214,23 @@ const AboutPage = () => (
               <h4 className="text-lg font-bold mb-2 group-hover:text-emerald-400 transition-colors">Clear communication and transparency</h4>
               <p className="text-gray-400 text-sm">Honesty is the bedrock of our partnerships.</p>
             </div>
-          </div>
-          <div className="space-y-8">
             <div className="group">
               <h4 className="text-lg font-bold mb-2 group-hover:text-emerald-400 transition-colors">Results-driven mindset</h4>
               <p className="text-gray-400 text-sm">Metrics that matter to your bottom line.</p>
             </div>
+          </div>
+          <div className="space-y-8">
             <div className="group">
               <h4 className="text-lg font-bold mb-2 group-hover:text-emerald-400 transition-colors">Modern tools and creative solutions</h4>
               <p className="text-gray-400 text-sm">Leveraging the latest in tech and creativity.</p>
             </div>
+            <div className="group">
+              <h4 className="text-lg font-bold mb-2 group-hover:text-emerald-400 transition-colors">Long-term growth focus</h4>
+              <p className="text-gray-400 text-sm">Building sustainable value, not short-term hype.</p>
+            </div>
+            <p className="text-emerald-400 font-bold tracking-tighter text-2xl pt-4">
+              We don’t just help businesses look good — we help them outgrow their limits.
+            </p>
           </div>
         </div>
       </div>
@@ -275,12 +285,10 @@ const AIInsights = () => {
 
   const handleKeySelection = async () => {
     try {
-      // Use the global aistudio object provided by the environment
       // @ts-ignore
       await window.aistudio.openSelectKey();
       setKeySelectionRequired(false);
       setError(null);
-      // After opening the dialog, we assume success as per instructions
     } catch (e) {
       console.error("Failed to open key selection", e);
     }
@@ -290,7 +298,6 @@ const AIInsights = () => {
     e.preventDefault();
     if (!input.businessName || !input.industry) return;
 
-    // Vertex Readiness Check: Ensure key is selected in aistudio environments
     // @ts-ignore
     if (typeof window.aistudio !== 'undefined') {
       // @ts-ignore
