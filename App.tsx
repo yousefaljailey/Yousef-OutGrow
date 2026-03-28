@@ -1017,7 +1017,6 @@ const Contact = () => {
     </section>
   );
 };
-);
 
 const Footer = ({ setView }: { setView: (v: View) => void }) => (
   <footer className="bg-black text-white pt-32 pb-12 px-6 md:px-12">
