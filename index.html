@@ -3,61 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outgrow | Creative Transformation</title>
+    <title>Outgrow | Advertising · PR · Brand Management · Event Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        *, *::before, *::after { box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
             -webkit-font-smoothing: antialiased;
+            cursor: none;
         }
+        a, button { cursor: none; }
+
+        /* ─── Custom cursor ─────────────────────────────── */
+        #cursor-dot {
+            width: 8px; height: 8px;
+            background: #059669;
+            border-radius: 50%;
+            position: fixed; top: 0; left: 0;
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%,-50%);
+            transition: transform 0.08s ease, width 0.25s cubic-bezier(0.22,1,0.36,1), height 0.25s cubic-bezier(0.22,1,0.36,1), background 0.25s ease;
+        }
+        #cursor-ring {
+            width: 36px; height: 36px;
+            border: 1.5px solid rgba(5,150,105,0.4);
+            border-radius: 50%;
+            position: fixed; top: 0; left: 0;
+            pointer-events: none; z-index: 9998;
+            transform: translate(-50%,-50%);
+            transition: transform 0.18s cubic-bezier(0.22,1,0.36,1), width 0.3s cubic-bezier(0.22,1,0.36,1), height 0.3s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease;
+        }
+        body:has(button:hover) #cursor-dot,
+        body:has(a:hover) #cursor-dot { width:14px; height:14px; background:#0a0a0a; }
+        body:has(button:hover) #cursor-ring,
+        body:has(a:hover) #cursor-ring { width:56px; height:56px; opacity:0.5; }
+
+        /* ─── Hero grid bg ──────────────────────────────── */
+        .hero-grid {
+            background-image:
+                linear-gradient(rgba(5,150,105,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(5,150,105,0.04) 1px, transparent 1px);
+            background-size: 64px 64px;
+        }
+
+        /* ─── Typography ────────────────────────────────── */
         .text-huge {
             font-size: clamp(3rem, 8vw, 6rem);
             line-height: 0.95;
             letter-spacing: -0.04em;
         }
+        .text-display {
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+
+        /* ─── Reveal animations ─────────────────────────── */
         .reveal {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            transform: translateY(24px);
+            transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
         }
-        .reveal.active {
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.94);
+            transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+        }
+        .reveal.active, .reveal-left.active, .reveal-right.active, .reveal-scale.active {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) translateX(0) scale(1);
         }
-        .capability-border {
-            position: relative;
+        .stagger-1 { transition-delay: 0.08s; }
+        .stagger-2 { transition-delay: 0.16s; }
+        .stagger-3 { transition-delay: 0.24s; }
+        .stagger-4 { transition-delay: 0.32s; }
+        .stagger-5 { transition-delay: 0.4s; }
+        .stagger-6 { transition-delay: 0.48s; }
+
+        /* ─── Word cycler ───────────────────────────────── */
+        @keyframes wordReveal {
+            0%   { opacity:0; transform: translateY(14px); }
+            12%  { opacity:1; transform: translateY(0); }
+            88%  { opacity:1; transform: translateY(0); }
+            100% { opacity:0; transform: translateY(-14px); }
         }
-        .capability-border::after {
+        .word-cycle-anim {
+            display: inline-block;
+            animation: wordReveal 2.8s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+
+        /* ─── Marquee ───────────────────────────────────── */
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+        .marquee-track { animation: marquee 28s linear infinite; }
+        .marquee-track:hover { animation-play-state: paused; }
+
+        /* ─── Loading bar ───────────────────────────────── */
+        @keyframes loadingBar {
+            0%   { left: -30%; width: 30%; }
+            60%  { width: 30%; }
+            100% { left: 100%; width: 30%; }
+        }
+
+        /* ─── Capability card underline ─────────────────── */
+        .cap-underline { position: relative; }
+        .cap-underline::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: #10b981;
-            transition: width 0.4s ease;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: #059669;
+            transition: width 0.4s cubic-bezier(0.22,1,0.36,1);
         }
-        .capability-group:hover .capability-border::after {
-            width: 100%;
+        .capability-group:hover .cap-underline::after { width: 100%; }
+
+        /* ─── 3D card tilt ──────────────────────────────── */
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
+            will-change: transform;
         }
+        .card-3d:hover {
+            transform: perspective(800px) rotateX(-3deg) rotateY(4deg) translateY(-4px);
+            box-shadow: 8px 16px 40px rgba(5,150,105,0.12), 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* ─── Accordion ─────────────────────────────────── */
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease;
+            opacity: 0;
+        }
+        .accordion-body.open {
+            max-height: 480px;
+            opacity: 1;
+        }
+        .accordion-chevron {
+            transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+        }
+        .accordion-chevron.open { transform: rotate(45deg); }
+
+        /* ─── Calculator tab ────────────────────────────── */
+        .calc-tab {
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        .calc-tab::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: #059669;
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+            z-index: 0;
+        }
+        .calc-tab.active::after, .calc-tab:hover::after { transform: translateY(0); }
+        .calc-tab span { position: relative; z-index: 1; }
+
+        /* ─── Button hover lift ──────────────────────────── */
+        .btn-lift {
+            transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), background 0.25s ease, color 0.25s ease;
+        }
+        .btn-lift:hover { transform: translateY(-2px); }
+        .btn-lift:active { transform: translateY(0); }
+
+        /* ─── Stat number ───────────────────────────────── */
+        .stat-num {
+            font-variant-numeric: tabular-nums;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        /* ─── Map overlay blend ─────────────────────────── */
+        .map-container { position: relative; }
+        .map-container::before {
+            content: '';
+            position: absolute; inset: 0; z-index: 1;
+            pointer-events: none;
+            box-shadow: inset 0 0 60px rgba(10,10,10,0.15);
+        }
+
+        /* ─── Progress bar ───────────────────────────────── */
+        .progress-fill {
+            height: 100%;
+            background: #059669;
+            transition: width 1.2s cubic-bezier(0.22,1,0.36,1);
+        }
+
+        /* ─── Magnetic zone ─────────────────────────────── */
+        .magnetic {
+            transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+        }
+
+        /* ─── Scrollbar ─────────────────────────────────── */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #059669; border-radius: 4px; }
     </style>
 </head>
 <body class="bg-white text-gray-900 overflow-x-hidden">
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
     <div id="root"></div>
-    <script>
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, { threshold: 0.1 });
 
-        window.addEventListener('load', () => {
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-        });
+    <script>
+        /* ── Custom cursor ── */
+        const dot = document.getElementById('cursor-dot');
+        const ring = document.getElementById('cursor-ring');
+        let mx = -100, my = -100, rx = -100, ry = -100;
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+        function animCursor() {
+            rx += (mx - rx) * 0.14;
+            ry += (my - ry) * 0.14;
+            dot.style.left  = mx + 'px'; dot.style.top  = my + 'px';
+            ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+            requestAnimationFrame(animCursor);
+        }
+        animCursor();
+
+        /* ── Intersection observer for reveal classes ── */
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+        }, { threshold: 0.08 });
+
+        function attachObserver() {
+            document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale')
+                .forEach(el => revealObserver.observe(el));
+        }
+        window.addEventListener('load', attachObserver);
+        const mo = new MutationObserver(attachObserver);
+        mo.observe(document.getElementById('root'), { childList: true, subtree: true });
     </script>
     <script type="module" src="/index.tsx"></script>
 </body>
