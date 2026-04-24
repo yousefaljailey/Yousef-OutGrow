@@ -3,7 +3,7 @@ import { SERVICES, PACKAGES } from './constants.tsx';
 import { UserInput, GrowthStrategy as StrategyType } from './types.ts';
 import { generateGrowthStrategy } from './services/geminiService.ts';
 
-type View = 'home' | 'about' | 'privacy' | 'terms' | 'service-marketing' | 'service-events';
+type View = 'home' | 'about' | 'privacy' | 'terms' | 'service-marketing' | 'service-events' | 'works';
 
 /* ─────────────────────────────────────────────
    Utility hooks
@@ -56,6 +56,40 @@ const WordCycler = () => {
     <span key={key} className="word-cycle-anim" style={{ color: '#059669' }}>
       {CYCLE_WORDS[idx]}
     </span>
+  );
+};
+
+/* ─────────────────────────────────────────────
+   Floating Hero Stats (21st.dev-inspired)
+───────────────────────────────────────────── */
+const FloatingHeroStats = () => {
+  const { count: c1, ref: r1 } = useCountUp(50);
+  const { count: c2, ref: r2 } = useCountUp(100);
+  const { count: c3, ref: r3 } = useCountUp(35);
+  return (
+    <div className="relative h-[420px] w-full select-none" aria-hidden="true">
+      <div className="stat-card float-a" style={{ top: '4%', left: '5%' }}>
+        <span className="stat-card-dot" />
+        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#059669' }}>Brands</span>
+        <div className="stat-card-num" ref={r1}>{c1}+</div>
+        <div className="stat-card-label">Brands Served</div>
+      </div>
+      <div className="stat-card float-b" style={{ top: '30%', right: '2%' }}>
+        <span className="stat-card-dot" />
+        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#059669' }}>Campaigns</span>
+        <div className="stat-card-num" ref={r2}>{c2}+</div>
+        <div className="stat-card-label">Campaigns Delivered</div>
+      </div>
+      <div className="stat-card float-c" style={{ bottom: '6%', left: '18%' }}>
+        <span className="stat-card-dot" />
+        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#059669' }}>Events</span>
+        <div className="stat-card-num" ref={r3}>{c3}+</div>
+        <div className="stat-card-label">Events Managed</div>
+      </div>
+      {/* Decorative emerald ring */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full pointer-events-none" style={{ border: '1px solid rgba(5,150,105,0.08)' }} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full pointer-events-none" style={{ border: '1px solid rgba(5,150,105,0.06)' }} />
+    </div>
   );
 };
 
@@ -343,68 +377,90 @@ const Header = ({ setView, currentView }: { setView: (v: View) => void; currentV
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 bg-white border-b transition-all duration-500 ${scrolled ? 'border-gray-200 shadow-[0_2px_20px_rgba(0,0,0,0.06)]' : 'border-gray-100'}`}
+      className={`fixed top-0 left-0 right-0 z-50 bg-white border-b duration-500 ${scrolled ? 'border-gray-200 shadow-[0_2px_20px_rgba(0,0,0,0.06)]' : 'border-gray-100'}`}
+      style={{ transition: 'border-color 500ms ease, box-shadow 500ms ease' }}
     >
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
         <button
           onClick={() => setView('home')}
+          aria-label="Outgrow — go to homepage"
           className="flex items-center space-x-2.5 outline-none group"
         >
           <div
-            className="w-7 h-7 flex items-center justify-center transition-all duration-300 group-hover:scale-110"
-            style={{ background: '#059669' }}
+            className="w-7 h-7 flex items-center justify-center group-hover:scale-110"
+            style={{ background: '#059669', transition: 'transform 250ms cubic-bezier(0.34,1.56,0.64,1)' }}
           >
             <span className="text-white font-black text-sm">O</span>
           </div>
-          <span className="text-lg font-black tracking-tighter uppercase text-[#0A0A0A]">outgrow</span>
+          <span className="font-syne text-lg font-black tracking-tighter uppercase text-[#0A0A0A]">outgrow</span>
         </button>
 
-        <nav className="hidden lg:flex items-center space-x-10 text-[12px] font-black uppercase tracking-[0.15em] text-gray-400">
+        <nav className="hidden lg:flex items-center space-x-10 text-[12px] font-black uppercase tracking-[0.15em] text-gray-400" aria-label="Main navigation">
           <button
             onClick={() => setView('about')}
-            className={`relative pb-0.5 transition-colors duration-200 ${currentView === 'about' ? 'text-[#0A0A0A]' : 'hover:text-[#0A0A0A]'}`}
+            aria-current={currentView === 'about' ? 'page' : undefined}
+            className={`transition-colors duration-200 ${currentView === 'about' ? 'text-[#0A0A0A]' : 'hover:text-[#0A0A0A]'}`}
           >
             Who we are
           </button>
 
           <div className="relative group">
-            <button className={`flex items-center gap-1.5 transition-colors duration-200 ${currentView === 'service-marketing' || currentView === 'service-events' ? 'text-[#0A0A0A]' : 'hover:text-[#0A0A0A]'}`}>
+            <button
+              aria-haspopup="true"
+              className={`flex items-center gap-1.5 transition-colors duration-200 ${currentView === 'service-marketing' || currentView === 'service-events' ? 'text-[#0A0A0A]' : 'hover:text-[#0A0A0A]'}`}
+            >
               Services
-              <svg className="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 h-3 group-hover:rotate-180" style={{ transition: 'transform 300ms ease' }} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-80 bg-white border border-gray-100 shadow-[0_8px_40px_rgba(0,0,0,0.12)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 translate-y-2 group-hover:translate-y-0">
+            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-80 bg-white border border-gray-100 shadow-[0_8px_40px_rgba(0,0,0,0.12)] opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 z-50 translate-y-2" style={{ transition: 'opacity 200ms ease, visibility 200ms ease, transform 200ms ease' }} role="menu">
               <button
                 onClick={() => setView('service-marketing')}
-                className="w-full text-left px-6 py-5 border-b border-gray-50 hover:bg-[#0A0A0A] hover:text-white transition-all duration-300 group/item"
+                role="menuitem"
+                className="w-full text-left px-6 py-5 border-b border-gray-50 group/item"
+                style={{ transition: 'background 300ms ease, color 300ms ease' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#0A0A0A'; (e.currentTarget as HTMLElement).style.color = 'white'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = ''; (e.currentTarget as HTMLElement).style.color = ''; }}
               >
-                <span className="block text-[9px] font-black uppercase tracking-widest text-gray-400 group-hover/item:text-gray-400 mb-1.5" style={{ color: '#059669' }}>01</span>
+                <span className="block text-[9px] font-black uppercase tracking-widest mb-1.5" style={{ color: '#059669' }}>01</span>
                 <span className="block text-[13px] font-bold normal-case tracking-normal mb-1">Advertising, PR & Brand Management</span>
-                <span className="block text-[11px] text-gray-400 group-hover/item:text-gray-400 normal-case tracking-normal font-normal">Marketing consultancy, ad design & placement</span>
+                <span className="block text-[11px] text-gray-400 normal-case tracking-normal font-normal">Marketing consultancy, ad design & placement</span>
               </button>
               <button
                 onClick={() => setView('service-events')}
-                className="w-full text-left px-6 py-5 hover:bg-[#0A0A0A] hover:text-white transition-all duration-300 group/item"
+                role="menuitem"
+                className="w-full text-left px-6 py-5"
+                style={{ transition: 'background 300ms ease, color 300ms ease' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#0A0A0A'; (e.currentTarget as HTMLElement).style.color = 'white'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = ''; (e.currentTarget as HTMLElement).style.color = ''; }}
               >
                 <span className="block text-[9px] font-black uppercase tracking-widest mb-1.5" style={{ color: '#059669' }}>02</span>
                 <span className="block text-[13px] font-bold normal-case tracking-normal mb-1">Event Management Services</span>
-                <span className="block text-[11px] text-gray-400 group-hover/item:text-gray-400 normal-case tracking-normal font-normal">Trade shows, conferences & corporate events</span>
+                <span className="block text-[11px] text-gray-400 normal-case tracking-normal font-normal">Trade shows, conferences & corporate events</span>
               </button>
             </div>
           </div>
 
+          <button
+            onClick={() => setView('works')}
+            aria-current={currentView === 'works' ? 'page' : undefined}
+            className={`transition-colors duration-200 ${currentView === 'works' ? 'text-[#0A0A0A]' : 'hover:text-[#0A0A0A]'}`}
+          >
+            Works
+          </button>
+
           {currentView !== 'home' && (
-            <button onClick={() => setView('home')} className="hover:text-[#0A0A0A] transition-colors">Home</button>
+            <button onClick={() => setView('home')} className="hover:text-[#0A0A0A] transition-colors duration-200">Home</button>
           )}
         </nav>
 
         <a
           href="#contact"
-          className="btn-lift hidden md:block text-[11px] font-black uppercase tracking-[0.15em] border-b-2 pb-1 transition-colors duration-300 hover:border-[#059669]"
-          style={{ borderColor: '#0A0A0A', color: '#0A0A0A' }}
-          onMouseEnter={e => { (e.target as HTMLElement).style.color = '#059669'; (e.target as HTMLElement).style.borderColor = '#059669'; }}
-          onMouseLeave={e => { (e.target as HTMLElement).style.color = '#0A0A0A'; (e.target as HTMLElement).style.borderColor = '#0A0A0A'; }}
+          className="btn-lift hidden md:block text-[11px] font-black uppercase tracking-[0.15em] border-b-2 pb-1"
+          style={{ borderColor: '#0A0A0A', color: '#0A0A0A', transition: 'color 250ms ease, border-color 250ms ease' }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#059669'; (e.currentTarget as HTMLElement).style.borderColor = '#059669'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#0A0A0A'; (e.currentTarget as HTMLElement).style.borderColor = '#0A0A0A'; }}
         >
           Contact
         </a>
@@ -420,43 +476,47 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
   <>
     {/* Hero */}
     <section className="min-h-screen flex items-center pt-20 px-6 md:px-12 hero-grid relative overflow-hidden bg-white">
-      {/* Subtle emerald glow */}
-      <div
-        className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(5,150,105,0.06) 0%, transparent 70%)' }}
-      />
+      <div className="grain-overlay" />
+      <div className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(5,150,105,0.07) 0%, transparent 70%)' }} />
       <div className="max-w-[1440px] mx-auto w-full relative z-10">
-        <div className="reveal">
-          <span
-            className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] mb-10"
-            style={{ color: '#059669' }}
-          >
-            <span className="w-8 h-px" style={{ background: '#059669' }} />
-            Advertising · PR · Brand Management · Event Management
-          </span>
-          <h1 className="text-huge font-black text-[#0A0A0A] mb-6 leading-none">
-            We build <WordCycler />
-            <br />
-            <span style={{ color: '#6B7280' }}>for your market.</span>
-          </h1>
-          <div className="flex flex-col md:flex-row md:items-end gap-12 mt-12">
-            <p className="max-w-xl text-xl md:text-2xl font-light leading-snug" style={{ color: '#6B7280' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left — text */}
+          <div className="lg:col-span-7 reveal">
+            <span className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] mb-10" style={{ color: '#059669' }}>
+              <span className="w-8 h-px" style={{ background: '#059669' }} />
+              Doha, Qatar · Advertising · Events
+            </span>
+            <h1 className="text-huge font-black text-[#0A0A0A] mb-6 leading-none">
+              We build <WordCycler /><br />
+              <span style={{ color: '#6B7280' }}>for your market.</span>
+            </h1>
+            <p className="max-w-xl text-xl md:text-2xl font-light leading-snug mt-8" style={{ color: '#6B7280' }}>
               Outgrow is a marketing, advertising, and event management company based in Doha, Qatar. We build brands that get noticed and create events that leave a lasting impression.
             </p>
-            <div className="flex gap-4 pb-2">
+            <div className="flex flex-wrap gap-4 mt-12">
               <button
                 onClick={() => setView('about')}
-                className="btn-lift bg-[#0A0A0A] text-white px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] hover:bg-[#059669] transition-colors duration-300"
+                className="btn-lift bg-[#0A0A0A] text-white px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em]"
+                style={{ transition: 'background 250ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)' }}
+                onMouseEnter={e => (e.currentTarget.style.background = '#059669')}
+                onMouseLeave={e => (e.currentTarget.style.background = '#0A0A0A')}
               >
                 Who We Are
               </button>
               <a
                 href="#capabilities"
-                className="btn-lift border-2 border-[#0A0A0A] text-[#0A0A0A] px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] hover:border-[#059669] hover:text-[#059669] transition-colors duration-300"
+                className="btn-lift px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-[#0A0A0A]"
+                style={{ border: '2px solid #0A0A0A', transition: 'border-color 250ms ease, color 250ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#059669'; (e.currentTarget as HTMLElement).style.color = '#059669'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#0A0A0A'; (e.currentTarget as HTMLElement).style.color = '#0A0A0A'; }}
               >
                 Our Services
               </a>
             </div>
+          </div>
+          {/* Right — floating stat cards */}
+          <div className="hidden lg:block lg:col-span-5">
+            <FloatingHeroStats />
           </div>
         </div>
       </div>
@@ -479,7 +539,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
           {SERVICES.map((service, i) => (
             <div
               key={service.id}
-              className={`capability-group border-t border-gray-800 py-14 flex flex-col lg:flex-row items-start lg:items-center justify-between group transition-all duration-500 reveal stagger-${i + 1}`}
+              className={`capability-group border-t border-gray-800 py-14 flex flex-col lg:flex-row items-start lg:items-center justify-between group reveal stagger-${i + 1}`}
             >
               <div className="flex items-center space-x-10 mb-6 lg:mb-0">
                 <span className="text-[10px] font-black tabular-nums" style={{ color: '#059669' }}>0{i + 1}</span>
@@ -493,8 +553,8 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
                   {service.features.map((feature, idx) => (
                     <li
                       key={idx}
-                      className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border transition-all duration-300 group-hover:border-[#059669]/40 group-hover:text-[#059669]"
-                      style={{ borderColor: '#374151', color: '#6B7280' }}
+                      className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border group-hover:border-[#059669]/40 group-hover:text-[#059669]"
+                      style={{ borderColor: '#374151', color: '#6B7280', transition: 'border-color 300ms ease, color 300ms ease' }}
                     >
                       {feature}
                     </li>
@@ -521,7 +581,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
               key={i}
               className={`w-full max-w-5xl group card-3d reveal stagger-${i + 1}`}
             >
-              <div className="flex flex-col md:flex-row md:items-stretch border-2 border-gray-100 group-hover:border-[#0A0A0A] transition-all duration-500">
+              <div className="flex flex-col md:flex-row md:items-stretch border-2 border-gray-100 group-hover:border-[#0A0A0A]" style={{ transition: 'border-color 500ms ease' }}>
                 <div className="p-10 md:p-16 flex-1 bg-white">
                   <div className="flex items-center justify-between mb-8">
                     <h3 className="text-3xl font-black uppercase tracking-tighter text-[#0A0A0A]">{pkg.name}</h3>
@@ -534,7 +594,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
                   <p className="text-lg text-gray-500 font-light leading-relaxed mb-8">{pkg.description}</p>
                   <div className="text-4xl font-black text-[#0A0A0A]">{pkg.price}</div>
                 </div>
-                <div className="p-10 md:p-16 flex-1 bg-gray-50 border-t md:border-t-0 md:border-l border-gray-100 group-hover:bg-white transition-all duration-500">
+                <div className="p-10 md:p-16 flex-1 bg-gray-50 border-t md:border-t-0 md:border-l border-gray-100 group-hover:bg-white" style={{ transition: 'background 500ms ease' }}>
                   <h4 className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-400 mb-8">Engagement Details</h4>
                   <ul className="space-y-4 mb-12">
                     {pkg.features.map((feature, idx) => (
@@ -908,6 +968,89 @@ const ProcessStep: React.FC<{ step: string; title: string; desc: string }> = ({ 
   </div>
 );
 
+/* ─────────────────────────────────────────────
+   Works Page
+───────────────────────────────────────────── */
+const WORKS = [
+  {
+    num: '01',
+    title: 'Regional Brand Launch',
+    category: 'Advertising & Brand Management',
+    desc: 'Full-spectrum brand identity, media placement, and advertising campaign across digital and broadcast channels for a Doha-based client.',
+    tags: ['Brand Strategy', 'Media Placement', 'Digital Advertising'],
+    year: '2025',
+  },
+  {
+    num: '02',
+    title: 'Annual Trade Exhibition',
+    category: 'Event Management',
+    desc: 'End-to-end organization of a multi-day trade exhibition in Qatar — venue coordination, vendor management, permits, and promotional campaign.',
+    tags: ['Trade Show', 'Venue & Permits', 'Event Promotion'],
+    year: '2025',
+  },
+  {
+    num: '03',
+    title: 'Corporate Conference Series',
+    category: 'Event Management',
+    desc: 'Planning and delivery of a quarterly corporate conference series — scheduling, invitations, on-site coordination, and post-event reporting.',
+    tags: ['Corporate Events', 'Budgeting', 'Logistics'],
+    year: '2024',
+  },
+  {
+    num: '04',
+    title: 'Multi-Channel Ad Campaign',
+    category: 'Advertising & PR',
+    desc: 'Integrated advertising campaign covering TV, radio, press, and digital platforms — creative direction, ad design, and media distribution.',
+    tags: ['TV & Radio', 'Press Advertising', 'Creative Direction'],
+    year: '2024',
+  },
+];
+
+const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
+  <section className="pt-40 pb-32 px-6 md:px-12 bg-white">
+    <div className="max-w-[1440px] mx-auto">
+      <div className="reveal">
+        <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-12" style={{ color: '#059669' }}>Portfolio</h2>
+        <h1 className="text-huge font-black tracking-tighter text-[#0A0A0A] mb-6">Our Works</h1>
+        <p className="text-xl text-gray-500 font-light max-w-xl mb-24">Selected client work across advertising, brand management, and event management in Qatar and the GCC region.</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100 reveal">
+        {WORKS.map((w, i) => (
+          <div key={i} className="works-card bg-white p-10 md:p-14 group" style={{ minHeight: '340px' }}>
+            <div className="flex justify-between items-start mb-8">
+              <span className="text-[10px] font-black" style={{ color: '#059669' }}>{w.num}</span>
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{w.year}</span>
+            </div>
+            <span className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-400 block mb-4 group-hover:text-green-300" style={{ transition: 'color 300ms ease' }}>{w.category}</span>
+            <h3 className="text-2xl md:text-3xl font-black tracking-tighter text-[#0A0A0A] mb-4 group-hover:text-white" style={{ transition: 'color 300ms ease' }}>{w.title}</h3>
+            <p className="text-gray-500 text-sm leading-relaxed font-light mb-8 group-hover:text-gray-300" style={{ transition: 'color 300ms ease' }}>{w.desc}</p>
+            <div className="flex flex-wrap gap-2">
+              {w.tags.map((tag, j) => (
+                <span key={j} className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border border-gray-200 text-gray-500 group-hover:border-gray-700 group-hover:text-gray-400" style={{ transition: 'border-color 300ms ease, color 300ms ease' }}>{tag}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="border-t-2 border-[#0A0A0A] pt-24 text-center mt-24 reveal">
+        <h3 className="text-huge font-black tracking-tighter mb-8">Ready to work together?</h3>
+        <p className="text-xl text-gray-500 max-w-xl mx-auto mb-12 font-light">Every project starts with a conversation. Tell us what you're building.</p>
+        <a
+          href="#contact"
+          className="btn-lift inline-block text-white px-12 py-6 text-sm font-black uppercase tracking-widest"
+          style={{ background: '#0A0A0A', transition: 'background 250ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)' }}
+          onMouseEnter={e => (e.currentTarget.style.background = '#059669')}
+          onMouseLeave={e => (e.currentTarget.style.background = '#0A0A0A')}
+        >
+          Start a Project
+        </a>
+      </div>
+    </div>
+  </section>
+);
+
 const ServiceMarketingPage = ({ setView }: { setView: (v: View) => void }) => (
   <div>
     <section className="pt-40 pb-32 px-6 md:px-12 bg-[#0A0A0A] text-white">
@@ -1114,7 +1257,8 @@ const Contact = () => {
               href={item.href}
               target={item.href.startsWith('http') ? '_blank' : undefined}
               rel="noopener noreferrer"
-              className="btn-lift flex-1 border-2 border-[#0A0A0A] py-10 px-8 group hover:bg-[#0A0A0A] hover:text-white transition-all duration-300"
+              className="btn-lift flex-1 border-2 border-[#0A0A0A] py-10 px-8 group hover:bg-[#0A0A0A] hover:text-white"
+              style={{ transition: 'background 300ms ease, color 300ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)' }}
             >
               <span className="block text-[9px] font-black uppercase tracking-widest mb-3 transition-colors duration-300 group-hover:text-gray-400" style={{ color: '#6B7280' }}>{item.label}</span>
               <span className="block text-lg font-bold text-[#0A0A0A] group-hover:text-white transition-colors duration-300">{item.value}</span>
@@ -1235,8 +1379,8 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
         <div className="col-span-1 md:col-span-2">
           <button onClick={() => setView('home')} className="flex items-center space-x-2.5 mb-10 outline-none group">
             <div
-              className="w-7 h-7 flex items-center justify-center transition-all duration-300 group-hover:scale-110"
-              style={{ background: '#059669' }}
+              className="w-7 h-7 flex items-center justify-center group-hover:scale-110"
+              style={{ background: '#059669', transition: 'transform 250ms cubic-bezier(0.34,1.56,0.64,1)' }}
             >
               <span className="text-white font-black text-sm">O</span>
             </div>
@@ -1250,7 +1394,8 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
               <a
                 key={s}
                 href="#"
-                className="text-[9px] font-black uppercase tracking-widest border border-gray-800 px-4 py-2.5 text-gray-600 hover:border-[#059669] hover:text-[#059669] transition-all duration-300"
+                className="text-[9px] font-black uppercase tracking-widest border border-gray-800 px-4 py-2.5 text-gray-600 hover:border-[#059669] hover:text-[#059669]"
+                style={{ transition: 'border-color 300ms ease, color 300ms ease' }}
               >
                 {s}
               </a>
@@ -1263,6 +1408,7 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
             {[
               { label: 'About', action: () => setView('about') },
               { label: 'Services', action: () => { setView('home'); setTimeout(() => document.getElementById('capabilities')?.scrollIntoView({ behavior: 'smooth' }), 100); } },
+              { label: 'Works', action: () => setView('works') },
               { label: 'Privacy Policy', action: () => setView('privacy') },
               { label: 'Terms & Conditions', action: () => setView('terms') },
             ].map((item, i) => (
@@ -1329,11 +1475,12 @@ export default function App() {
     <div className="min-h-screen">
       <Header setView={setView} currentView={view} />
       <main>
-        {view === 'home'             ? <HomePage setView={setView} />
-          : view === 'about'           ? <AboutPage />
+        {view === 'home'               ? <HomePage setView={setView} />
+          : view === 'about'             ? <AboutPage />
+          : view === 'works'             ? <WorksPage setView={setView} />
           : view === 'service-marketing' ? <ServiceMarketingPage setView={setView} />
-          : view === 'service-events'  ? <ServiceEventsPage setView={setView} />
-          : view === 'privacy'         ? <PolicyPage setView={setView} title="Privacy Policy" subtitle="Outgrow Agency" sections={PRIVACY_SECTIONS} />
+          : view === 'service-events'    ? <ServiceEventsPage setView={setView} />
+          : view === 'privacy'           ? <PolicyPage setView={setView} title="Privacy Policy" subtitle="Outgrow Agency" sections={PRIVACY_SECTIONS} />
           : <PolicyPage setView={setView} title="Terms & Conditions" subtitle="Outgrow Agency" sections={TERMS_SECTIONS} />}
         {view !== 'privacy' && view !== 'terms' && view !== 'service-marketing' && view !== 'service-events' && (
           <Contact />
