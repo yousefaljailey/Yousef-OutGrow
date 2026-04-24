@@ -392,7 +392,7 @@ const Header = ({ setView, currentView }: { setView: (v: View) => void; currentV
           >
             <span className="text-white font-black text-sm">O</span>
           </div>
-          <span className="font-syne text-lg font-black tracking-tighter uppercase text-[#0A0A0A]">outgrow</span>
+          <span className="text-lg font-black tracking-tighter uppercase text-[#0A0A0A]">outgrow</span>
         </button>
 
         <nav className="hidden lg:flex items-center space-x-10 text-[12px] font-black uppercase tracking-[0.15em] text-gray-400" aria-label="Main navigation">
