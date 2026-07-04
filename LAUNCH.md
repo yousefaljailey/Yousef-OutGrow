@@ -47,3 +47,16 @@ then the widget shows a labeled sample.
 - Custom domain (e.g. `outgrowagency.com`) in Vercel → Domains
 - Repo hygiene: make this repo private; it is public today
 - Analytics: enable Vercel Analytics (one click) or add a GA4/Plausible tag
+
+## Added since this runbook was written (same branch)
+
+- `/api/lead` now accepts a `source` tag (`website`, `strategy-widget`,
+  `zihay-newsletter`) and an optional `context` line — email subjects are
+  tagged accordingly. It also allows cross-origin posts from the ZIHAY
+  domains, which is how the storefront's newsletter feeds the same inbox.
+- Every generated strategy report carries its own lead-capture form and a
+  print stylesheet ("Save as PDF" → branded letterhead document).
+- The Works page links the live ZIHAY build as a case study.
+- `public/og.png` is the WhatsApp/social share card; a Vercel Analytics
+  tag is in place and activates with one click in the dashboard
+  (Project → Analytics → Enable).
