@@ -132,6 +132,7 @@ const VERTICALS: Vertical[] = [
     act: [
       "Drive to shoppable product pages, never the homepage; every creative deep-links to the exact item shown",
       "Grow first-party lists: 10% first-order hook for email/WhatsApp opt-in — cookieless targeting makes owned audiences the moat",
+      "Publish style-guide content targeting long-tail search ('modest workwear Qatar') — organic SEO compounds while paid only rents attention",
     ],
     convert: [
       "Install abandoned-cart recovery on WhatsApp and email within 1 hour and at 24 hours — the single highest-ROI automation in e-commerce",
@@ -303,7 +304,7 @@ const VERTICALS: Vertical[] = [
       "Search ads only on high-intent service keywords; B2B search is expensive — bid where budgets are already allocated",
     ],
     act: [
-      "Gate only the flagship asset; let everything else build memory ungated",
+      "Gate only the flagship asset — a report or a live expert webinar; let everything else build memory ungated",
       "Site pages per service with named clients, outcomes, and a short qualification form (company, role, need, timeline)",
     ],
     convert: [
@@ -682,8 +683,8 @@ function buildSampleStrategy(input: UserInput): GrowthStrategy {
       theme: "Prove & iterate",
       actions: [
         "Read the numbers weekly against benchmarks; kill losers, feed winners",
-        "Second creative wave built from what the data says resonated",
-        "Stand up the owned-audience rhythm (WhatsApp/email cadence)",
+        "A/B test the second creative wave — hooks, CTAs, subject lines, landing pages — and let the data pick",
+        "Stand up the owned-audience rhythm (segmented WhatsApp/email flows)",
       ],
     },
     {
@@ -692,7 +693,7 @@ function buildSampleStrategy(input: UserInput): GrowthStrategy {
       actions: [
         "Codify what works into playbooks and a rolling 90-day calendar",
         `Rebalance budget toward the ${brand}/${activation} split as foundations settle`,
-        "Add the next channel or segment only after the first is compounding",
+        "Automate the repeatable — lifecycle flows, chat first-response, reporting — then add the next channel or segment",
       ],
     },
   ];
