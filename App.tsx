@@ -1192,7 +1192,7 @@ const AboutPage = () => (
         </div>
       </div>
 
-      <div className="mb-32 reveal">
+      <div className="mb-32 reveal active">
         <h3
           className="text-xs font-black uppercase tracking-[0.3em] mb-4"
           style={{ color: "#059669" }}
