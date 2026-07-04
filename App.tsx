@@ -957,6 +957,9 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
     {/* Service Calculator */}
     <ServiceCalculator />
 
+    {/* Presence Grader */}
+    <PresenceGrader />
+
     {/* AI Insights */}
     <AIInsights />
 
@@ -1304,6 +1307,419 @@ const AboutPage = () => (
     </div>
   </section>
 );
+
+/* ─────────────────────────────────────────────
+   Presence Grader — interactive audit lead magnet
+───────────────────────────────────────────── */
+const GRADER_DIMS = [
+  {
+    key: "search",
+    label: "Search presence",
+    q: "Someone googles your category in Doha. Do you show up?",
+    opts: [
+      { t: "Yes — complete profile, fresh reviews", s: 100 },
+      { t: "We're listed, but it's thin", s: 50 },
+      { t: "Not really", s: 0 },
+    ],
+    fix: "Claim and complete the Google Business Profile — photos, services, hours, weekly posts. Maps is the highest-intent shelf in local business.",
+  },
+  {
+    key: "rhythm",
+    label: "Publishing rhythm",
+    q: "How often does your brand actually post?",
+    opts: [
+      { t: "Fixed rhythm, several times a week", s: 100 },
+      { t: "Bursts — active weeks, silent months", s: 50 },
+      { t: "Rarely", s: 0 },
+    ],
+    fix: "Consistency beats bursts: one monthly content session feeding a fixed weekly cadence keeps the brand visible without daily effort.",
+  },
+  {
+    key: "contact",
+    label: "One-tap contact",
+    q: "Can a customer reach you in one tap from any ad or profile?",
+    opts: [
+      { t: "WhatsApp button everywhere", s: 100 },
+      { t: "Phone number / DMs, scattered", s: 50 },
+      { t: "Contact forms only — slow replies", s: 0 },
+    ],
+    fix: "Put WhatsApp click-to-chat on every ad, bio and page — then hold a 5-minute response SLA in working hours. Speed-to-lead decides who wins the deal.",
+  },
+  {
+    key: "capture",
+    label: "Lead capture",
+    q: "What happens to interested people who don’t buy today?",
+    opts: [
+      { t: "They join our list; flows follow up", s: 100 },
+      { t: "We collect contacts, rarely follow up", s: 50 },
+      { t: "Nothing — they scroll away", s: 0 },
+    ],
+    fix: "Build the first-party list: one conversion page, a genuine incentive, and triggered follow-ups. Owned audiences are the hedge against rising ad costs.",
+  },
+  {
+    key: "measure",
+    label: "Measurement",
+    q: "Do you know what a customer costs you to acquire?",
+    opts: [
+      { t: "Pixels + dashboard, reviewed weekly", s: 100 },
+      { t: "We check platform stats sometimes", s: 50 },
+      { t: "No idea", s: 0 },
+    ],
+    fix: "Install pixels/CAPI and UTM discipline, then one dashboard with CAC, conversion rate and ROI — reviewed on a fixed rhythm. Data before opinions.",
+  },
+  {
+    key: "proof",
+    label: "Reviews & proof",
+    q: "How does social proof get created?",
+    opts: [
+      { t: "We systematically ask at the right moment", s: 100 },
+      { t: "Reviews happen organically", s: 50 },
+      { t: "Few or none", s: 0 },
+    ],
+    fix: "Systematize reviews at the happiest customer moment and surface outcomes on your site — proof compounds while ads only rent attention.",
+  },
+];
+
+const gradeBand = (score: number) =>
+  score >= 85
+    ? {
+        title: "Sharp. Now scale it.",
+        line: "The foundations are in place — the next win is concentrating budget on what already works.",
+      }
+    : score >= 65
+      ? {
+          title: "Solid — with leaks.",
+          line: "The basics are there, but demand is slipping through specific gaps. Fix the three below first.",
+        }
+      : score >= 40
+        ? {
+            title: "Visible gaps.",
+            line: "Customers are looking for a business like yours and finding competitors. The fixes below are where to start.",
+          }
+        : {
+            title: "Invisible where it counts.",
+            line: "Almost every buying moment is passing you by — the good news: the first fixes are cheap and fast.",
+          };
+
+const PresenceGrader = () => {
+  const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [done, setDone] = useState(false);
+  const [lead, setLead] = useState({ name: "", email: "" });
+  const [leadStatus, setLeadStatus] = useState<
+    "idle" | "sending" | "sent" | "error"
+  >("idle");
+
+  const answered = Object.keys(answers).length;
+  const score = done
+    ? Math.round(
+        GRADER_DIMS.reduce((n, d) => n + (answers[d.key] ?? 0), 0) /
+          GRADER_DIMS.length,
+      )
+    : 0;
+  const band = gradeBand(score);
+  const weakest = [...GRADER_DIMS]
+    .sort((a, b) => (answers[a.key] ?? 0) - (answers[b.key] ?? 0))
+    .slice(0, 3)
+    .filter((d) => (answers[d.key] ?? 0) < 100);
+
+  const submitLead = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (leadStatus === "sending") return;
+    setLeadStatus("sending");
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...lead,
+          phone: "",
+          comments: "Requested their Presence Check results + recommendations.",
+          source: "grader",
+          context: `Scored ${score}/100 — weakest: ${weakest.map((w) => w.label).join(", ") || "none"}`,
+        }),
+      });
+      if (!res.ok) throw new Error(`lead endpoint ${res.status}`);
+      setLeadStatus("sent");
+    } catch (err) {
+      console.error("grader lead submit failed:", err);
+      setLeadStatus("error");
+    }
+  };
+
+  const ringLen = 2 * Math.PI * 54;
+
+  return (
+    <section
+      id="presence-check"
+      className="py-32 md:py-48 px-6 md:px-12 bg-white"
+    >
+      <div className="max-w-[1440px] mx-auto">
+        <div className="mb-16 reveal active">
+          <h2
+            className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
+            style={{ color: "#059669" }}
+          >
+            Free Presence Check
+          </h2>
+          <h3 className="text-display font-black tracking-tighter text-[#0A0A0A]">
+            How visible is your business, really?
+          </h3>
+          <p className="text-gray-600 mt-4 font-light max-w-lg">
+            Six honest questions, thirty seconds, an instant score — and the
+            three fixes that would move it most.
+          </p>
+        </div>
+
+        {!done ? (
+          <div className="max-w-3xl">
+            <div className="flex gap-2 mb-10">
+              {GRADER_DIMS.map((d) => (
+                <div
+                  key={d.key}
+                  className="flex-1 h-0.5 bg-gray-200 overflow-hidden rounded-full"
+                >
+                  <div
+                    className="progress-fill rounded-full"
+                    style={{
+                      width: answers[d.key] !== undefined ? "100%" : "0%",
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="space-y-10">
+              {GRADER_DIMS.map((d, i) => (
+                <div key={d.key}>
+                  <p className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-400 mb-3">
+                    {String(i + 1).padStart(2, "0")} — {d.label}
+                  </p>
+                  <p className="text-lg font-bold tracking-tight text-[#0A0A0A] mb-4">
+                    {d.q}
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {d.opts.map((o) => (
+                      <button
+                        key={o.t}
+                        onClick={() => setAnswers({ ...answers, [d.key]: o.s })}
+                        className="text-left p-5 border-2 text-[13px] font-medium leading-snug transition-colors duration-200"
+                        style={{
+                          borderColor:
+                            answers[d.key] === o.s ? "#059669" : "#E5E7EB",
+                          background:
+                            answers[d.key] === o.s ? "#ECFDF5" : "#fff",
+                          color: "#0A0A0A",
+                        }}
+                      >
+                        {o.t}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button
+              disabled={answered < GRADER_DIMS.length}
+              onClick={() => setDone(true)}
+              className="btn-lift mt-12 px-12 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-white disabled:opacity-40"
+              style={{ background: "#0A0A0A" }}
+            >
+              {answered < GRADER_DIMS.length
+                ? `Answer ${GRADER_DIMS.length - answered} more`
+                : "Get my score"}
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 items-start">
+            <div className="lg:col-span-4">
+              <div className="relative w-44 h-44 mb-8">
+                <svg
+                  viewBox="0 0 120 120"
+                  className="w-full h-full"
+                  style={{ transform: "rotate(-90deg)" }}
+                >
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="54"
+                    fill="none"
+                    stroke="#F3F4F6"
+                    strokeWidth="10"
+                  />
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="54"
+                    fill="none"
+                    stroke={
+                      score >= 65
+                        ? "#059669"
+                        : score >= 40
+                          ? "#B45309"
+                          : "#B91C1C"
+                    }
+                    strokeWidth="10"
+                    strokeLinecap="butt"
+                    strokeDasharray={ringLen}
+                    strokeDashoffset={ringLen * (1 - score / 100)}
+                    style={{
+                      transition:
+                        "stroke-dashoffset 1s cubic-bezier(0.22,1,0.36,1)",
+                    }}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-5xl font-black tabular-nums text-[#0A0A0A]">
+                    {score}
+                  </span>
+                  <span className="text-[9px] font-black uppercase tracking-widest text-gray-400">
+                    out of 100
+                  </span>
+                </div>
+              </div>
+              <h4 className="text-3xl font-black tracking-tighter text-[#0A0A0A] mb-3">
+                {band.title}
+              </h4>
+              <p className="text-gray-500 font-light leading-relaxed mb-8">
+                {band.line}
+              </p>
+              <div className="space-y-2.5">
+                {GRADER_DIMS.map((d) => (
+                  <div key={d.key} className="flex items-center gap-3">
+                    <span className="w-32 text-[10px] font-black uppercase tracking-widest text-gray-400 flex-shrink-0">
+                      {d.label}
+                    </span>
+                    <div className="flex-1 h-1.5 bg-gray-100 overflow-hidden">
+                      <div
+                        style={{
+                          width: `${answers[d.key] ?? 0}%`,
+                          height: "100%",
+                          background:
+                            (answers[d.key] ?? 0) >= 100
+                              ? "#059669"
+                              : (answers[d.key] ?? 0) >= 50
+                                ? "#B45309"
+                                : "#B91C1C",
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={() => {
+                  setDone(false);
+                  setAnswers({});
+                  setLeadStatus("idle");
+                }}
+                className="mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors duration-300"
+              >
+                Retake
+              </button>
+            </div>
+
+            <div className="lg:col-span-8">
+              <p
+                className="text-[10px] font-black uppercase tracking-[0.25em] mb-6"
+                style={{ color: "#059669" }}
+              >
+                Fix these first
+              </p>
+              <div className="space-y-px bg-gray-100 border border-gray-100 mb-10">
+                {(weakest.length ? weakest : GRADER_DIMS.slice(0, 3)).map(
+                  (d, i) => (
+                    <div
+                      key={d.key}
+                      className="bg-white p-7 flex items-start gap-5"
+                    >
+                      <span
+                        className="text-[11px] font-black tabular-nums mt-0.5"
+                        style={{ color: "#059669" }}
+                      >
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <div>
+                        <h5 className="text-base font-black tracking-tight text-[#0A0A0A] mb-1">
+                          {d.label}
+                        </h5>
+                        <p className="text-sm text-gray-500 font-light leading-relaxed">
+                          {d.fix}
+                        </p>
+                      </div>
+                    </div>
+                  ),
+                )}
+              </div>
+
+              <div className="bg-[#0A0A0A] p-8 text-white">
+                {leadStatus === "sent" ? (
+                  <p className="text-sm font-bold text-center py-2">
+                    Done — your results and recommendations are on the way to{" "}
+                    <span style={{ color: "#34D399" }}>{lead.email}</span>.
+                  </p>
+                ) : (
+                  <form
+                    onSubmit={submitLead}
+                    className="flex flex-col md:flex-row md:items-end gap-5"
+                  >
+                    <p className="text-sm font-black tracking-tight md:max-w-[200px] flex-shrink-0">
+                      Get your full results + a fix-it plan by email.
+                    </p>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Your name"
+                      value={lead.name}
+                      onChange={(e) =>
+                        setLead({ ...lead, name: e.target.value })
+                      }
+                      className="flex-1 bg-transparent border-b-2 border-gray-700 focus:border-[#059669] py-3 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors duration-300"
+                    />
+                    <input
+                      type="email"
+                      required
+                      placeholder="Work email"
+                      value={lead.email}
+                      onChange={(e) =>
+                        setLead({ ...lead, email: e.target.value })
+                      }
+                      className="flex-1 bg-transparent border-b-2 border-gray-700 focus:border-[#059669] py-3 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors duration-300"
+                    />
+                    <button
+                      type="submit"
+                      disabled={leadStatus === "sending"}
+                      className="btn-lift flex-shrink-0 px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-white disabled:opacity-60"
+                      style={{ background: "#059669" }}
+                    >
+                      {leadStatus === "sending"
+                        ? "Sending…"
+                        : "Send my results"}
+                    </button>
+                  </form>
+                )}
+                {leadStatus === "error" && (
+                  <p className="text-red-400 text-[11px] font-bold mt-3">
+                    Couldn't send right now — try again, or use the contact form
+                    below.
+                  </p>
+                )}
+              </div>
+
+              <p className="text-[12px] text-gray-400 font-light mt-6">
+                Want the full 90-day plan behind these fixes?{" "}
+                <a
+                  href="#ai-strategy"
+                  className="font-bold text-[#0A0A0A] border-b border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors"
+                >
+                  Generate your strategy below ↓
+                </a>
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
 
 /* ─────────────────────────────────────────────
    AI Insights
