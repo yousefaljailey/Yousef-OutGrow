@@ -73,3 +73,5 @@ Measured contrast:
 Debt item #1 (est. 2h, post-launch, needs visual regression): tokenize ~120 inline `#059669` sites in App.tsx → `var(--color-brand)` for fills/borders/text-on-dark/display-size, `var(--color-brand-ink)` for text on light grounds (~40 eyebrow labels). Same pass: audit 39 `text-gray-400` sites → gray-600 where ground is light. After tokenization the brand recolors in one CSS line — sellable as "rebrand in one token."
 
 Rule until then: new code consumes the CSS variables, never raw hexes.
+
+Update 2026-07-04 (post-meeting): token unification DONE — all 122 brand-color sites now consume `var(--color-brand)` (identical pixels; 1 opacity-modifier site keeps hex by design). The whole brand recolors from one CSS line. Remaining debt from the AA audit is now ONLY the text-on-light ink split (~40 labels → `var(--color-brand-ink)`), still est. 1h with visual check.

@@ -64,7 +64,7 @@ const WordCycler = () => {
   }, []);
 
   return (
-    <span key={key} className="word-cycle-anim" style={{ color: "#059669" }}>
+    <span key={key} className="word-cycle-anim" style={{ color: "var(--color-brand)" }}>
       {CYCLE_WORDS[idx]}
     </span>
   );
@@ -82,7 +82,7 @@ const FloatingHeroStats = () => {
         <span className="stat-card-dot" />
         <span
           className="text-[9px] font-black uppercase tracking-widest"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           Proposals
         </span>
@@ -95,7 +95,7 @@ const FloatingHeroStats = () => {
         <span className="stat-card-dot" />
         <span
           className="text-[9px] font-black uppercase tracking-widest"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           Launch
         </span>
@@ -108,7 +108,7 @@ const FloatingHeroStats = () => {
         <span className="stat-card-dot" />
         <span
           className="text-[9px] font-black uppercase tracking-widest"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           Coverage
         </span>
@@ -158,7 +158,7 @@ const MarqueeTicker = () => {
             {item}
             <span
               className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-              style={{ background: "#059669" }}
+              style={{ background: "var(--color-brand)" }}
             />
           </span>
         ))}
@@ -189,7 +189,7 @@ const AnimStat = ({
         {count}
         {suffix}
       </div>
-      <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-gray-600 group-hover:text-[#059669] transition-colors duration-300">
+      <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-gray-600 group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
         {label}
       </div>
     </div>
@@ -272,7 +272,7 @@ const ServiceCalculator = () => {
         <div className="mb-16 reveal">
           <h2
             className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
-            style={{ color: "#059669" }}
+            style={{ color: "var(--color-brand)" }}
           >
             Scope Your Project
           </h2>
@@ -365,7 +365,7 @@ const ServiceCalculator = () => {
             <div className="bg-[#0A0A0A] p-10 md:p-14 text-white">
               <p
                 className="text-[10px] font-black uppercase tracking-[0.25em] mb-8"
-                style={{ color: "#059669" }}
+                style={{ color: "var(--color-brand)" }}
               >
                 Your Recommendation
               </p>
@@ -394,7 +394,7 @@ const ServiceCalculator = () => {
               <div className="flex gap-4 flex-wrap">
                 <a
                   href="#contact"
-                  className="btn-lift inline-block py-4 px-10 text-[11px] font-black uppercase tracking-[0.2em] text-[#0A0A0A] bg-white hover:bg-[#059669] hover:text-white transition-colors"
+                  className="btn-lift inline-block py-4 px-10 text-[11px] font-black uppercase tracking-[0.2em] text-[#0A0A0A] bg-white hover:bg-[color:var(--color-brand)] hover:text-white transition-colors"
                 >
                   Get a Quote
                 </a>
@@ -449,11 +449,11 @@ const FAQItem: React.FC<{
       onClick={toggle}
       className="w-full flex items-start justify-between py-8 text-left group"
     >
-      <span className="text-lg font-bold text-[#0A0A0A] pr-8 group-hover:text-[#059669] transition-colors duration-300">
+      <span className="text-lg font-bold text-[#0A0A0A] pr-8 group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
         {item.q}
       </span>
       <span
-        className={`accordion-chevron flex-shrink-0 w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-400 group-hover:border-[#059669] group-hover:text-[#059669] transition-colors ${isOpen ? "open" : ""}`}
+        className={`accordion-chevron flex-shrink-0 w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-400 group-hover:border-[color:var(--color-brand)] group-hover:text-[color:var(--color-brand)] transition-colors ${isOpen ? "open" : ""}`}
         style={{
           transition:
             "transform 0.4s cubic-bezier(0.22,1,0.36,1), border-color 0.3s, color 0.3s",
@@ -487,7 +487,7 @@ const FAQSection = () => {
           <div className="lg:col-span-4 reveal-left">
             <h2
               className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
-              style={{ color: "#059669" }}
+              style={{ color: "var(--color-brand)" }}
             >
               FAQ
             </h2>
@@ -499,7 +499,7 @@ const FAQSection = () => {
               your answer?{" "}
               <a
                 href="#contact"
-                className="font-bold text-[#0A0A0A] border-b border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors"
+                className="font-bold text-[#0A0A0A] border-b border-[#0A0A0A] hover:text-[color:var(--color-brand)] hover:border-[color:var(--color-brand)] transition-colors"
               >
                 Contact us directly.
               </a>
@@ -554,7 +554,7 @@ const Header = ({
           <div
             className="w-7 h-7 flex items-center justify-center group-hover:scale-110"
             style={{
-              background: "#059669",
+              background: "var(--color-brand)",
               transition: "transform 250ms cubic-bezier(0.34,1.56,0.64,1)",
             }}
           >
@@ -625,7 +625,7 @@ const Header = ({
               >
                 <span
                   className="block text-[9px] font-black uppercase tracking-widest mb-1.5"
-                  style={{ color: "#059669" }}
+                  style={{ color: "var(--color-brand)" }}
                 >
                   01
                 </span>
@@ -654,7 +654,7 @@ const Header = ({
               >
                 <span
                   className="block text-[9px] font-black uppercase tracking-widest mb-1.5"
-                  style={{ color: "#059669" }}
+                  style={{ color: "var(--color-brand)" }}
                 >
                   02
                 </span>
@@ -695,8 +695,8 @@ const Header = ({
             transition: "color 250ms ease, border-color 250ms ease",
           }}
           onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.color = "#059669";
-            (e.currentTarget as HTMLElement).style.borderColor = "#059669";
+            (e.currentTarget as HTMLElement).style.color = "var(--color-brand)";
+            (e.currentTarget as HTMLElement).style.borderColor = "var(--color-brand)";
           }}
           onMouseLeave={(e) => {
             (e.currentTarget as HTMLElement).style.color = "#0A0A0A";
@@ -731,9 +731,9 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
           <div className="lg:col-span-7 reveal">
             <span
               className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] mb-10"
-              style={{ color: "#059669" }}
+              style={{ color: "var(--color-brand)" }}
             >
-              <span className="w-8 h-px" style={{ background: "#059669" }} />
+              <span className="w-8 h-px" style={{ background: "var(--color-brand)" }} />
               Doha, Qatar · Advertising · Events
             </span>
             <h1 className="text-huge font-black text-[#0A0A0A] mb-6 leading-none">
@@ -761,7 +761,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
                 }}
                 onMouseEnter={(e) =>
                   ((e.currentTarget as HTMLElement).style.background =
-                    "#059669")
+                    "var(--color-brand)")
                 }
                 onMouseLeave={(e) =>
                   ((e.currentTarget as HTMLElement).style.background =
@@ -780,8 +780,8 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
                 }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.borderColor =
-                    "#059669";
-                  (e.currentTarget as HTMLElement).style.color = "#059669";
+                    "var(--color-brand)";
+                  (e.currentTarget as HTMLElement).style.color = "var(--color-brand)";
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLElement).style.borderColor =
@@ -816,7 +816,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
         <div className="mb-24 reveal">
           <h2
             className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
-            style={{ color: "#059669" }}
+            style={{ color: "var(--color-brand)" }}
           >
             What we do
           </h2>
@@ -833,11 +833,11 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
               <div className="flex items-center space-x-10 mb-6 lg:mb-0">
                 <span
                   className="text-[10px] font-black tabular-nums"
-                  style={{ color: "#059669" }}
+                  style={{ color: "var(--color-brand)" }}
                 >
                   0{i + 1}
                 </span>
-                <h4 className="cap-underline text-3xl md:text-4xl font-black tracking-tighter group-hover:text-[#059669] transition-colors duration-300">
+                <h4 className="cap-underline text-3xl md:text-4xl font-black tracking-tighter group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
                   {service.title}
                 </h4>
               </div>
@@ -849,7 +849,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
                   {service.features.map((feature, idx) => (
                     <li
                       key={idx}
-                      className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border group-hover:border-[#059669]/40 group-hover:text-[#059669]"
+                      className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border group-hover:border-[#059669]/40 group-hover:text-[color:var(--color-brand)]"
                       style={{
                         borderColor: "#374151",
                         color: "#6B7280",
@@ -874,7 +874,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
         <div className="text-center mb-24 reveal">
           <h2
             className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
-            style={{ color: "#059669" }}
+            style={{ color: "var(--color-brand)" }}
           >
             Growth Plans
           </h2>
@@ -900,7 +900,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
                     {pkg.isPopular && (
                       <span
                         className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 text-white"
-                        style={{ background: "#059669" }}
+                        style={{ background: "var(--color-brand)" }}
                       >
                         Recommended
                       </span>
@@ -928,7 +928,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
                       >
                         <div
                           className="w-1.5 h-1.5 mr-4 flex-shrink-0"
-                          style={{ background: "#059669" }}
+                          style={{ background: "var(--color-brand)" }}
                         />
                         {feature}
                       </li>
@@ -939,7 +939,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
                     className="btn-lift inline-block w-full text-center py-5 text-[10px] font-black uppercase tracking-[0.2em] text-white transition-colors duration-300 hover:opacity-90"
                     style={{ background: "#0A0A0A" }}
                     onMouseEnter={(e) => {
-                      (e.target as HTMLElement).style.background = "#059669";
+                      (e.target as HTMLElement).style.background = "var(--color-brand)";
                     }}
                     onMouseLeave={(e) => {
                       (e.target as HTMLElement).style.background = "#0A0A0A";
@@ -973,7 +973,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
         <div className="mb-16 reveal">
           <h2
             className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
-            style={{ color: "#059669" }}
+            style={{ color: "var(--color-brand)" }}
           >
             Find Us
           </h2>
@@ -1011,7 +1011,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
             <div key={i} className="bg-[#0A0A0A] px-8 py-8">
               <span
                 className="block text-[9px] font-black uppercase tracking-widest mb-3"
-                style={{ color: "#059669" }}
+                style={{ color: "var(--color-brand)" }}
               >
                 {item.label}
               </span>
@@ -1035,7 +1035,7 @@ const AboutPage = () => (
       <div className="reveal">
         <h2
           className="text-xs font-bold uppercase tracking-[0.3em] mb-12"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           Who we are
         </h2>
@@ -1073,7 +1073,7 @@ const AboutPage = () => (
         <div className="border-t-2 border-[#0A0A0A] pt-12 reveal-left">
           <h3
             className="text-xs font-black uppercase tracking-[0.3em] mb-8"
-            style={{ color: "#059669" }}
+            style={{ color: "var(--color-brand)" }}
           >
             What We Do
           </h3>
@@ -1108,7 +1108,7 @@ const AboutPage = () => (
                 key={i}
                 className="group cursor-default border-b border-gray-100 pb-6 last:border-0"
               >
-                <h4 className="text-lg font-bold tracking-tighter mb-1 group-hover:text-[#059669] transition-colors duration-300 text-[#0A0A0A]">
+                <h4 className="text-lg font-bold tracking-tighter mb-1 group-hover:text-[color:var(--color-brand)] transition-colors duration-300 text-[#0A0A0A]">
                   {item.title}
                 </h4>
                 <p className="text-gray-400 text-sm font-light">{item.desc}</p>
@@ -1119,7 +1119,7 @@ const AboutPage = () => (
         <div className="border-t-2 border-[#0A0A0A] pt-12 reveal-right">
           <h3
             className="text-xs font-black uppercase tracking-[0.3em] mb-8"
-            style={{ color: "#059669" }}
+            style={{ color: "var(--color-brand)" }}
           >
             Our Approach
           </h3>
@@ -1136,11 +1136,11 @@ const AboutPage = () => (
             ].map((item, i) => (
               <li
                 key={i}
-                className={`text-xl font-medium text-[#0A0A0A] flex items-start group cursor-default hover:text-[#059669] transition-colors duration-300 reveal stagger-${i + 1}`}
+                className={`text-xl font-medium text-[#0A0A0A] flex items-start group cursor-default hover:text-[color:var(--color-brand)] transition-colors duration-300 reveal stagger-${i + 1}`}
               >
                 <span
                   className="w-1.5 h-1.5 mt-2.5 mr-4 flex-shrink-0 group-hover:scale-150 transition-transform duration-300"
-                  style={{ background: "#059669" }}
+                  style={{ background: "var(--color-brand)" }}
                 />
                 {item}
               </li>
@@ -1152,7 +1152,7 @@ const AboutPage = () => (
       <div className="bg-[#0A0A0A] text-white p-12 md:p-24 mb-32 reveal-scale">
         <h3
           className="text-xs font-black uppercase tracking-[0.3em] mb-12"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           Why Outgrow?
         </h3>
@@ -1180,7 +1180,7 @@ const AboutPage = () => (
             },
           ].map((item, i) => (
             <div key={i} className="group">
-              <h4 className="text-lg font-bold mb-2 group-hover:text-[#059669] transition-colors duration-300">
+              <h4 className="text-lg font-bold mb-2 group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
                 {item.title}
               </h4>
               <p className="text-gray-400 text-sm font-light">{item.desc}</p>
@@ -1188,7 +1188,7 @@ const AboutPage = () => (
           ))}
           <p
             className="text-xl font-black tracking-tighter pt-4"
-            style={{ color: "#059669" }}
+            style={{ color: "var(--color-brand)" }}
           >
             We don't just help businesses look good — we help them outgrow their
             limits.
@@ -1199,7 +1199,7 @@ const AboutPage = () => (
       <div className="mb-32 reveal active">
         <h3
           className="text-xs font-black uppercase tracking-[0.3em] mb-4"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           The Outgrow Playbook
         </h3>
@@ -1262,7 +1262,7 @@ const AboutPage = () => (
             },
           ].map((item, i) => (
             <div key={i} className="bg-white p-8 group">
-              <h4 className="text-base font-black tracking-tight text-[#0A0A0A] mb-2 group-hover:text-[#059669] transition-colors duration-300">
+              <h4 className="text-base font-black tracking-tight text-[#0A0A0A] mb-2 group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
                 {item.t}
               </h4>
               <p className="text-[13px] text-gray-500 font-light leading-relaxed">
@@ -1296,7 +1296,7 @@ const AboutPage = () => (
           className="btn-lift inline-block text-white px-12 py-6 text-sm font-black uppercase tracking-widest transition-colors duration-300"
           style={{ background: "#0A0A0A" }}
           onMouseEnter={(e) => {
-            (e.target as HTMLElement).style.background = "#059669";
+            (e.target as HTMLElement).style.background = "var(--color-brand)";
           }}
           onMouseLeave={(e) => {
             (e.target as HTMLElement).style.background = "#0A0A0A";
@@ -1459,7 +1459,7 @@ const PresenceGrader = () => {
         <div className="mb-16 reveal active">
           <h2
             className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
-            style={{ color: "#059669" }}
+            style={{ color: "var(--color-brand)" }}
           >
             Free Presence Check
           </h2>
@@ -1506,7 +1506,7 @@ const PresenceGrader = () => {
                         className="text-left p-5 border-2 text-[13px] font-medium leading-snug transition-colors duration-200"
                         style={{
                           borderColor:
-                            answers[d.key] === o.s ? "#059669" : "#E5E7EB",
+                            answers[d.key] === o.s ? "var(--color-brand)" : "#E5E7EB",
                           background:
                             answers[d.key] === o.s ? "#ECFDF5" : "#fff",
                           color: "#0A0A0A",
@@ -1562,7 +1562,7 @@ const PresenceGrader = () => {
                     fill="none"
                     stroke={
                       score >= 65
-                        ? "#059669"
+                        ? "var(--color-brand)"
                         : score >= 40
                           ? "#B45309"
                           : "#B91C1C"
@@ -1605,7 +1605,7 @@ const PresenceGrader = () => {
                           height: "100%",
                           background:
                             (answers[d.key] ?? 0) >= 100
-                              ? "#059669"
+                              ? "var(--color-brand)"
                               : (answers[d.key] ?? 0) >= 50
                                 ? "#B45309"
                                 : "#B91C1C",
@@ -1621,7 +1621,7 @@ const PresenceGrader = () => {
                   setAnswers({});
                   setLeadStatus("idle");
                 }}
-                className="mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors duration-300"
+                className="mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[color:var(--color-brand)] hover:border-[color:var(--color-brand)] transition-colors duration-300"
               >
                 Retake
               </button>
@@ -1630,7 +1630,7 @@ const PresenceGrader = () => {
             <div className="lg:col-span-8">
               <p
                 className="text-[10px] font-black uppercase tracking-[0.25em] mb-6"
-                style={{ color: "#059669" }}
+                style={{ color: "var(--color-brand)" }}
               >
                 Fix these first
               </p>
@@ -1643,7 +1643,7 @@ const PresenceGrader = () => {
                     >
                       <span
                         className="text-[11px] font-black tabular-nums mt-0.5"
-                        style={{ color: "#059669" }}
+                        style={{ color: "var(--color-brand)" }}
                       >
                         {String(i + 1).padStart(2, "0")}
                       </span>
@@ -1682,7 +1682,7 @@ const PresenceGrader = () => {
                       onChange={(e) =>
                         setLead({ ...lead, name: e.target.value })
                       }
-                      className="flex-1 bg-transparent border-b-2 border-gray-700 focus:border-[#059669] py-3 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors duration-300"
+                      className="flex-1 bg-transparent border-b-2 border-gray-700 focus:border-[color:var(--color-brand)] py-3 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors duration-300"
                     />
                     <input
                       type="email"
@@ -1692,13 +1692,13 @@ const PresenceGrader = () => {
                       onChange={(e) =>
                         setLead({ ...lead, email: e.target.value })
                       }
-                      className="flex-1 bg-transparent border-b-2 border-gray-700 focus:border-[#059669] py-3 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors duration-300"
+                      className="flex-1 bg-transparent border-b-2 border-gray-700 focus:border-[color:var(--color-brand)] py-3 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors duration-300"
                     />
                     <button
                       type="submit"
                       disabled={leadStatus === "sending"}
                       className="btn-lift flex-shrink-0 px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-white disabled:opacity-60"
-                      style={{ background: "#059669" }}
+                      style={{ background: "var(--color-brand)" }}
                     >
                       {leadStatus === "sending"
                         ? "Sending…"
@@ -1718,7 +1718,7 @@ const PresenceGrader = () => {
                 Want the full 90-day plan behind these fixes?{" "}
                 <a
                   href="#ai-strategy"
-                  className="font-bold text-[#0A0A0A] border-b border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors"
+                  className="font-bold text-[#0A0A0A] border-b border-[#0A0A0A] hover:text-[color:var(--color-brand)] hover:border-[color:var(--color-brand)] transition-colors"
                 >
                   Generate your strategy below ↓
                 </a>
@@ -1789,7 +1789,7 @@ const StrategyReport = ({
         <span className="flex items-center gap-2">
           <span
             className="w-6 h-6 flex items-center justify-center"
-            style={{ background: "#059669" }}
+            style={{ background: "var(--color-brand)" }}
           >
             <span className="text-white font-black text-xs">O</span>
           </span>
@@ -1807,7 +1807,7 @@ const StrategyReport = ({
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
           <span
             className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 text-white"
-            style={{ background: strategy.demo ? "#0A0A0A" : "#059669" }}
+            style={{ background: strategy.demo ? "#0A0A0A" : "var(--color-brand)" }}
           >
             {strategy.demo
               ? "Sample Preview — engine output"
@@ -1837,7 +1837,7 @@ const StrategyReport = ({
         <div className="bg-white p-8 md:p-10">
           <span
             className="block text-[9px] font-black uppercase tracking-[0.25em] mb-4"
-            style={{ color: "#059669" }}
+            style={{ color: "var(--color-brand)" }}
           >
             Positioning (STP)
           </span>
@@ -1855,7 +1855,7 @@ const StrategyReport = ({
           <div>
             <span
               className="block text-[9px] font-black uppercase tracking-[0.25em] mb-4"
-              style={{ color: "#059669" }}
+              style={{ color: "var(--color-brand)" }}
             >
               North-star metric
             </span>
@@ -1883,7 +1883,7 @@ const StrategyReport = ({
               <div
                 style={{
                   width: `${strategy.budgetSplit.activation}%`,
-                  background: "#059669",
+                  background: "var(--color-brand)",
                 }}
               />
             </div>
@@ -1898,7 +1898,7 @@ const StrategyReport = ({
       <div>
         <span
           className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           The plan — RACE journey
         </span>
@@ -1910,7 +1910,7 @@ const StrategyReport = ({
                 key={i}
                 className="bg-white p-7 md:p-9 grid grid-cols-1 md:grid-cols-12 gap-6"
                 style={
-                  priority ? { boxShadow: "inset 4px 0 0 #059669" } : undefined
+                  priority ? { boxShadow: "inset 4px 0 0 var(--color-brand)" } : undefined
                 }
               >
                 <div className="md:col-span-3">
@@ -1921,7 +1921,7 @@ const StrategyReport = ({
                     {priority && (
                       <span
                         className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 text-white"
-                        style={{ background: "#059669" }}
+                        style={{ background: "var(--color-brand)" }}
                       >
                         Priority
                       </span>
@@ -1942,7 +1942,7 @@ const StrategyReport = ({
                       >
                         <span
                           className="w-1.5 h-1.5 mt-2 mr-3 flex-shrink-0"
-                          style={{ background: "#059669" }}
+                          style={{ background: "var(--color-brand)" }}
                         />
                         {t}
                       </li>
@@ -1973,7 +1973,7 @@ const StrategyReport = ({
       <div>
         <span
           className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           90-day roadmap
         </span>
@@ -1982,7 +1982,7 @@ const StrategyReport = ({
             <div key={i} className="bg-white p-7 md:p-9">
               <span
                 className="block text-[10px] font-black tabular-nums mb-1"
-                style={{ color: "#059669" }}
+                style={{ color: "var(--color-brand)" }}
               >
                 {r.phase}
               </span>
@@ -2011,7 +2011,7 @@ const StrategyReport = ({
       <div className="border-2 border-[#0A0A0A] p-7 md:p-9">
         <span
           className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           Do this week — zero budget
         </span>
@@ -2019,8 +2019,8 @@ const StrategyReport = ({
           {strategy.quickWins.map((q, i) => (
             <div key={i} className="flex items-start">
               <span
-                className="w-5 h-5 border-2 border-[#059669] flex-shrink-0 mr-3 mt-0.5 flex items-center justify-center text-[10px] font-black"
-                style={{ color: "#059669" }}
+                className="w-5 h-5 border-2 border-[color:var(--color-brand)] flex-shrink-0 mr-3 mt-0.5 flex items-center justify-center text-[10px] font-black"
+                style={{ color: "var(--color-brand)" }}
               >
                 ✓
               </span>
@@ -2038,7 +2038,7 @@ const StrategyReport = ({
           <div className="text-center py-4">
             <div
               className="w-10 h-10 mx-auto mb-5 flex items-center justify-center text-white font-black"
-              style={{ background: "#059669" }}
+              style={{ background: "var(--color-brand)" }}
             >
               ✓
             </div>
@@ -2096,7 +2096,7 @@ const StrategyReport = ({
                     onChange={(e) =>
                       setLead({ ...lead, [f.key]: e.target.value })
                     }
-                    className="w-full bg-transparent border-b-2 border-gray-700 focus:border-[#059669] py-3 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors duration-300"
+                    className="w-full bg-transparent border-b-2 border-gray-700 focus:border-[color:var(--color-brand)] py-3 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors duration-300"
                   />
                 ))}
               </div>
@@ -2116,7 +2116,7 @@ const StrategyReport = ({
                 type="submit"
                 disabled={leadStatus === "sending"}
                 className="btn-lift flex-shrink-0 px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-white disabled:opacity-60"
-                style={{ background: "#059669" }}
+                style={{ background: "var(--color-brand)" }}
               >
                 {leadStatus === "sending" ? "Sending…" : "Send it to me"}
               </button>
@@ -2150,7 +2150,7 @@ const StrategyReport = ({
         <div className="print-hide flex items-center gap-6 flex-shrink-0">
           <button
             onClick={onReset}
-            className="text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors duration-300"
+            className="text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[color:var(--color-brand)] hover:border-[color:var(--color-brand)] transition-colors duration-300"
           >
             New Analysis
           </button>
@@ -2227,7 +2227,7 @@ const AIInsights = () => {
     <section
       id="ai-strategy"
       className="py-32 md:py-48 px-6 md:px-12 text-white overflow-hidden relative"
-      style={{ background: "#059669" }}
+      style={{ background: "var(--color-brand)" }}
     >
       <div
         className="absolute inset-0 pointer-events-none"
@@ -2294,7 +2294,7 @@ const AIInsights = () => {
                       <div
                         className="absolute inset-0"
                         style={{
-                          background: "#059669",
+                          background: "var(--color-brand)",
                           animation: "loadingBar 2s ease-in-out infinite",
                         }}
                       />
@@ -2335,7 +2335,7 @@ const AIInsights = () => {
                         }
                         onFocus={(e) => {
                           (e.target as HTMLElement).style.borderColor =
-                            "#059669";
+                            "var(--color-brand)";
                         }}
                         onBlur={(e) => {
                           (e.target as HTMLElement).style.borderColor =
@@ -2354,7 +2354,7 @@ const AIInsights = () => {
                       setInput({ ...input, mainChallenge: e.target.value })
                     }
                     onFocus={(e) => {
-                      (e.target as HTMLElement).style.borderColor = "#059669";
+                      (e.target as HTMLElement).style.borderColor = "var(--color-brand)";
                     }}
                     onBlur={(e) => {
                       (e.target as HTMLElement).style.borderColor = "#E5E7EB";
@@ -2367,7 +2367,7 @@ const AIInsights = () => {
                   style={{ background: "#0A0A0A" }}
                   onMouseEnter={(e) => {
                     if (!loading)
-                      (e.target as HTMLElement).style.background = "#059669";
+                      (e.target as HTMLElement).style.background = "var(--color-brand)";
                   }}
                   onMouseLeave={(e) => {
                     (e.target as HTMLElement).style.background = "#0A0A0A";
@@ -2400,11 +2400,11 @@ const ServiceCard: React.FC<{ num: string; title: string; desc: string }> = ({
   <div className="card-3d bg-white p-10 md:p-12 group border border-gray-100 hover:border-[#0A0A0A] transition-colors duration-300">
     <span
       className="block text-[10px] font-black mb-6 transition-colors duration-300"
-      style={{ color: "#059669" }}
+      style={{ color: "var(--color-brand)" }}
     >
       {num}
     </span>
-    <h3 className="text-xl font-black tracking-tighter mb-4 text-[#0A0A0A] group-hover:text-[#059669] transition-colors duration-300">
+    <h3 className="text-xl font-black tracking-tighter mb-4 text-[#0A0A0A] group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
       {title}
     </h3>
     <p className="text-gray-500 text-sm leading-relaxed font-light">{desc}</p>
@@ -2416,11 +2416,11 @@ const ProcessStep: React.FC<{ step: string; title: string; desc: string }> = ({
   title,
   desc,
 }) => (
-  <div className="border-t-2 border-[#0A0A0A] pt-10 pr-8 pb-10 group hover:border-[#059669] transition-colors duration-300">
+  <div className="border-t-2 border-[#0A0A0A] pt-10 pr-8 pb-10 group hover:border-[color:var(--color-brand)] transition-colors duration-300">
     <span className="block text-5xl font-black text-gray-100 group-hover:text-[#D1FAE5] mb-6 transition-colors duration-300">
       {step}
     </span>
-    <h3 className="text-lg font-black tracking-tighter mb-3 group-hover:text-[#059669] transition-colors duration-300 text-[#0A0A0A]">
+    <h3 className="text-lg font-black tracking-tighter mb-3 group-hover:text-[color:var(--color-brand)] transition-colors duration-300 text-[#0A0A0A]">
       {title}
     </h3>
     <p className="text-gray-500 text-sm leading-relaxed font-light">{desc}</p>
@@ -2491,7 +2491,7 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <button
           onClick={() => setView("works")}
-          className="text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-[#059669] transition-colors duration-300 mb-16 flex items-center gap-3"
+          className="text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
         >
           <span>←</span> All works
         </button>
@@ -2512,7 +2512,7 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
           href="https://zihay-preview.vercel.app"
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-lift inline-block px-10 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-[#0A0A0A] bg-white hover:bg-[#059669] hover:text-white transition-colors duration-300"
+          className="btn-lift inline-block px-10 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-[#0A0A0A] bg-white hover:bg-[color:var(--color-brand)] hover:text-white transition-colors duration-300"
         >
           Open the live build ↗
         </a>
@@ -2538,7 +2538,7 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
     <section className="py-24 px-6 md:px-12 bg-white">
       <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
         <div>
-          <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: "#059669" }}>The brief</h2>
+          <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: "var(--color-brand)" }}>The brief</h2>
           <p className="text-2xl font-light leading-snug text-gray-600 mb-6">
             A modest-womenswear brand needed to go from idea to <span className="text-[#0A0A0A] font-medium">selling</span> — without waiting on payment gateways, photography, or a CMS.
           </p>
@@ -2547,7 +2547,7 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
           </p>
         </div>
         <div>
-          <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: "#059669" }}>What we built</h2>
+          <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: "var(--color-brand)" }}>What we built</h2>
           <ul className="space-y-4">
             {[
               "Working commerce: cart, sizes, free-shipping logic, and a WhatsApp checkout that arrives as a clean order message",
@@ -2557,7 +2557,7 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
               "Growth wiring: newsletter into the agency lead pipeline, Instagram catalog feed, structured-data SEO, analytics-ready",
             ].map((item, i) => (
               <li key={i} className="flex items-start text-[15px] text-gray-700 font-light leading-relaxed">
-                <span className="w-1.5 h-1.5 mt-2.5 mr-4 flex-shrink-0" style={{ background: "#059669" }} />
+                <span className="w-1.5 h-1.5 mt-2.5 mr-4 flex-shrink-0" style={{ background: "var(--color-brand)" }} />
                 {item}
               </li>
             ))}
@@ -2568,7 +2568,7 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
 
     <section className="py-20 px-6 md:px-12 bg-gray-50">
       <div className="max-w-[1440px] mx-auto">
-        <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-10" style={{ color: "#059669" }}>Under the hood</h2>
+        <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-10" style={{ color: "var(--color-brand)" }}>Under the hood</h2>
         <div className="flex flex-wrap gap-3">
           {[
             "Zero-backend storefront",
@@ -2591,7 +2591,7 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
       </div>
     </section>
 
-    <section className="py-24 px-6 md:px-12 text-white" style={{ background: "#059669" }}>
+    <section className="py-24 px-6 md:px-12 text-white" style={{ background: "var(--color-brand)" }}>
       <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-12">
         <div>
           <h2 className="text-xs font-black uppercase tracking-[0.3em] text-green-200 mb-6">Your brand next?</h2>
@@ -2614,7 +2614,7 @@ const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="reveal">
         <h2
           className="text-xs font-black uppercase tracking-[0.3em] mb-12"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           Portfolio
         </h2>
@@ -2638,14 +2638,14 @@ const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
             <div className="flex justify-between items-start mb-8">
               <span
                 className="text-[10px] font-black"
-                style={{ color: "#059669" }}
+                style={{ color: "var(--color-brand)" }}
               >
                 {w.num}
               </span>
               {w.href && (
                 <span
                   className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 text-white"
-                  style={{ background: "#059669" }}
+                  style={{ background: "var(--color-brand)" }}
                 >
                   Live
                 </span>
@@ -2724,7 +2724,7 @@ const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
             transition:
               "background 250ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)",
           }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#059669")}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-brand)")}
           onMouseLeave={(e) => (e.currentTarget.style.background = "#0A0A0A")}
         >
           Start a Project
@@ -2740,13 +2740,13 @@ const ServiceMarketingPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <button
           onClick={() => setView("home")}
-          className="text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-[#059669] transition-colors duration-300 mb-16 flex items-center gap-3"
+          className="text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
         >
           <span>←</span> Back to Home
         </button>
         <span
           className="inline-block text-xs font-bold uppercase tracking-[0.3em] mb-8"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           Our Services — 01
         </span>
@@ -2765,7 +2765,7 @@ const ServiceMarketingPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <h2
           className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           What's Included
         </h2>
@@ -2814,7 +2814,7 @@ const ServiceMarketingPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <h2
           className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           How We Work
         </h2>
@@ -2854,7 +2854,7 @@ const ServiceMarketingPage = ({ setView }: { setView: (v: View) => void }) => (
 
     <section
       className="py-32 px-6 md:px-12 text-white"
-      style={{ background: "#059669" }}
+      style={{ background: "var(--color-brand)" }}
     >
       <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-12 reveal">
         <div>
@@ -2884,13 +2884,13 @@ const ServiceEventsPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <button
           onClick={() => setView("home")}
-          className="text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-[#059669] transition-colors duration-300 mb-16 flex items-center gap-3"
+          className="text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
         >
           <span>←</span> Back to Home
         </button>
         <span
           className="inline-block text-xs font-bold uppercase tracking-[0.3em] mb-8"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           Our Services — 02
         </span>
@@ -2911,7 +2911,7 @@ const ServiceEventsPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <h2
           className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           What's Included
         </h2>
@@ -2960,7 +2960,7 @@ const ServiceEventsPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <h2
           className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
-          style={{ color: "#059669" }}
+          style={{ color: "var(--color-brand)" }}
         >
           How We Work
         </h2>
@@ -3000,7 +3000,7 @@ const ServiceEventsPage = ({ setView }: { setView: (v: View) => void }) => (
 
     <section
       className="py-32 px-6 md:px-12 text-white"
-      style={{ background: "#059669" }}
+      style={{ background: "var(--color-brand)" }}
     >
       <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-12 reveal">
         <div>
@@ -3051,7 +3051,7 @@ const PolicyPage = ({
       </h1>
       <p
         className="text-xs font-bold uppercase tracking-widest mb-20"
-        style={{ color: "#059669" }}
+        style={{ color: "var(--color-brand)" }}
       >
         {subtitle}
       </p>
@@ -3059,7 +3059,7 @@ const PolicyPage = ({
         <div key={i} className="border-t border-gray-100 py-12">
           <h2
             className="text-xs font-black uppercase tracking-[0.3em] mb-6"
-            style={{ color: "#059669" }}
+            style={{ color: "var(--color-brand)" }}
           >
             {s.heading}
           </h2>
@@ -3135,7 +3135,7 @@ const Contact = () => {
         <div className="text-center mb-20 reveal">
           <h2
             className="text-xs font-bold uppercase tracking-[0.3em] mb-8"
-            style={{ color: "#059669" }}
+            style={{ color: "var(--color-brand)" }}
           >
             Contact us
           </h2>
@@ -3216,7 +3216,7 @@ const Contact = () => {
         <div className="max-w-3xl mx-auto reveal">
           <h4
             className="text-xs font-black uppercase tracking-[0.3em] mb-4"
-            style={{ color: "#059669" }}
+            style={{ color: "var(--color-brand)" }}
           >
             Send us a message
           </h4>
@@ -3225,10 +3225,10 @@ const Contact = () => {
             immediate answer.
           </p>
           {status === "sent" ? (
-            <div className="border-2 border-[#059669] p-16 text-center">
+            <div className="border-2 border-[color:var(--color-brand)] p-16 text-center">
               <div
                 className="w-12 h-12 flex items-center justify-center mx-auto mb-6 text-white text-xl font-black"
-                style={{ background: "#059669" }}
+                style={{ background: "var(--color-brand)" }}
               >
                 ✓
               </div>
@@ -3244,7 +3244,7 @@ const Contact = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-lift inline-block mt-10 px-10 py-5 text-white text-[11px] font-black uppercase tracking-[0.2em]"
-                style={{ background: "#059669" }}
+                style={{ background: "var(--color-brand)" }}
               >
                 Continue on WhatsApp
               </a>
@@ -3255,7 +3255,7 @@ const Contact = () => {
                     setForm({ name: "", email: "", phone: "", comments: "" });
                     setCharCount(0);
                   }}
-                  className="mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors duration-300"
+                  className="mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[color:var(--color-brand)] hover:border-[color:var(--color-brand)] transition-colors duration-300"
                 >
                   Send another message
                 </button>
@@ -3282,7 +3282,7 @@ const Contact = () => {
                 ].map((f, i) => (
                   <div
                     key={f.key}
-                    className={`border-2 border-gray-200 p-8 focus-within:border-[#059669] transition-colors duration-300 ${i === 1 ? "md:border-l-0" : ""}`}
+                    className={`border-2 border-gray-200 p-8 focus-within:border-[color:var(--color-brand)] transition-colors duration-300 ${i === 1 ? "md:border-l-0" : ""}`}
                   >
                     <label className="block text-[9px] font-black uppercase tracking-widest text-gray-400 mb-3">
                       {f.label}
@@ -3300,7 +3300,7 @@ const Contact = () => {
                   </div>
                 ))}
               </div>
-              <div className="border-2 border-t-0 border-gray-200 p-8 focus-within:border-[#059669] transition-colors duration-300">
+              <div className="border-2 border-t-0 border-gray-200 p-8 focus-within:border-[color:var(--color-brand)] transition-colors duration-300">
                 <label className="block text-[9px] font-black uppercase tracking-widest text-gray-400 mb-3">
                   Phone Number
                 </label>
@@ -3312,7 +3312,7 @@ const Contact = () => {
                   className="w-full text-lg font-medium text-[#0A0A0A] placeholder-gray-300 focus:outline-none bg-transparent"
                 />
               </div>
-              <div className="border-2 border-t-0 border-gray-200 p-8 focus-within:border-[#059669] transition-colors duration-300">
+              <div className="border-2 border-t-0 border-gray-200 p-8 focus-within:border-[color:var(--color-brand)] transition-colors duration-300">
                 <div className="flex justify-between mb-3">
                   <label className="block text-[9px] font-black uppercase tracking-widest text-gray-400">
                     Comments
@@ -3363,7 +3363,7 @@ const Contact = () => {
                 className="btn-lift w-full py-7 text-white text-[11px] font-black uppercase tracking-[0.25em] transition-colors duration-300 disabled:opacity-60"
                 style={{ background: "#0A0A0A" }}
                 onMouseEnter={(e) => {
-                  (e.target as HTMLElement).style.background = "#059669";
+                  (e.target as HTMLElement).style.background = "var(--color-brand)";
                 }}
                 onMouseLeave={(e) => {
                   (e.target as HTMLElement).style.background = "#0A0A0A";
@@ -3382,7 +3382,7 @@ const Contact = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-lift inline-block px-8 py-4 text-white text-[10px] font-black uppercase tracking-[0.2em]"
-                    style={{ background: "#059669" }}
+                    style={{ background: "var(--color-brand)" }}
                   >
                     Send via WhatsApp instead
                   </a>
@@ -3411,7 +3411,7 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
             <div
               className="w-7 h-7 flex items-center justify-center group-hover:scale-110"
               style={{
-                background: "#059669",
+                background: "var(--color-brand)",
                 transition: "transform 250ms cubic-bezier(0.34,1.56,0.64,1)",
               }}
             >
@@ -3436,7 +3436,7 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
                 href={s.href}
                 target={s.href.startsWith("http") ? "_blank" : undefined}
                 rel="noopener noreferrer"
-                className="text-[9px] font-black uppercase tracking-widest border border-gray-800 px-4 py-2.5 text-gray-600 hover:border-[#059669] hover:text-[#059669]"
+                className="text-[9px] font-black uppercase tracking-widest border border-gray-800 px-4 py-2.5 text-gray-600 hover:border-[color:var(--color-brand)] hover:text-[color:var(--color-brand)]"
                 style={{
                   transition: "border-color 300ms ease, color 300ms ease",
                 }}
@@ -3473,7 +3473,7 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
               <li key={i}>
                 <button
                   onClick={item.action}
-                  className="hover:text-[#059669] transition-colors duration-300 text-gray-400"
+                  className="hover:text-[color:var(--color-brand)] transition-colors duration-300 text-gray-400"
                 >
                   {item.label}
                 </button>
@@ -3489,7 +3489,7 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
             <li>
               <a
                 href="mailto:info@outgrowagency.com"
-                className="hover:text-[#059669] transition-colors duration-300"
+                className="hover:text-[color:var(--color-brand)] transition-colors duration-300"
               >
                 info@outgrowagency.com
               </a>
@@ -3497,7 +3497,7 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
             <li>
               <a
                 href="tel:+97455954896"
-                className="hover:text-[#059669] transition-colors duration-300"
+                className="hover:text-[color:var(--color-brand)] transition-colors duration-300"
               >
                 +974 5595 4896
               </a>
@@ -3511,7 +3511,7 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
           © {new Date().getFullYear()} Outgrow. Advertising · PR · Brand
           Management · Event Management
         </p>
-        <span style={{ color: "#059669" }}>Doha, Qatar</span>
+        <span style={{ color: "var(--color-brand)" }}>Doha, Qatar</span>
       </div>
     </div>
   </footer>
