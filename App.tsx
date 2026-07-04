@@ -1405,6 +1405,7 @@ const gradeBand = (score: number) =>
 const PresenceGrader = () => {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [done, setDone] = useState(false);
+  const [scoring, setScoring] = useState(false);
   const [lead, setLead] = useState({ name: "", email: "" });
   const [leadStatus, setLeadStatus] = useState<
     "idle" | "sending" | "sent" | "error"
@@ -1519,14 +1520,22 @@ const PresenceGrader = () => {
               ))}
             </div>
             <button
-              disabled={answered < GRADER_DIMS.length}
-              onClick={() => setDone(true)}
+              disabled={answered < GRADER_DIMS.length || scoring}
+              onClick={() => {
+                setScoring(true);
+                setTimeout(() => {
+                  setScoring(false);
+                  setDone(true);
+                }, 1400);
+              }}
               className="btn-lift mt-12 px-12 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-white disabled:opacity-40"
               style={{ background: "#0A0A0A" }}
             >
-              {answered < GRADER_DIMS.length
-                ? `Answer ${GRADER_DIMS.length - answered} more`
-                : "Get my score"}
+              {scoring
+                ? "Scoring your presence…"
+                : answered < GRADER_DIMS.length
+                  ? `Answer ${GRADER_DIMS.length - answered} more`
+                  : "Get my score"}
             </button>
           </div>
         ) : (
@@ -2194,7 +2203,13 @@ const AIInsights = () => {
     setLoading(true);
     setError(null);
     try {
-      setStrategy(await generateGrowthStrategy(input));
+      /* Hold the reveal to live-AI timing: instant results read as cheap
+         (labor-illusion effect), and the sample path is near-instant. */
+      const started = Date.now();
+      const result = await generateGrowthStrategy(input);
+      const remaining = 3200 - (Date.now() - started);
+      if (remaining > 0) await new Promise((r) => setTimeout(r, remaining));
+      setStrategy(result);
     } catch (err: unknown) {
       if (err instanceof Error && err.message === "RATE_LIMITED") {
         setError("Too many requests — give it a minute and try again.");
