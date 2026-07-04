@@ -196,28 +196,23 @@ a:focus-visible {
   transition-delay: 0.48s;
 }
 
-/* ─── Word cycler ────────────────────────────────── */
+/* ─── Word cycler ──────────────────────────────────
+   Entrance-only: the React key-remount restarts this on every
+   swap, which doubles as the exit. An exit keyframe here would
+   race the 2.8s JS interval and leave the word invisible. */
 @keyframes wordReveal {
   0% {
     opacity: 0;
     transform: translateY(14px);
   }
-  12% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  88% {
-    opacity: 1;
-    transform: translateY(0);
-  }
   100% {
-    opacity: 0;
-    transform: translateY(-14px);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 .word-cycle-anim {
   display: inline-block;
-  animation: wordReveal 2.8s var(--ease-out) forwards;
+  animation: wordReveal 0.5s var(--ease-out) both;
 }
 
 /* ─── Marquee ────────────────────────────────────── */
