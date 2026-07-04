@@ -624,6 +624,9 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
     {/* Service Calculator */}
     <ServiceCalculator />
 
+    {/* AI Insights */}
+    <AIInsights />
+
     {/* FAQ */}
     <FAQSection />
 
@@ -788,7 +791,6 @@ const AIInsights = () => {
   const [input, setInput] = useState<UserInput>({ businessName: '', industry: '', mainChallenge: '' });
   const [strategy, setStrategy] = useState<StrategyType | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [keyRequired, setKeyRequired] = useState(false);
 
   const LOADING_MSGS = [
     'Analyzing market dynamics...',
@@ -811,18 +813,15 @@ const AIInsights = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.businessName || !input.industry) return;
-    // @ts-ignore
-    if (typeof window.aistudio !== 'undefined') {
-      // @ts-ignore
-      const hasKey = await window.aistudio.hasSelectedApiKey();
-      if (!hasKey) { setKeyRequired(true); return; }
-    }
     setLoading(true); setError(null);
     try {
       setStrategy(await generateGrowthStrategy(input));
-    } catch (err: any) {
-      if (err.message === 'API_KEY_NOT_FOUND') setKeyRequired(true);
-      else setError('Our strategy engine encountered a momentary pause. Please try again.');
+    } catch (err: unknown) {
+      if (err instanceof Error && err.message === 'RATE_LIMITED') {
+        setError('Too many requests — give it a minute and try again.');
+      } else {
+        setError('Our strategy engine encountered a momentary pause. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -847,26 +846,7 @@ const AIInsights = () => {
           </div>
 
           <div className="reveal-right">
-            {keyRequired ? (
-              <div className="bg-white p-10 md:p-12 text-gray-900 shadow-2xl">
-                <h4 className="text-xl font-black uppercase tracking-widest mb-6" style={{ color: '#059669' }}>Setup Required</h4>
-                <p className="text-sm text-gray-500 leading-relaxed mb-8">Please select your API key to unlock the strategic engine.</p>
-                <button
-                  onClick={async () => {
-                    try {
-                      // @ts-ignore
-                      if (window.aistudio?.openSelectKey) { await window.aistudio.openSelectKey(); setKeyRequired(false); }
-                    } catch {}
-                  }}
-                  className="btn-lift w-full py-5 text-white text-[11px] font-black uppercase tracking-[0.2em] transition-colors duration-300"
-                  style={{ background: '#0A0A0A' }}
-                  onMouseEnter={e => { (e.target as HTMLElement).style.background = '#059669'; }}
-                  onMouseLeave={e => { (e.target as HTMLElement).style.background = '#0A0A0A'; }}
-                >
-                  Manage API Key
-                </button>
-              </div>
-            ) : !strategy ? (
+            {!strategy ? (
               <form onSubmit={handleSubmit} className="bg-white p-10 md:p-12 shadow-2xl space-y-6 relative overflow-hidden">
                 {loading && (
                   <div className="absolute inset-0 z-30 flex flex-col items-center justify-center p-12 text-center bg-white/98">
@@ -922,7 +902,7 @@ const AIInsights = () => {
               <div className="bg-white p-10 md:p-12 text-gray-900 space-y-8 shadow-2xl">
                 <div className="flex justify-between items-start">
                   <h4 className="text-xl font-black uppercase tracking-tighter text-[#0A0A0A] pr-4">{strategy.headline}</h4>
-                  <span className="text-[9px] font-black uppercase border border-gray-200 px-2 py-1 text-gray-400 flex-shrink-0">AI Analysis</span>
+                  <span className="text-[9px] font-black uppercase border border-gray-200 px-2 py-1 text-gray-400 flex-shrink-0">{strategy.demo ? 'Sample Preview' : 'AI Analysis'}</span>
                 </div>
                 <p className="text-gray-500 font-light leading-relaxed">{strategy.summary}</p>
                 <div className="space-y-3">
@@ -1222,14 +1202,42 @@ const PolicyPage = ({
 /* ─────────────────────────────────────────────
    Contact
 ───────────────────────────────────────────── */
+const WHATSAPP_NUMBER = '97455954896';
+
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', phone: '', comments: '' });
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [error, setError] = useState<string | null>(null);
   const [charCount, setCharCount] = useState(0);
+  const [honeypot, setHoneypot] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const whatsappHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    `Hello Outgrow! I'm ${form.name || '…'}.` +
+    (form.comments ? `\n\n${form.comments}` : '') +
+    `\n\nYou can reach me at ${form.email}${form.phone ? ` / ${form.phone}` : ''}.`
+  )}`;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (status === 'sending') return;
+    setStatus('sending');
+    setError(null);
+    try {
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, company: honeypot }),
+      });
+      if (!res.ok) {
+        const data: { error?: string } = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Request failed (${res.status})`);
+      }
+      setStatus('sent');
+    } catch (err) {
+      console.error('lead submit failed:', err);
+      setStatus('idle');
+      setError("We couldn't send your message right now — tap the WhatsApp button below and it will reach us instantly.");
+    }
   };
 
   return (
@@ -1250,7 +1258,7 @@ const Contact = () => {
           {[
             { label: 'Email us', value: 'info@outgrowagency.com', href: 'mailto:info@outgrowagency.com' },
             { label: 'Call us', value: '+974 5595 4896', href: 'tel:+97455954896' },
-            { label: 'Location', value: 'Doha, Qatar', href: 'https://maps.google.com/?q=Doha,Qatar' },
+            { label: 'WhatsApp', value: '+974 5595 4896', href: `https://wa.me/${WHATSAPP_NUMBER}` },
           ].map((item, i) => (
             <a
               key={i}
@@ -1283,7 +1291,7 @@ const Contact = () => {
         {/* Form */}
         <div className="max-w-3xl mx-auto reveal">
           <h4 className="text-xs font-black uppercase tracking-[0.3em] mb-12" style={{ color: '#059669' }}>Send us a message</h4>
-          {submitted ? (
+          {status === 'sent' ? (
             <div className="border-2 border-[#059669] p-16 text-center">
               <div
                 className="w-12 h-12 flex items-center justify-center mx-auto mb-6 text-white text-xl font-black"
@@ -1293,12 +1301,23 @@ const Contact = () => {
               </div>
               <h5 className="text-2xl font-black tracking-tighter mb-4 text-[#0A0A0A]">Message received.</h5>
               <p className="text-gray-500 font-light">We'll be in touch shortly at <span className="font-bold text-[#0A0A0A]">{form.email}</span>.</p>
-              <button
-                onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', comments: '' }); setCharCount(0); }}
-                className="mt-10 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors duration-300"
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-lift inline-block mt-10 px-10 py-5 text-white text-[11px] font-black uppercase tracking-[0.2em]"
+                style={{ background: '#059669' }}
               >
-                Send another message
-              </button>
+                Continue on WhatsApp
+              </a>
+              <div>
+                <button
+                  onClick={() => { setStatus('idle'); setForm({ name: '', email: '', phone: '', comments: '' }); setCharCount(0); }}
+                  className="mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors duration-300"
+                >
+                  Send another message
+                </button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-0">
@@ -1352,15 +1371,37 @@ const Contact = () => {
                   </div>
                 )}
               </div>
+              {/* Honeypot — invisible to humans, catches spam bots */}
+              <div className="absolute -left-[9999px] top-auto" aria-hidden="true">
+                <label>
+                  Company
+                  <input tabIndex={-1} autoComplete="off" type="text" value={honeypot} onChange={e => setHoneypot(e.target.value)} />
+                </label>
+              </div>
               <button
                 type="submit"
-                className="btn-lift w-full py-7 text-white text-[11px] font-black uppercase tracking-[0.25em] transition-colors duration-300"
+                disabled={status === 'sending'}
+                className="btn-lift w-full py-7 text-white text-[11px] font-black uppercase tracking-[0.25em] transition-colors duration-300 disabled:opacity-60"
                 style={{ background: '#0A0A0A' }}
                 onMouseEnter={e => { (e.target as HTMLElement).style.background = '#059669'; }}
                 onMouseLeave={e => { (e.target as HTMLElement).style.background = '#0A0A0A'; }}
               >
-                Send Message
+                {status === 'sending' ? 'Sending…' : 'Send Message'}
               </button>
+              {error && (
+                <div className="border-2 border-t-0 p-6 text-center" style={{ borderColor: '#FECACA', background: '#FEF2F2' }}>
+                  <p className="text-red-600 text-xs font-bold mb-4">{error}</p>
+                  <a
+                    href={whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-lift inline-block px-8 py-4 text-white text-[10px] font-black uppercase tracking-[0.2em]"
+                    style={{ background: '#059669' }}
+                  >
+                    Send via WhatsApp instead
+                  </a>
+                </div>
+              )}
             </form>
           )}
         </div>
@@ -1464,8 +1505,42 @@ const TERMS_SECTIONS = [
 /* ─────────────────────────────────────────────
    App Root
 ───────────────────────────────────────────── */
+const VIEW_ROUTES: Record<View, string> = {
+  'home': '#/',
+  'about': '#/about',
+  'works': '#/works',
+  'service-marketing': '#/services/advertising',
+  'service-events': '#/services/events',
+  'privacy': '#/privacy',
+  'terms': '#/terms',
+};
+
+/* Maps a location hash to a view; returns null for in-page anchors like #contact. */
+function viewFromHash(hash: string): View | null {
+  if (hash === '' || hash === '#' || hash === '#/') return 'home';
+  const entry = (Object.entries(VIEW_ROUTES) as [View, string][]).find(([, h]) => h === hash);
+  return entry ? entry[0] : null;
+}
+
 export default function App() {
-  const [view, setView] = useState<View>('home');
+  const [view, setViewState] = useState<View>(() => viewFromHash(window.location.hash) ?? 'home');
+
+  const setView = useCallback((v: View) => {
+    if (window.location.hash !== VIEW_ROUTES[v]) {
+      window.location.hash = VIEW_ROUTES[v];
+    } else {
+      setViewState(v);
+    }
+  }, []);
+
+  useEffect(() => {
+    const onHashChange = () => {
+      const v = viewFromHash(window.location.hash);
+      if (v !== null) setViewState(v);
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
@@ -1482,7 +1557,7 @@ export default function App() {
           : view === 'service-events'    ? <ServiceEventsPage setView={setView} />
           : view === 'privacy'           ? <PolicyPage setView={setView} title="Privacy Policy" subtitle="Outgrow Agency" sections={PRIVACY_SECTIONS} />
           : <PolicyPage setView={setView} title="Terms & Conditions" subtitle="Outgrow Agency" sections={TERMS_SECTIONS} />}
-        {view !== 'privacy' && view !== 'terms' && view !== 'service-marketing' && view !== 'service-events' && (
+        {view !== 'privacy' && view !== 'terms' && (
           <Contact />
         )}
       </main>

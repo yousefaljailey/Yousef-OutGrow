@@ -7,6 +7,8 @@ export interface Service {
 }
 
 export interface GrowthStrategy {
+  /** True when this is a generated sample (no live AI key configured). */
+  demo?: boolean;
   headline: string;
   summary: string;
   recommendations: {
