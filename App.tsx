@@ -1322,268 +1322,424 @@ const StrategyReport = ({
 }: {
   strategy: StrategyType;
   onReset: () => void;
-}) => (
-  <div className="bg-white text-gray-900 shadow-2xl p-8 md:p-14 space-y-12">
-    {/* Header */}
-    <div>
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-        <span
-          className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 text-white"
-          style={{ background: strategy.demo ? "#0A0A0A" : "#059669" }}
-        >
-          {strategy.demo
-            ? "Sample Preview — engine output"
-            : "Live AI Analysis"}
-        </span>
-        <div className="flex flex-wrap gap-2">
-          {(strategy.frameworks || []).map((f, i) => (
-            <span
-              key={i}
-              className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 border border-gray-200 text-gray-400"
-            >
-              {f}
-            </span>
-          ))}
-        </div>
-      </div>
-      <h4 className="text-3xl md:text-4xl font-black tracking-tighter text-[#0A0A0A] mb-6">
-        {strategy.headline}
-      </h4>
-      <p className="text-gray-500 font-light leading-relaxed max-w-3xl">
-        {strategy.summary}
-      </p>
-    </div>
+}) => {
+  const [lead, setLead] = useState({ name: "", email: "", phone: "" });
+  const [leadStatus, setLeadStatus] = useState<
+    "idle" | "sending" | "sent" | "error"
+  >("idle");
+  const [hp, setHp] = useState("");
 
-    {/* Positioning + North star / Budget */}
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-gray-100 border border-gray-100">
-      <div className="bg-white p-8 md:p-10">
-        <span
-          className="block text-[9px] font-black uppercase tracking-[0.25em] mb-4"
-          style={{ color: "#059669" }}
-        >
-          Positioning (STP)
+  const submitLead = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (leadStatus === "sending") return;
+    setLeadStatus("sending");
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...lead,
+          comments: "Requested their AI strategy report + a strategy session.",
+          company: hp,
+          source: "strategy-widget",
+          context: strategy.headline,
+        }),
+      });
+      if (!res.ok) throw new Error(`lead endpoint ${res.status}`);
+      setLeadStatus("sent");
+    } catch (err) {
+      console.error("strategy lead submit failed:", err);
+      setLeadStatus("error");
+    }
+  };
+
+  return (
+    <div
+      id="strategy-report"
+      className="bg-white text-gray-900 shadow-2xl p-8 md:p-14 space-y-12"
+    >
+      {/* Print-only letterhead */}
+      <div className="print-letterhead items-center justify-between">
+        <span className="flex items-center gap-2">
+          <span
+            className="w-6 h-6 flex items-center justify-center"
+            style={{ background: "#059669" }}
+          >
+            <span className="text-white font-black text-xs">O</span>
+          </span>
+          <span className="text-base font-black tracking-tighter uppercase">
+            outgrow
+          </span>
         </span>
-        <p className="text-lg font-bold tracking-tight text-[#0A0A0A] leading-snug mb-5">
-          {strategy.positioning}
-        </p>
-        <span className="block text-[9px] font-black uppercase tracking-[0.25em] text-gray-400 mb-2">
-          Beachhead segment
+        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
+          Growth Strategy Preview · info@outgrowagency.com · +974 5595 4896 ·
+          Doha, Qatar
         </span>
-        <p className="text-sm text-gray-500 font-light leading-relaxed">
-          {strategy.targetSegment}
+      </div>
+      {/* Header */}
+      <div>
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+          <span
+            className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 text-white"
+            style={{ background: strategy.demo ? "#0A0A0A" : "#059669" }}
+          >
+            {strategy.demo
+              ? "Sample Preview — engine output"
+              : "Live AI Analysis"}
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {(strategy.frameworks || []).map((f, i) => (
+              <span
+                key={i}
+                className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 border border-gray-200 text-gray-400"
+              >
+                {f}
+              </span>
+            ))}
+          </div>
+        </div>
+        <h4 className="text-3xl md:text-4xl font-black tracking-tighter text-[#0A0A0A] mb-6">
+          {strategy.headline}
+        </h4>
+        <p className="text-gray-500 font-light leading-relaxed max-w-3xl">
+          {strategy.summary}
         </p>
       </div>
-      <div className="bg-white p-8 md:p-10 flex flex-col justify-between gap-8">
-        <div>
+
+      {/* Positioning + North star / Budget */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-gray-100 border border-gray-100">
+        <div className="bg-white p-8 md:p-10">
           <span
             className="block text-[9px] font-black uppercase tracking-[0.25em] mb-4"
             style={{ color: "#059669" }}
           >
-            North-star metric
+            Positioning (STP)
           </span>
-          <p className="text-lg font-bold tracking-tight text-[#0A0A0A] leading-snug">
-            {strategy.northStar}
+          <p className="text-lg font-bold tracking-tight text-[#0A0A0A] leading-snug mb-5">
+            {strategy.positioning}
+          </p>
+          <span className="block text-[9px] font-black uppercase tracking-[0.25em] text-gray-400 mb-2">
+            Beachhead segment
+          </span>
+          <p className="text-sm text-gray-500 font-light leading-relaxed">
+            {strategy.targetSegment}
           </p>
         </div>
-        <div>
-          <div className="flex items-baseline justify-between mb-3">
-            <span className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-400">
-              Budget split
-            </span>
-            <span className="text-[10px] font-black tabular-nums text-gray-500">
-              {strategy.budgetSplit.brand}% brand ·{" "}
-              {strategy.budgetSplit.activation}% activation
-            </span>
-          </div>
-          <div className="flex h-2.5 w-full overflow-hidden">
-            <div
-              style={{
-                width: `${strategy.budgetSplit.brand}%`,
-                background: "#0A0A0A",
-              }}
-            />
-            <div
-              style={{
-                width: `${strategy.budgetSplit.activation}%`,
-                background: "#059669",
-              }}
-            />
-          </div>
-          <p className="text-[11px] text-gray-400 font-light leading-relaxed mt-3">
-            {strategy.budgetSplit.note}
-          </p>
-        </div>
-      </div>
-    </div>
-
-    {/* RACE funnel */}
-    <div>
-      <span
-        className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
-        style={{ color: "#059669" }}
-      >
-        The plan — RACE journey
-      </span>
-      <div className="space-y-px bg-gray-100 border border-gray-100">
-        {strategy.funnel.map((s, i) => {
-          const priority = s.focus.startsWith("Priority");
-          return (
-            <div
-              key={i}
-              className="bg-white p-7 md:p-9 grid grid-cols-1 md:grid-cols-12 gap-6"
-              style={
-                priority ? { boxShadow: "inset 4px 0 0 #059669" } : undefined
-              }
-            >
-              <div className="md:col-span-3">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-xl font-black tracking-tighter text-[#0A0A0A]">
-                    {s.stage}
-                  </span>
-                  {priority && (
-                    <span
-                      className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 text-white"
-                      style={{ background: "#059669" }}
-                    >
-                      Priority
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-gray-400 font-light leading-relaxed">
-                  {priority ? s.focus.replace(/^Priority\s*—\s*/, "") : s.focus}
-                </p>
-              </div>
-              <div className="md:col-span-6">
-                <ul className="space-y-3">
-                  {s.tactics.map((t, j) => (
-                    <li
-                      key={j}
-                      className="flex items-start text-sm text-gray-700 font-light leading-relaxed"
-                    >
-                      <span
-                        className="w-1.5 h-1.5 mt-2 mr-3 flex-shrink-0"
-                        style={{ background: "#059669" }}
-                      />
-                      {t}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="md:col-span-3 md:border-l md:border-gray-100 md:pl-6">
-                <span className="block text-[8px] font-black uppercase tracking-widest text-gray-400 mb-1.5">
-                  KPI
-                </span>
-                <p className="text-xs font-bold text-[#0A0A0A] mb-4 leading-snug">
-                  {s.kpi}
-                </p>
-                <span className="block text-[8px] font-black uppercase tracking-widest text-gray-400 mb-1.5">
-                  Benchmark
-                </span>
-                <p className="text-[11px] text-gray-500 font-light leading-relaxed">
-                  {s.benchmark}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-
-    {/* Roadmap */}
-    <div>
-      <span
-        className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
-        style={{ color: "#059669" }}
-      >
-        90-day roadmap
-      </span>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-100 border border-gray-100">
-        {strategy.roadmap.map((r, i) => (
-          <div key={i} className="bg-white p-7 md:p-9">
+        <div className="bg-white p-8 md:p-10 flex flex-col justify-between gap-8">
+          <div>
             <span
-              className="block text-[10px] font-black tabular-nums mb-1"
+              className="block text-[9px] font-black uppercase tracking-[0.25em] mb-4"
               style={{ color: "#059669" }}
             >
-              {r.phase}
+              North-star metric
             </span>
-            <h5 className="text-lg font-black tracking-tighter text-[#0A0A0A] mb-5">
-              {r.theme}
-            </h5>
-            <ul className="space-y-3">
-              {r.actions.map((a, j) => (
-                <li
-                  key={j}
-                  className="flex items-start text-[13px] text-gray-600 font-light leading-relaxed"
-                >
-                  <span className="text-[10px] font-black mr-3 mt-0.5 tabular-nums text-gray-300">
-                    {String(j + 1).padStart(2, "0")}
-                  </span>
-                  {a}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    {/* Quick wins */}
-    <div className="border-2 border-[#0A0A0A] p-7 md:p-9">
-      <span
-        className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
-        style={{ color: "#059669" }}
-      >
-        Do this week — zero budget
-      </span>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {strategy.quickWins.map((q, i) => (
-          <div key={i} className="flex items-start">
-            <span
-              className="w-5 h-5 border-2 border-[#059669] flex-shrink-0 mr-3 mt-0.5 flex items-center justify-center text-[10px] font-black"
-              style={{ color: "#059669" }}
-            >
-              ✓
-            </span>
-            <p className="text-sm text-gray-700 font-light leading-relaxed">
-              {q}
+            <p className="text-lg font-bold tracking-tight text-[#0A0A0A] leading-snug">
+              {strategy.northStar}
             </p>
           </div>
-        ))}
+          <div>
+            <div className="flex items-baseline justify-between mb-3">
+              <span className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-400">
+                Budget split
+              </span>
+              <span className="text-[10px] font-black tabular-nums text-gray-500">
+                {strategy.budgetSplit.brand}% brand ·{" "}
+                {strategy.budgetSplit.activation}% activation
+              </span>
+            </div>
+            <div className="flex h-2.5 w-full overflow-hidden">
+              <div
+                style={{
+                  width: `${strategy.budgetSplit.brand}%`,
+                  background: "#0A0A0A",
+                }}
+              />
+              <div
+                style={{
+                  width: `${strategy.budgetSplit.activation}%`,
+                  background: "#059669",
+                }}
+              />
+            </div>
+            <p className="text-[11px] text-gray-400 font-light leading-relaxed mt-3">
+              {strategy.budgetSplit.note}
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
 
-    {/* Footer */}
-    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pt-2">
-      <p className="text-[10px] text-gray-400 font-light leading-relaxed max-w-md">
-        Benchmarks are published 2026 industry aggregates (Meta &amp; Google
-        benchmark studies, IPA effectiveness databank, DataReportal Qatar) —
-        directional guidance, not guarantees. The full engagement version is
-        built on your actual numbers.
-      </p>
-      <div className="flex items-center gap-6 flex-shrink-0">
-        <button
-          onClick={onReset}
-          className="text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors duration-300"
+      {/* RACE funnel */}
+      <div>
+        <span
+          className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
+          style={{ color: "#059669" }}
         >
-          New Analysis
-        </button>
-        <a
-          href="#contact"
-          className="btn-lift inline-block px-10 py-5 text-white text-[11px] font-black uppercase tracking-[0.2em]"
-          style={{ background: "#0A0A0A" }}
-          onMouseEnter={(e) => {
-            (e.target as HTMLElement).style.background = "#059669";
-          }}
-          onMouseLeave={(e) => {
-            (e.target as HTMLElement).style.background = "#0A0A0A";
-          }}
+          The plan — RACE journey
+        </span>
+        <div className="space-y-px bg-gray-100 border border-gray-100">
+          {strategy.funnel.map((s, i) => {
+            const priority = s.focus.startsWith("Priority");
+            return (
+              <div
+                key={i}
+                className="bg-white p-7 md:p-9 grid grid-cols-1 md:grid-cols-12 gap-6"
+                style={
+                  priority ? { boxShadow: "inset 4px 0 0 #059669" } : undefined
+                }
+              >
+                <div className="md:col-span-3">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-xl font-black tracking-tighter text-[#0A0A0A]">
+                      {s.stage}
+                    </span>
+                    {priority && (
+                      <span
+                        className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 text-white"
+                        style={{ background: "#059669" }}
+                      >
+                        Priority
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-400 font-light leading-relaxed">
+                    {priority
+                      ? s.focus.replace(/^Priority\s*—\s*/, "")
+                      : s.focus}
+                  </p>
+                </div>
+                <div className="md:col-span-6">
+                  <ul className="space-y-3">
+                    {s.tactics.map((t, j) => (
+                      <li
+                        key={j}
+                        className="flex items-start text-sm text-gray-700 font-light leading-relaxed"
+                      >
+                        <span
+                          className="w-1.5 h-1.5 mt-2 mr-3 flex-shrink-0"
+                          style={{ background: "#059669" }}
+                        />
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="md:col-span-3 md:border-l md:border-gray-100 md:pl-6">
+                  <span className="block text-[8px] font-black uppercase tracking-widest text-gray-400 mb-1.5">
+                    KPI
+                  </span>
+                  <p className="text-xs font-bold text-[#0A0A0A] mb-4 leading-snug">
+                    {s.kpi}
+                  </p>
+                  <span className="block text-[8px] font-black uppercase tracking-widest text-gray-400 mb-1.5">
+                    Benchmark
+                  </span>
+                  <p className="text-[11px] text-gray-500 font-light leading-relaxed">
+                    {s.benchmark}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Roadmap */}
+      <div>
+        <span
+          className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
+          style={{ color: "#059669" }}
         >
-          Build this with us
-        </a>
+          90-day roadmap
+        </span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-100 border border-gray-100">
+          {strategy.roadmap.map((r, i) => (
+            <div key={i} className="bg-white p-7 md:p-9">
+              <span
+                className="block text-[10px] font-black tabular-nums mb-1"
+                style={{ color: "#059669" }}
+              >
+                {r.phase}
+              </span>
+              <h5 className="text-lg font-black tracking-tighter text-[#0A0A0A] mb-5">
+                {r.theme}
+              </h5>
+              <ul className="space-y-3">
+                {r.actions.map((a, j) => (
+                  <li
+                    key={j}
+                    className="flex items-start text-[13px] text-gray-600 font-light leading-relaxed"
+                  >
+                    <span className="text-[10px] font-black mr-3 mt-0.5 tabular-nums text-gray-300">
+                      {String(j + 1).padStart(2, "0")}
+                    </span>
+                    {a}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Quick wins */}
+      <div className="border-2 border-[#0A0A0A] p-7 md:p-9">
+        <span
+          className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
+          style={{ color: "#059669" }}
+        >
+          Do this week — zero budget
+        </span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {strategy.quickWins.map((q, i) => (
+            <div key={i} className="flex items-start">
+              <span
+                className="w-5 h-5 border-2 border-[#059669] flex-shrink-0 mr-3 mt-0.5 flex items-center justify-center text-[10px] font-black"
+                style={{ color: "#059669" }}
+              >
+                ✓
+              </span>
+              <p className="text-sm text-gray-700 font-light leading-relaxed">
+                {q}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Take it with you — lead capture */}
+      <div className="print-hide bg-[#0A0A0A] p-7 md:p-10 text-white">
+        {leadStatus === "sent" ? (
+          <div className="text-center py-4">
+            <div
+              className="w-10 h-10 mx-auto mb-5 flex items-center justify-center text-white font-black"
+              style={{ background: "#059669" }}
+            >
+              ✓
+            </div>
+            <p className="text-xl font-black tracking-tighter mb-2">
+              Strategy on its way.
+            </p>
+            <p className="text-gray-400 text-sm font-light">
+              We'll follow up at{" "}
+              <span className="text-white font-bold">{lead.email}</span> within
+              one business day to book your session.
+            </p>
+          </div>
+        ) : (
+          <form onSubmit={submitLead}>
+            <div className="flex flex-col lg:flex-row lg:items-end gap-8">
+              <div className="lg:max-w-xs flex-shrink-0">
+                <span
+                  className="block text-[9px] font-black uppercase tracking-[0.25em] mb-3"
+                  style={{ color: "#34D399" }}
+                >
+                  Take this with you
+                </span>
+                <p className="text-lg font-black tracking-tight leading-snug">
+                  Get this strategy in your inbox — plus a free 30-minute
+                  session to pressure-test it.
+                </p>
+              </div>
+              <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  {
+                    ph: "Your name",
+                    key: "name" as const,
+                    type: "text",
+                    req: true,
+                  },
+                  {
+                    ph: "Work email",
+                    key: "email" as const,
+                    type: "email",
+                    req: true,
+                  },
+                  {
+                    ph: "WhatsApp (optional)",
+                    key: "phone" as const,
+                    type: "tel",
+                    req: false,
+                  },
+                ].map((f) => (
+                  <input
+                    key={f.key}
+                    type={f.type}
+                    required={f.req}
+                    placeholder={f.ph}
+                    value={lead[f.key]}
+                    onChange={(e) =>
+                      setLead({ ...lead, [f.key]: e.target.value })
+                    }
+                    className="w-full bg-transparent border-b-2 border-gray-700 focus:border-[#059669] py-3 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors duration-300"
+                  />
+                ))}
+              </div>
+              <div className="absolute -left-[9999px]" aria-hidden="true">
+                <label>
+                  Company
+                  <input
+                    tabIndex={-1}
+                    autoComplete="off"
+                    type="text"
+                    value={hp}
+                    onChange={(e) => setHp(e.target.value)}
+                  />
+                </label>
+              </div>
+              <button
+                type="submit"
+                disabled={leadStatus === "sending"}
+                className="btn-lift flex-shrink-0 px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-white disabled:opacity-60"
+                style={{ background: "#059669" }}
+              >
+                {leadStatus === "sending" ? "Sending…" : "Send it to me"}
+              </button>
+            </div>
+            {leadStatus === "error" && (
+              <p className="text-red-400 text-[11px] font-bold mt-4">
+                Couldn't send right now —{" "}
+                <a
+                  className="underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`https://wa.me/97455954896?text=${encodeURIComponent(`Hello Outgrow! I'd like the strategy preview "${strategy.headline}" and a session. — ${lead.name}`)}`}
+                >
+                  message us on WhatsApp instead
+                </a>
+                .
+              </p>
+            )}
+          </form>
+        )}
+      </div>
+
+      {/* Footer */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pt-2">
+        <p className="text-[10px] text-gray-400 font-light leading-relaxed max-w-md">
+          Benchmarks are published 2026 industry aggregates (Meta &amp; Google
+          benchmark studies, IPA effectiveness databank, DataReportal Qatar) —
+          directional guidance, not guarantees. The full engagement version is
+          built on your actual numbers.
+        </p>
+        <div className="print-hide flex items-center gap-6 flex-shrink-0">
+          <button
+            onClick={onReset}
+            className="text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors duration-300"
+          >
+            New Analysis
+          </button>
+          <button
+            onClick={() => window.print()}
+            className="btn-lift inline-block px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-[#0A0A0A]"
+            style={{ border: "2px solid #0A0A0A" }}
+          >
+            Save as PDF
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const AIInsights = () => {
   const [loading, setLoading] = useState(false);
@@ -1842,9 +1998,26 @@ const ProcessStep: React.FC<{ step: string; title: string; desc: string }> = ({
 /* ─────────────────────────────────────────────
    Works Page
 ───────────────────────────────────────────── */
-const WORKS = [
+const WORKS: {
+  num: string;
+  title: string;
+  category: string;
+  desc: string;
+  tags: string[];
+  year: string;
+  href?: string;
+}[] = [
   {
     num: "01",
+    title: "ZIHAY — Modest Fashion E-Commerce",
+    category: "Web Build & Brand Systems",
+    desc: "Launch build for a modest womenswear brand: working storefront with cart and WhatsApp ordering, editorial art direction, structured-data SEO, and a single-source content system the client can edit.",
+    tags: ["E-Commerce", "WhatsApp Commerce", "Art Direction"],
+    year: "2026",
+    href: "https://zihay-preview.vercel.app",
+  },
+  {
+    num: "02",
     title: "Regional Brand Launch",
     category: "Advertising & Brand Management",
     desc: "Full-spectrum brand identity, media placement, and advertising campaign across digital and broadcast channels for a Doha-based client.",
@@ -1911,6 +2084,14 @@ const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
               >
                 {w.num}
               </span>
+              {w.href && (
+                <span
+                  className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 text-white"
+                  style={{ background: "#059669" }}
+                >
+                  Live
+                </span>
+              )}
             </div>
             <span
               className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-400 block mb-4 group-hover:text-green-300"
@@ -1943,6 +2124,19 @@ const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
                 </span>
               ))}
             </div>
+            {w.href && (
+              <a
+                href={w.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 pb-0.5 text-[#0A0A0A] border-[#0A0A0A] group-hover:text-[#34D399] group-hover:border-[#34D399]"
+                style={{
+                  transition: "color 300ms ease, border-color 300ms ease",
+                }}
+              >
+                View the live build ↗
+              </a>
+            )}
           </div>
         ))}
       </div>

@@ -492,3 +492,36 @@ a:focus-visible {
     animation: none;
   }
 }
+
+/* ─── Print: branded strategy report → PDF ────────── */
+.print-letterhead {
+  display: none;
+}
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #strategy-report,
+  #strategy-report * {
+    visibility: visible;
+  }
+  #strategy-report {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none !important;
+    padding: 24px !important;
+  }
+  #strategy-report .print-hide {
+    display: none !important;
+  }
+  .print-letterhead {
+    display: flex !important;
+    border-bottom: 2px solid #0a0a0a;
+    padding-bottom: 12px;
+  }
+  @page {
+    margin: 14mm;
+  }
+}

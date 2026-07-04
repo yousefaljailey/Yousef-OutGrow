@@ -14,9 +14,32 @@ interface Lead {
   email: string;
   phone: string;
   comments: string;
+  source: string;
+  context: string;
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/* One lead pipeline for the whole agency: the Outgrow site posts here,
+   and client sites (e.g. the ZIHAY storefront) may post here cross-origin.
+   Keep the allowlist tight — origins are checked exactly. */
+const ALLOWED_ORIGINS = new Set([
+  "https://zihay-preview.vercel.app",
+  "https://zihay.vercel.app",
+  "http://localhost:3000",
+  "http://localhost:4173",
+]);
+
+function applyCors(req: ApiRequest, res: ApiResponse): void {
+  const origin = String(req.headers.origin ?? "");
+  if (ALLOWED_ORIGINS.has(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Max-Age", "86400");
+  }
+}
 
 function sanitizeLead(body: unknown): { lead: Lead | null; spam: boolean } {
   if (typeof body !== "object" || body === null)
@@ -30,8 +53,28 @@ function sanitizeLead(body: unknown): { lead: Lead | null; spam: boolean } {
   const phone = typeof b.phone === "string" ? b.phone.trim().slice(0, 40) : "";
   const comments =
     typeof b.comments === "string" ? b.comments.trim().slice(0, 1000) : "";
+  const source =
+    typeof b.source === "string" && /^[a-z0-9-]{1,40}$/.test(b.source)
+      ? b.source
+      : "website";
+  const context =
+    typeof b.context === "string" ? b.context.trim().slice(0, 300) : "";
   if (!name || !EMAIL_RE.test(email)) return { lead: null, spam: false };
-  return { lead: { name, email, phone, comments }, spam: false };
+  return {
+    lead: { name, email, phone, comments, source, context },
+    spam: false,
+  };
+}
+
+const SOURCE_LABELS: Record<string, string> = {
+  website: "Outgrow website — contact form",
+  "strategy-widget": "Outgrow website — AI strategy report",
+  "zihay-newsletter": "ZIHAY storefront — newsletter signup",
+};
+
+function subjectFor(lead: Lead): string {
+  const label = SOURCE_LABELS[lead.source] || `lead (${lead.source})`;
+  return `New lead: ${lead.name} · ${label}`;
 }
 
 async function deliverToWebhook(lead: Lead, url: string): Promise<boolean> {
@@ -40,7 +83,6 @@ async function deliverToWebhook(lead: Lead, url: string): Promise<boolean> {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        source: "outgrow-website",
         receivedAt: new Date().toISOString(),
         ...lead,
       }),
@@ -70,11 +112,12 @@ async function deliverByEmail(
           "Outgrow Website <onboarding@resend.dev>",
         to: [to],
         reply_to: lead.email,
-        subject: `New website lead: ${lead.name}`,
+        subject: subjectFor(lead),
         text:
-          `New enquiry from the Outgrow website\n\n` +
-          `Name: ${lead.name}\nEmail: ${lead.email}\nPhone: ${lead.phone || "—"}\n\n` +
-          `Message:\n${lead.comments || "—"}\n`,
+          `New enquiry via ${SOURCE_LABELS[lead.source] || lead.source}\n\n` +
+          `Name: ${lead.name}\nEmail: ${lead.email}\nPhone: ${lead.phone || "—"}\n` +
+          (lead.context ? `\nContext: ${lead.context}\n` : "") +
+          `\nMessage:\n${lead.comments || "—"}\n`,
       }),
     });
     return res.ok;
@@ -85,8 +128,13 @@ async function deliverByEmail(
 }
 
 export default async function handler(req: ApiRequest, res: ApiResponse) {
+  applyCors(req, res);
+  if (req.method === "OPTIONS") {
+    res.status(204).json(null);
+    return;
+  }
   if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
+    res.setHeader("Allow", "POST, OPTIONS");
     res.status(405).json({ error: "Method not allowed" });
     return;
   }
@@ -117,7 +165,7 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     delivered.push("email");
   }
   console.log(
-    `lead received from ${lead.email}; delivered via: ${delivered.join(", ") || "none configured"}`,
+    `lead [${lead.source}] from ${lead.email}${lead.context ? ` (${lead.context})` : ""}; delivered via: ${delivered.join(", ") || "none configured"}`,
   );
   res.status(200).json({ ok: true, delivered });
 }
