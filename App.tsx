@@ -82,7 +82,7 @@ const FloatingHeroStats = () => {
         <span className="stat-card-dot" />
         <span
           className="text-[9px] font-black uppercase tracking-widest"
-          style={{ color: "var(--color-brand)" }}
+          style={{ color: "var(--color-brand-ink)" }}
         >
           Proposals
         </span>
@@ -95,7 +95,7 @@ const FloatingHeroStats = () => {
         <span className="stat-card-dot" />
         <span
           className="text-[9px] font-black uppercase tracking-widest"
-          style={{ color: "var(--color-brand)" }}
+          style={{ color: "var(--color-brand-ink)" }}
         >
           Launch
         </span>
@@ -108,7 +108,7 @@ const FloatingHeroStats = () => {
         <span className="stat-card-dot" />
         <span
           className="text-[9px] font-black uppercase tracking-widest"
-          style={{ color: "var(--color-brand)" }}
+          style={{ color: "var(--color-brand-ink)" }}
         >
           Coverage
         </span>
@@ -153,7 +153,7 @@ const MarqueeTicker = () => {
         {items.map((item, i) => (
           <span
             key={i}
-            className="flex items-center gap-10 text-[11px] font-black uppercase tracking-[0.25em] text-gray-600"
+            className="flex items-center gap-10 text-[11px] font-black uppercase tracking-[0.25em] text-gray-400"
           >
             {item}
             <span
@@ -189,7 +189,7 @@ const AnimStat = ({
         {count}
         {suffix}
       </div>
-      <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-gray-600 group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
+      <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-gray-400 group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
         {label}
       </div>
     </div>
@@ -272,7 +272,7 @@ const ServiceCalculator = () => {
         <div className="mb-16 reveal">
           <h2
             className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
-            style={{ color: "var(--color-brand)" }}
+            style={{ color: "var(--color-brand-ink)" }}
           >
             Scope Your Project
           </h2>
@@ -330,7 +330,7 @@ const ServiceCalculator = () => {
 
           {step === 2 && (
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-500 mb-8">
+              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-400 mb-8">
                 Step 02 — What's your scale?
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -346,7 +346,7 @@ const ServiceCalculator = () => {
                     <span className="block text-base font-black tracking-tighter text-[#0A0A0A] group-hover:text-white mb-2">
                       {s.label}
                     </span>
-                    <span className="block text-xs text-gray-500 group-hover:text-green-100 font-light leading-relaxed">
+                    <span className="block text-xs text-gray-400 group-hover:text-green-100 font-light leading-relaxed">
                       {s.sub}
                     </span>
                   </button>
@@ -354,7 +354,7 @@ const ServiceCalculator = () => {
               </div>
               <button
                 onClick={() => setStep(1)}
-                className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[#0A0A0A] transition-colors"
+                className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-[#0A0A0A] transition-colors"
               >
                 ← Back
               </button>
@@ -377,7 +377,7 @@ const ServiceCalculator = () => {
               </p>
               <div className="grid grid-cols-2 gap-6 mb-12">
                 <div className="border border-gray-800 p-6">
-                  <span className="block text-[9px] font-black uppercase tracking-widest text-gray-600 mb-2">
+                  <span className="block text-[9px] font-black uppercase tracking-widest text-gray-400 mb-2">
                     Est. Timeline
                   </span>
                   <span className="text-2xl font-black">
@@ -449,11 +449,11 @@ const FAQItem: React.FC<{
       onClick={toggle}
       className="w-full flex items-start justify-between py-8 text-left group"
     >
-      <span className="text-lg font-bold text-[#0A0A0A] pr-8 group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
+      <span className="text-lg font-bold text-[#0A0A0A] pr-8 group-hover:text-[color:var(--color-brand-ink)] transition-colors duration-300">
         {item.q}
       </span>
       <span
-        className={`accordion-chevron flex-shrink-0 w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-400 group-hover:border-[color:var(--color-brand)] group-hover:text-[color:var(--color-brand)] transition-colors ${isOpen ? "open" : ""}`}
+        className={`accordion-chevron flex-shrink-0 w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-500 group-hover:border-[color:var(--color-brand)] group-hover:text-[color:var(--color-brand-ink)] transition-colors ${isOpen ? "open" : ""}`}
         style={{
           transition:
             "transform 0.4s cubic-bezier(0.22,1,0.36,1), border-color 0.3s, color 0.3s",
@@ -487,7 +487,7 @@ const FAQSection = () => {
           <div className="lg:col-span-4 reveal-left">
             <h2
               className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
-              style={{ color: "var(--color-brand)" }}
+              style={{ color: "var(--color-brand-ink)" }}
             >
               FAQ
             </h2>
@@ -499,7 +499,7 @@ const FAQSection = () => {
               your answer?{" "}
               <a
                 href="#contact"
-                className="font-bold text-[#0A0A0A] border-b border-[#0A0A0A] hover:text-[color:var(--color-brand)] hover:border-[color:var(--color-brand)] transition-colors"
+                className="font-bold text-[#0A0A0A] border-b border-[#0A0A0A] hover:text-[color:var(--color-brand-ink)] hover:border-[color:var(--color-brand)] transition-colors"
               >
                 Contact us directly.
               </a>
@@ -566,7 +566,7 @@ const Header = ({
         </button>
 
         <nav
-          className="hidden lg:flex items-center space-x-10 text-[12px] font-black uppercase tracking-[0.15em] text-gray-400"
+          className="hidden lg:flex items-center space-x-10 text-[12px] font-black uppercase tracking-[0.15em] text-gray-500"
           aria-label="Main navigation"
         >
           <button
@@ -625,14 +625,14 @@ const Header = ({
               >
                 <span
                   className="block text-[9px] font-black uppercase tracking-widest mb-1.5"
-                  style={{ color: "var(--color-brand)" }}
+                  style={{ color: "var(--color-brand-ink)" }}
                 >
                   01
                 </span>
                 <span className="block text-[13px] font-bold normal-case tracking-normal mb-1">
                   Advertising, PR & Brand Management
                 </span>
-                <span className="block text-[11px] text-gray-400 normal-case tracking-normal font-normal">
+                <span className="block text-[11px] text-gray-500 normal-case tracking-normal font-normal">
                   Marketing consultancy, ad design & placement
                 </span>
               </button>
@@ -654,14 +654,14 @@ const Header = ({
               >
                 <span
                   className="block text-[9px] font-black uppercase tracking-widest mb-1.5"
-                  style={{ color: "var(--color-brand)" }}
+                  style={{ color: "var(--color-brand-ink)" }}
                 >
                   02
                 </span>
                 <span className="block text-[13px] font-bold normal-case tracking-normal mb-1">
                   Event Management Services
                 </span>
-                <span className="block text-[11px] text-gray-400 normal-case tracking-normal font-normal">
+                <span className="block text-[11px] text-gray-500 normal-case tracking-normal font-normal">
                   Trade shows, conferences & corporate events
                 </span>
               </button>
@@ -695,7 +695,7 @@ const Header = ({
             transition: "color 250ms ease, border-color 250ms ease",
           }}
           onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.color = "var(--color-brand)";
+            (e.currentTarget as HTMLElement).style.color = "var(--color-brand-ink)";
             (e.currentTarget as HTMLElement).style.borderColor = "var(--color-brand)";
           }}
           onMouseLeave={(e) => {
@@ -731,7 +731,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
           <div className="lg:col-span-7 reveal">
             <span
               className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] mb-10"
-              style={{ color: "var(--color-brand)" }}
+              style={{ color: "var(--color-brand-ink)" }}
             >
               <span className="w-8 h-px" style={{ background: "var(--color-brand)" }} />
               Doha, Qatar · Advertising · Events
@@ -781,7 +781,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.borderColor =
                     "var(--color-brand)";
-                  (e.currentTarget as HTMLElement).style.color = "var(--color-brand)";
+                  (e.currentTarget as HTMLElement).style.color = "var(--color-brand-ink)";
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLElement).style.borderColor =
@@ -852,7 +852,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
                       className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border group-hover:border-[#059669]/40 group-hover:text-[color:var(--color-brand)]"
                       style={{
                         borderColor: "#374151",
-                        color: "#6B7280",
+                        color: "#9CA3AF",
                         transition: "border-color 300ms ease, color 300ms ease",
                       }}
                     >
@@ -874,7 +874,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
         <div className="text-center mb-24 reveal">
           <h2
             className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
-            style={{ color: "var(--color-brand)" }}
+            style={{ color: "var(--color-brand-ink)" }}
           >
             Growth Plans
           </h2>
@@ -917,7 +917,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
                   className="p-10 md:p-16 flex-1 bg-gray-50 border-t md:border-t-0 md:border-l border-gray-100 group-hover:bg-white"
                   style={{ transition: "background 500ms ease" }}
                 >
-                  <h4 className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-400 mb-8">
+                  <h4 className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-500 mb-8">
                     Engagement Details
                   </h4>
                   <ul className="space-y-4 mb-12">
@@ -980,7 +980,7 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
           <h3 className="text-4xl md:text-5xl font-black tracking-tighter text-white">
             Our Office
           </h3>
-          <p className="text-gray-500 font-light mt-4">
+          <p className="text-gray-400 font-light mt-4">
             Floor 16, Tornado Tower · West Bay, Doha, Qatar
           </p>
         </div>
@@ -1035,7 +1035,7 @@ const AboutPage = () => (
       <div className="reveal">
         <h2
           className="text-xs font-bold uppercase tracking-[0.3em] mb-12"
-          style={{ color: "var(--color-brand)" }}
+          style={{ color: "var(--color-brand-ink)" }}
         >
           Who we are
         </h2>
@@ -1046,7 +1046,7 @@ const AboutPage = () => (
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start mb-32">
         <div className="lg:col-span-5 reveal-left">
-          <p className="text-3xl md:text-4xl font-light leading-tight text-gray-400 mb-8">
+          <p className="text-3xl md:text-4xl font-light leading-tight text-gray-500 mb-8">
             At Outgrow, we help brands move from{" "}
             <span className="text-[#0A0A0A] font-medium">
               potential to performance.
@@ -1073,7 +1073,7 @@ const AboutPage = () => (
         <div className="border-t-2 border-[#0A0A0A] pt-12 reveal-left">
           <h3
             className="text-xs font-black uppercase tracking-[0.3em] mb-8"
-            style={{ color: "var(--color-brand)" }}
+            style={{ color: "var(--color-brand-ink)" }}
           >
             What We Do
           </h3>
@@ -1108,10 +1108,10 @@ const AboutPage = () => (
                 key={i}
                 className="group cursor-default border-b border-gray-100 pb-6 last:border-0"
               >
-                <h4 className="text-lg font-bold tracking-tighter mb-1 group-hover:text-[color:var(--color-brand)] transition-colors duration-300 text-[#0A0A0A]">
+                <h4 className="text-lg font-bold tracking-tighter mb-1 group-hover:text-[color:var(--color-brand-ink)] transition-colors duration-300 text-[#0A0A0A]">
                   {item.title}
                 </h4>
-                <p className="text-gray-400 text-sm font-light">{item.desc}</p>
+                <p className="text-gray-500 text-sm font-light">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -1119,7 +1119,7 @@ const AboutPage = () => (
         <div className="border-t-2 border-[#0A0A0A] pt-12 reveal-right">
           <h3
             className="text-xs font-black uppercase tracking-[0.3em] mb-8"
-            style={{ color: "var(--color-brand)" }}
+            style={{ color: "var(--color-brand-ink)" }}
           >
             Our Approach
           </h3>
@@ -1199,7 +1199,7 @@ const AboutPage = () => (
       <div className="mb-32 reveal active">
         <h3
           className="text-xs font-black uppercase tracking-[0.3em] mb-4"
-          style={{ color: "var(--color-brand)" }}
+          style={{ color: "var(--color-brand-ink)" }}
         >
           The Outgrow Playbook
         </h3>
@@ -1262,7 +1262,7 @@ const AboutPage = () => (
             },
           ].map((item, i) => (
             <div key={i} className="bg-white p-8 group">
-              <h4 className="text-base font-black tracking-tight text-[#0A0A0A] mb-2 group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
+              <h4 className="text-base font-black tracking-tight text-[#0A0A0A] mb-2 group-hover:text-[color:var(--color-brand-ink)] transition-colors duration-300">
                 {item.t}
               </h4>
               <p className="text-[13px] text-gray-500 font-light leading-relaxed">
@@ -1274,7 +1274,7 @@ const AboutPage = () => (
       </div>
 
       <div className="max-w-4xl mx-auto text-center mb-32 reveal">
-        <h3 className="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mb-8">
+        <h3 className="text-xs font-black uppercase tracking-[0.3em] text-gray-500 mb-8">
           Our Vision
         </h3>
         <blockquote className="text-4xl md:text-5xl font-light italic leading-tight text-[#0A0A0A] mb-12">
@@ -1459,7 +1459,7 @@ const PresenceGrader = () => {
         <div className="mb-16 reveal active">
           <h2
             className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
-            style={{ color: "var(--color-brand)" }}
+            style={{ color: "var(--color-brand-ink)" }}
           >
             Free Presence Check
           </h2>
@@ -1492,7 +1492,7 @@ const PresenceGrader = () => {
             <div className="space-y-10">
               {GRADER_DIMS.map((d, i) => (
                 <div key={d.key}>
-                  <p className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-400 mb-3">
+                  <p className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-500 mb-3">
                     {String(i + 1).padStart(2, "0")} — {d.label}
                   </p>
                   <p className="text-lg font-bold tracking-tight text-[#0A0A0A] mb-4">
@@ -1581,7 +1581,7 @@ const PresenceGrader = () => {
                   <span className="text-5xl font-black tabular-nums text-[#0A0A0A]">
                     {score}
                   </span>
-                  <span className="text-[9px] font-black uppercase tracking-widest text-gray-400">
+                  <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">
                     out of 100
                   </span>
                 </div>
@@ -1595,7 +1595,7 @@ const PresenceGrader = () => {
               <div className="space-y-2.5">
                 {GRADER_DIMS.map((d) => (
                   <div key={d.key} className="flex items-center gap-3">
-                    <span className="w-32 text-[10px] font-black uppercase tracking-widest text-gray-400 flex-shrink-0">
+                    <span className="w-32 text-[10px] font-black uppercase tracking-widest text-gray-500 flex-shrink-0">
                       {d.label}
                     </span>
                     <div className="flex-1 h-1.5 bg-gray-100 overflow-hidden">
@@ -1621,7 +1621,7 @@ const PresenceGrader = () => {
                   setAnswers({});
                   setLeadStatus("idle");
                 }}
-                className="mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[color:var(--color-brand)] hover:border-[color:var(--color-brand)] transition-colors duration-300"
+                className="mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[color:var(--color-brand-ink)] hover:border-[color:var(--color-brand)] transition-colors duration-300"
               >
                 Retake
               </button>
@@ -1630,7 +1630,7 @@ const PresenceGrader = () => {
             <div className="lg:col-span-8">
               <p
                 className="text-[10px] font-black uppercase tracking-[0.25em] mb-6"
-                style={{ color: "var(--color-brand)" }}
+                style={{ color: "var(--color-brand-ink)" }}
               >
                 Fix these first
               </p>
@@ -1643,7 +1643,7 @@ const PresenceGrader = () => {
                     >
                       <span
                         className="text-[11px] font-black tabular-nums mt-0.5"
-                        style={{ color: "var(--color-brand)" }}
+                        style={{ color: "var(--color-brand-ink)" }}
                       >
                         {String(i + 1).padStart(2, "0")}
                       </span>
@@ -1714,11 +1714,11 @@ const PresenceGrader = () => {
                 )}
               </div>
 
-              <p className="text-[12px] text-gray-400 font-light mt-6">
+              <p className="text-[12px] text-gray-500 font-light mt-6">
                 Want the full 90-day plan behind these fixes?{" "}
                 <a
                   href="#ai-strategy"
-                  className="font-bold text-[#0A0A0A] border-b border-[#0A0A0A] hover:text-[color:var(--color-brand)] hover:border-[color:var(--color-brand)] transition-colors"
+                  className="font-bold text-[#0A0A0A] border-b border-[#0A0A0A] hover:text-[color:var(--color-brand-ink)] hover:border-[color:var(--color-brand)] transition-colors"
                 >
                   Generate your strategy below ↓
                 </a>
@@ -1817,7 +1817,7 @@ const StrategyReport = ({
             {(strategy.frameworks || []).map((f, i) => (
               <span
                 key={i}
-                className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 border border-gray-200 text-gray-400"
+                className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 border border-gray-200 text-gray-500"
               >
                 {f}
               </span>
@@ -1837,14 +1837,14 @@ const StrategyReport = ({
         <div className="bg-white p-8 md:p-10">
           <span
             className="block text-[9px] font-black uppercase tracking-[0.25em] mb-4"
-            style={{ color: "var(--color-brand)" }}
+            style={{ color: "var(--color-brand-ink)" }}
           >
             Positioning (STP)
           </span>
           <p className="text-lg font-bold tracking-tight text-[#0A0A0A] leading-snug mb-5">
             {strategy.positioning}
           </p>
-          <span className="block text-[9px] font-black uppercase tracking-[0.25em] text-gray-400 mb-2">
+          <span className="block text-[9px] font-black uppercase tracking-[0.25em] text-gray-500 mb-2">
             Beachhead segment
           </span>
           <p className="text-sm text-gray-500 font-light leading-relaxed">
@@ -1855,7 +1855,7 @@ const StrategyReport = ({
           <div>
             <span
               className="block text-[9px] font-black uppercase tracking-[0.25em] mb-4"
-              style={{ color: "var(--color-brand)" }}
+              style={{ color: "var(--color-brand-ink)" }}
             >
               North-star metric
             </span>
@@ -1865,7 +1865,7 @@ const StrategyReport = ({
           </div>
           <div>
             <div className="flex items-baseline justify-between mb-3">
-              <span className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-400">
+              <span className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-500">
                 Budget split
               </span>
               <span className="text-[10px] font-black tabular-nums text-gray-500">
@@ -1887,7 +1887,7 @@ const StrategyReport = ({
                 }}
               />
             </div>
-            <p className="text-[11px] text-gray-400 font-light leading-relaxed mt-3">
+            <p className="text-[11px] text-gray-500 font-light leading-relaxed mt-3">
               {strategy.budgetSplit.note}
             </p>
           </div>
@@ -1898,7 +1898,7 @@ const StrategyReport = ({
       <div>
         <span
           className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
-          style={{ color: "var(--color-brand)" }}
+          style={{ color: "var(--color-brand-ink)" }}
         >
           The plan — RACE journey
         </span>
@@ -1927,7 +1927,7 @@ const StrategyReport = ({
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-gray-400 font-light leading-relaxed">
+                  <p className="text-xs text-gray-500 font-light leading-relaxed">
                     {priority
                       ? s.focus.replace(/^Priority\s*—\s*/, "")
                       : s.focus}
@@ -1950,13 +1950,13 @@ const StrategyReport = ({
                   </ul>
                 </div>
                 <div className="md:col-span-3 md:border-l md:border-gray-100 md:pl-6">
-                  <span className="block text-[8px] font-black uppercase tracking-widest text-gray-400 mb-1.5">
+                  <span className="block text-[8px] font-black uppercase tracking-widest text-gray-500 mb-1.5">
                     KPI
                   </span>
                   <p className="text-xs font-bold text-[#0A0A0A] mb-4 leading-snug">
                     {s.kpi}
                   </p>
-                  <span className="block text-[8px] font-black uppercase tracking-widest text-gray-400 mb-1.5">
+                  <span className="block text-[8px] font-black uppercase tracking-widest text-gray-500 mb-1.5">
                     Benchmark
                   </span>
                   <p className="text-[11px] text-gray-500 font-light leading-relaxed">
@@ -1973,7 +1973,7 @@ const StrategyReport = ({
       <div>
         <span
           className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
-          style={{ color: "var(--color-brand)" }}
+          style={{ color: "var(--color-brand-ink)" }}
         >
           90-day roadmap
         </span>
@@ -1982,7 +1982,7 @@ const StrategyReport = ({
             <div key={i} className="bg-white p-7 md:p-9">
               <span
                 className="block text-[10px] font-black tabular-nums mb-1"
-                style={{ color: "var(--color-brand)" }}
+                style={{ color: "var(--color-brand-ink)" }}
               >
                 {r.phase}
               </span>
@@ -2011,7 +2011,7 @@ const StrategyReport = ({
       <div className="border-2 border-[#0A0A0A] p-7 md:p-9">
         <span
           className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
-          style={{ color: "var(--color-brand)" }}
+          style={{ color: "var(--color-brand-ink)" }}
         >
           Do this week — zero budget
         </span>
@@ -2020,7 +2020,7 @@ const StrategyReport = ({
             <div key={i} className="flex items-start">
               <span
                 className="w-5 h-5 border-2 border-[color:var(--color-brand)] flex-shrink-0 mr-3 mt-0.5 flex items-center justify-center text-[10px] font-black"
-                style={{ color: "var(--color-brand)" }}
+                style={{ color: "var(--color-brand-ink)" }}
               >
                 ✓
               </span>
@@ -2141,7 +2141,7 @@ const StrategyReport = ({
 
       {/* Footer */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pt-2">
-        <p className="text-[10px] text-gray-400 font-light leading-relaxed max-w-md">
+        <p className="text-[10px] text-gray-500 font-light leading-relaxed max-w-md">
           Benchmarks are published 2026 industry aggregates (Meta &amp; Google
           benchmark studies, IPA effectiveness databank, DataReportal Qatar) —
           directional guidance, not guarantees. The full engagement version is
@@ -2150,7 +2150,7 @@ const StrategyReport = ({
         <div className="print-hide flex items-center gap-6 flex-shrink-0">
           <button
             onClick={onReset}
-            className="text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[color:var(--color-brand)] hover:border-[color:var(--color-brand)] transition-colors duration-300"
+            className="text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[color:var(--color-brand-ink)] hover:border-[color:var(--color-brand)] transition-colors duration-300"
           >
             New Analysis
           </button>
@@ -2302,7 +2302,7 @@ const AIInsights = () => {
                     <p className="text-[#0A0A0A] font-black uppercase tracking-[0.2em] text-[11px] mb-2">
                       {statusMsg}
                     </p>
-                    <p className="text-gray-400 text-[9px] uppercase tracking-widest">
+                    <p className="text-gray-500 text-[9px] uppercase tracking-widest">
                       Outgrow Intelligence
                     </p>
                   </div>
@@ -2400,7 +2400,7 @@ const ServiceCard: React.FC<{ num: string; title: string; desc: string }> = ({
   <div className="card-3d bg-white p-10 md:p-12 group border border-gray-100 hover:border-[#0A0A0A] transition-colors duration-300">
     <span
       className="block text-[10px] font-black mb-6 transition-colors duration-300"
-      style={{ color: "var(--color-brand)" }}
+      style={{ color: "var(--color-brand-ink)" }}
     >
       {num}
     </span>
@@ -2420,7 +2420,7 @@ const ProcessStep: React.FC<{ step: string; title: string; desc: string }> = ({
     <span className="block text-5xl font-black text-gray-100 group-hover:text-[#D1FAE5] mb-6 transition-colors duration-300">
       {step}
     </span>
-    <h3 className="text-lg font-black tracking-tighter mb-3 group-hover:text-[color:var(--color-brand)] transition-colors duration-300 text-[#0A0A0A]">
+    <h3 className="text-lg font-black tracking-tighter mb-3 group-hover:text-[color:var(--color-brand-ink)] transition-colors duration-300 text-[#0A0A0A]">
       {title}
     </h3>
     <p className="text-gray-500 text-sm leading-relaxed font-light">{desc}</p>
@@ -2491,7 +2491,7 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <button
           onClick={() => setView("works")}
-          className="text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
+          className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
         >
           <span>←</span> All works
         </button>
@@ -2499,11 +2499,11 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
           Case study — Web build
         </span>
         <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-10 reveal active">
-          A storefront that speaks<br />WhatsApp — <span className="text-gray-600">and Arabic.</span>
+          A storefront that speaks<br />WhatsApp — <span className="text-gray-400">and Arabic.</span>
         </h1>
         <div className="flex flex-wrap items-center gap-3 mb-12">
           {["2026", "Modest fashion", "E-commerce", "Doha-ready", "Bilingual"].map((t) => (
-            <span key={t} className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border border-gray-800 text-gray-500">
+            <span key={t} className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border border-gray-800 text-gray-400">
               {t}
             </span>
           ))}
@@ -2529,7 +2529,7 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
             <div className="border border-gray-200 bg-white p-2 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
               <img src={shot.src} alt={shot.label} loading="lazy" className="w-full h-auto block" width={1280} height={900} />
             </div>
-            <figcaption className="text-[10px] font-black uppercase tracking-widest text-gray-400 mt-4">{shot.label}</figcaption>
+            <figcaption className="text-[10px] font-black uppercase tracking-widest text-gray-500 mt-4">{shot.label}</figcaption>
           </figure>
         ))}
       </div>
@@ -2538,7 +2538,7 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
     <section className="py-24 px-6 md:px-12 bg-white">
       <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
         <div>
-          <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: "var(--color-brand)" }}>The brief</h2>
+          <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: "var(--color-brand-ink)" }}>The brief</h2>
           <p className="text-2xl font-light leading-snug text-gray-600 mb-6">
             A modest-womenswear brand needed to go from idea to <span className="text-[#0A0A0A] font-medium">selling</span> — without waiting on payment gateways, photography, or a CMS.
           </p>
@@ -2547,7 +2547,7 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
           </p>
         </div>
         <div>
-          <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: "var(--color-brand)" }}>What we built</h2>
+          <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: "var(--color-brand-ink)" }}>What we built</h2>
           <ul className="space-y-4">
             {[
               "Working commerce: cart, sizes, free-shipping logic, and a WhatsApp checkout that arrives as a clean order message",
@@ -2568,7 +2568,7 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
 
     <section className="py-20 px-6 md:px-12 bg-gray-50">
       <div className="max-w-[1440px] mx-auto">
-        <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-10" style={{ color: "var(--color-brand)" }}>Under the hood</h2>
+        <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-10" style={{ color: "var(--color-brand-ink)" }}>Under the hood</h2>
         <div className="flex flex-wrap gap-3">
           {[
             "Zero-backend storefront",
@@ -2585,7 +2585,7 @@ const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
             </span>
           ))}
         </div>
-        <p className="text-[12px] text-gray-400 font-light mt-10 max-w-2xl">
+        <p className="text-[12px] text-gray-500 font-light mt-10 max-w-2xl">
           Status: launch build, live on preview. Payment rails (Stripe / BNPL) and brand photography are scheduled with the client — the build is wired to receive both without rework.
         </p>
       </div>
@@ -2614,7 +2614,7 @@ const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="reveal">
         <h2
           className="text-xs font-black uppercase tracking-[0.3em] mb-12"
-          style={{ color: "var(--color-brand)" }}
+          style={{ color: "var(--color-brand-ink)" }}
         >
           Portfolio
         </h2>
@@ -2638,7 +2638,7 @@ const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
             <div className="flex justify-between items-start mb-8">
               <span
                 className="text-[10px] font-black"
-                style={{ color: "var(--color-brand)" }}
+                style={{ color: "var(--color-brand-ink)" }}
               >
                 {w.num}
               </span>
@@ -2652,7 +2652,7 @@ const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
               )}
             </div>
             <span
-              className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-400 block mb-4 group-hover:text-green-300"
+              className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-500 block mb-4 group-hover:text-green-300"
               style={{ transition: "color 300ms ease" }}
             >
               {w.category}
@@ -2673,7 +2673,7 @@ const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
               {w.tags.map((tag, j) => (
                 <span
                   key={j}
-                  className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border border-gray-200 text-gray-500 group-hover:border-gray-700 group-hover:text-gray-400"
+                  className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border border-gray-200 text-gray-500 group-hover:border-gray-700 group-hover:text-gray-500"
                   style={{
                     transition: "border-color 300ms ease, color 300ms ease",
                   }}
@@ -2698,7 +2698,7 @@ const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
             {w.href && (
               <button
                 onClick={() => setView("work-zihay")}
-                className="inline-flex items-center gap-2 mt-8 ml-8 text-[10px] font-black uppercase tracking-widest border-b-2 pb-0.5 text-gray-400 border-gray-300 group-hover:text-white group-hover:border-white"
+                className="inline-flex items-center gap-2 mt-8 ml-8 text-[10px] font-black uppercase tracking-widest border-b-2 pb-0.5 text-gray-500 border-gray-300 group-hover:text-white group-hover:border-white"
                 style={{ transition: "color 300ms ease, border-color 300ms ease" }}
               >
                 Read the case study →
@@ -2740,7 +2740,7 @@ const ServiceMarketingPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <button
           onClick={() => setView("home")}
-          className="text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
+          className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
         >
           <span>←</span> Back to Home
         </button>
@@ -2765,7 +2765,7 @@ const ServiceMarketingPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <h2
           className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
-          style={{ color: "var(--color-brand)" }}
+          style={{ color: "var(--color-brand-ink)" }}
         >
           What's Included
         </h2>
@@ -2814,7 +2814,7 @@ const ServiceMarketingPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <h2
           className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
-          style={{ color: "var(--color-brand)" }}
+          style={{ color: "var(--color-brand-ink)" }}
         >
           How We Work
         </h2>
@@ -2884,7 +2884,7 @@ const ServiceEventsPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <button
           onClick={() => setView("home")}
-          className="text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
+          className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
         >
           <span>←</span> Back to Home
         </button>
@@ -2911,7 +2911,7 @@ const ServiceEventsPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <h2
           className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
-          style={{ color: "var(--color-brand)" }}
+          style={{ color: "var(--color-brand-ink)" }}
         >
           What's Included
         </h2>
@@ -2960,7 +2960,7 @@ const ServiceEventsPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="max-w-[1440px] mx-auto">
         <h2
           className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
-          style={{ color: "var(--color-brand)" }}
+          style={{ color: "var(--color-brand-ink)" }}
         >
           How We Work
         </h2>
@@ -3042,7 +3042,7 @@ const PolicyPage = ({
     <div className="max-w-[900px] mx-auto">
       <button
         onClick={() => setView("home")}
-        className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[#0A0A0A] transition-colors mb-16 flex items-center gap-3"
+        className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-[#0A0A0A] transition-colors mb-16 flex items-center gap-3"
       >
         <span>←</span> Back to Home
       </button>
@@ -3051,7 +3051,7 @@ const PolicyPage = ({
       </h1>
       <p
         className="text-xs font-bold uppercase tracking-widest mb-20"
-        style={{ color: "var(--color-brand)" }}
+        style={{ color: "var(--color-brand-ink)" }}
       >
         {subtitle}
       </p>
@@ -3059,7 +3059,7 @@ const PolicyPage = ({
         <div key={i} className="border-t border-gray-100 py-12">
           <h2
             className="text-xs font-black uppercase tracking-[0.3em] mb-6"
-            style={{ color: "var(--color-brand)" }}
+            style={{ color: "var(--color-brand-ink)" }}
           >
             {s.heading}
           </h2>
@@ -3135,7 +3135,7 @@ const Contact = () => {
         <div className="text-center mb-20 reveal">
           <h2
             className="text-xs font-bold uppercase tracking-[0.3em] mb-8"
-            style={{ color: "var(--color-brand)" }}
+            style={{ color: "var(--color-brand-ink)" }}
           >
             Contact us
           </h2>
@@ -3216,7 +3216,7 @@ const Contact = () => {
         <div className="max-w-3xl mx-auto reveal">
           <h4
             className="text-xs font-black uppercase tracking-[0.3em] mb-4"
-            style={{ color: "var(--color-brand)" }}
+            style={{ color: "var(--color-brand-ink)" }}
           >
             Send us a message
           </h4>
@@ -3255,7 +3255,7 @@ const Contact = () => {
                     setForm({ name: "", email: "", phone: "", comments: "" });
                     setCharCount(0);
                   }}
-                  className="mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[color:var(--color-brand)] hover:border-[color:var(--color-brand)] transition-colors duration-300"
+                  className="mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[color:var(--color-brand-ink)] hover:border-[color:var(--color-brand)] transition-colors duration-300"
                 >
                   Send another message
                 </button>
@@ -3284,7 +3284,7 @@ const Contact = () => {
                     key={f.key}
                     className={`border-2 border-gray-200 p-8 focus-within:border-[color:var(--color-brand)] transition-colors duration-300 ${i === 1 ? "md:border-l-0" : ""}`}
                   >
-                    <label className="block text-[9px] font-black uppercase tracking-widest text-gray-400 mb-3">
+                    <label className="block text-[9px] font-black uppercase tracking-widest text-gray-500 mb-3">
                       {f.label}
                     </label>
                     <input
@@ -3301,7 +3301,7 @@ const Contact = () => {
                 ))}
               </div>
               <div className="border-2 border-t-0 border-gray-200 p-8 focus-within:border-[color:var(--color-brand)] transition-colors duration-300">
-                <label className="block text-[9px] font-black uppercase tracking-widest text-gray-400 mb-3">
+                <label className="block text-[9px] font-black uppercase tracking-widest text-gray-500 mb-3">
                   Phone Number
                 </label>
                 <input
@@ -3314,7 +3314,7 @@ const Contact = () => {
               </div>
               <div className="border-2 border-t-0 border-gray-200 p-8 focus-within:border-[color:var(--color-brand)] transition-colors duration-300">
                 <div className="flex justify-between mb-3">
-                  <label className="block text-[9px] font-black uppercase tracking-widest text-gray-400">
+                  <label className="block text-[9px] font-black uppercase tracking-widest text-gray-500">
                     Comments
                   </label>
                   <span className="text-[9px] text-gray-300 font-mono tabular-nums">
@@ -3421,7 +3421,7 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
               outgrow
             </span>
           </button>
-          <p className="text-gray-500 max-w-sm text-sm leading-relaxed font-light">
+          <p className="text-gray-400 max-w-sm text-sm leading-relaxed font-light">
             A marketing, advertising, and event management company dedicated to
             building powerful brands and delivering exceptional events in Qatar
             and beyond.
@@ -3436,7 +3436,7 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
                 href={s.href}
                 target={s.href.startsWith("http") ? "_blank" : undefined}
                 rel="noopener noreferrer"
-                className="text-[9px] font-black uppercase tracking-widest border border-gray-800 px-4 py-2.5 text-gray-600 hover:border-[color:var(--color-brand)] hover:text-[color:var(--color-brand)]"
+                className="text-[9px] font-black uppercase tracking-widest border border-gray-800 px-4 py-2.5 text-gray-400 hover:border-[color:var(--color-brand)] hover:text-[color:var(--color-brand)]"
                 style={{
                   transition: "border-color 300ms ease, color 300ms ease",
                 }}
@@ -3447,7 +3447,7 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
           </div>
         </div>
         <div>
-          <h4 className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-8">
+          <h4 className="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-8">
             Navigation
           </h4>
           <ul className="space-y-4 text-sm font-bold tracking-wide">
@@ -3482,10 +3482,10 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
           </ul>
         </div>
         <div>
-          <h4 className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-8">
+          <h4 className="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-8">
             Contact
           </h4>
-          <ul className="space-y-4 text-sm font-light text-gray-500">
+          <ul className="space-y-4 text-sm font-light text-gray-400">
             <li>
               <a
                 href="mailto:info@outgrowagency.com"
@@ -3502,11 +3502,11 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
                 +974 5595 4896
               </a>
             </li>
-            <li className="text-gray-600">Doha, Qatar</li>
+            <li className="text-gray-400">Doha, Qatar</li>
           </ul>
         </div>
       </div>
-      <div className="pt-12 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center text-[9px] font-black uppercase tracking-widest text-gray-700 gap-4">
+      <div className="pt-12 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center text-[9px] font-black uppercase tracking-widest text-gray-400 gap-4">
         <p>
           © {new Date().getFullYear()} Outgrow. Advertising · PR · Brand
           Management · Event Management
