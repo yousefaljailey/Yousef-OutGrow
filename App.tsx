@@ -785,19 +785,301 @@ const AboutPage = () => (
 /* ─────────────────────────────────────────────
    AI Insights
 ───────────────────────────────────────────── */
+const FRAMEWORK_CHIPS = [
+  "STP",
+  "RACE",
+  "IPA 60/40",
+  "95-5 Rule",
+  "2026 Benchmarks",
+];
+
+const StrategyReport = ({
+  strategy,
+  onReset,
+}: {
+  strategy: StrategyType;
+  onReset: () => void;
+}) => (
+  <div className="bg-white text-gray-900 shadow-2xl p-8 md:p-14 space-y-12">
+    {/* Header */}
+    <div>
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <span
+          className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 text-white"
+          style={{ background: strategy.demo ? "#0A0A0A" : "#059669" }}
+        >
+          {strategy.demo
+            ? "Sample Preview — engine output"
+            : "Live AI Analysis"}
+        </span>
+        <div className="flex flex-wrap gap-2">
+          {(strategy.frameworks || []).map((f, i) => (
+            <span
+              key={i}
+              className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 border border-gray-200 text-gray-400"
+            >
+              {f}
+            </span>
+          ))}
+        </div>
+      </div>
+      <h4 className="text-3xl md:text-4xl font-black tracking-tighter text-[#0A0A0A] mb-6">
+        {strategy.headline}
+      </h4>
+      <p className="text-gray-500 font-light leading-relaxed max-w-3xl">
+        {strategy.summary}
+      </p>
+    </div>
+
+    {/* Positioning + North star / Budget */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-gray-100 border border-gray-100">
+      <div className="bg-white p-8 md:p-10">
+        <span
+          className="block text-[9px] font-black uppercase tracking-[0.25em] mb-4"
+          style={{ color: "#059669" }}
+        >
+          Positioning (STP)
+        </span>
+        <p className="text-lg font-bold tracking-tight text-[#0A0A0A] leading-snug mb-5">
+          {strategy.positioning}
+        </p>
+        <span className="block text-[9px] font-black uppercase tracking-[0.25em] text-gray-400 mb-2">
+          Beachhead segment
+        </span>
+        <p className="text-sm text-gray-500 font-light leading-relaxed">
+          {strategy.targetSegment}
+        </p>
+      </div>
+      <div className="bg-white p-8 md:p-10 flex flex-col justify-between gap-8">
+        <div>
+          <span
+            className="block text-[9px] font-black uppercase tracking-[0.25em] mb-4"
+            style={{ color: "#059669" }}
+          >
+            North-star metric
+          </span>
+          <p className="text-lg font-bold tracking-tight text-[#0A0A0A] leading-snug">
+            {strategy.northStar}
+          </p>
+        </div>
+        <div>
+          <div className="flex items-baseline justify-between mb-3">
+            <span className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-400">
+              Budget split
+            </span>
+            <span className="text-[10px] font-black tabular-nums text-gray-500">
+              {strategy.budgetSplit.brand}% brand ·{" "}
+              {strategy.budgetSplit.activation}% activation
+            </span>
+          </div>
+          <div className="flex h-2.5 w-full overflow-hidden">
+            <div
+              style={{
+                width: `${strategy.budgetSplit.brand}%`,
+                background: "#0A0A0A",
+              }}
+            />
+            <div
+              style={{
+                width: `${strategy.budgetSplit.activation}%`,
+                background: "#059669",
+              }}
+            />
+          </div>
+          <p className="text-[11px] text-gray-400 font-light leading-relaxed mt-3">
+            {strategy.budgetSplit.note}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {/* RACE funnel */}
+    <div>
+      <span
+        className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
+        style={{ color: "#059669" }}
+      >
+        The plan — RACE journey
+      </span>
+      <div className="space-y-px bg-gray-100 border border-gray-100">
+        {strategy.funnel.map((s, i) => {
+          const priority = s.focus.startsWith("Priority");
+          return (
+            <div
+              key={i}
+              className="bg-white p-7 md:p-9 grid grid-cols-1 md:grid-cols-12 gap-6"
+              style={
+                priority ? { boxShadow: "inset 4px 0 0 #059669" } : undefined
+              }
+            >
+              <div className="md:col-span-3">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-xl font-black tracking-tighter text-[#0A0A0A]">
+                    {s.stage}
+                  </span>
+                  {priority && (
+                    <span
+                      className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 text-white"
+                      style={{ background: "#059669" }}
+                    >
+                      Priority
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-gray-400 font-light leading-relaxed">
+                  {priority ? s.focus.replace(/^Priority\s*—\s*/, "") : s.focus}
+                </p>
+              </div>
+              <div className="md:col-span-6">
+                <ul className="space-y-3">
+                  {s.tactics.map((t, j) => (
+                    <li
+                      key={j}
+                      className="flex items-start text-sm text-gray-700 font-light leading-relaxed"
+                    >
+                      <span
+                        className="w-1.5 h-1.5 mt-2 mr-3 flex-shrink-0"
+                        style={{ background: "#059669" }}
+                      />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="md:col-span-3 md:border-l md:border-gray-100 md:pl-6">
+                <span className="block text-[8px] font-black uppercase tracking-widest text-gray-400 mb-1.5">
+                  KPI
+                </span>
+                <p className="text-xs font-bold text-[#0A0A0A] mb-4 leading-snug">
+                  {s.kpi}
+                </p>
+                <span className="block text-[8px] font-black uppercase tracking-widest text-gray-400 mb-1.5">
+                  Benchmark
+                </span>
+                <p className="text-[11px] text-gray-500 font-light leading-relaxed">
+                  {s.benchmark}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    {/* Roadmap */}
+    <div>
+      <span
+        className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
+        style={{ color: "#059669" }}
+      >
+        90-day roadmap
+      </span>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-100 border border-gray-100">
+        {strategy.roadmap.map((r, i) => (
+          <div key={i} className="bg-white p-7 md:p-9">
+            <span
+              className="block text-[10px] font-black tabular-nums mb-1"
+              style={{ color: "#059669" }}
+            >
+              {r.phase}
+            </span>
+            <h5 className="text-lg font-black tracking-tighter text-[#0A0A0A] mb-5">
+              {r.theme}
+            </h5>
+            <ul className="space-y-3">
+              {r.actions.map((a, j) => (
+                <li
+                  key={j}
+                  className="flex items-start text-[13px] text-gray-600 font-light leading-relaxed"
+                >
+                  <span className="text-[10px] font-black mr-3 mt-0.5 tabular-nums text-gray-300">
+                    {String(j + 1).padStart(2, "0")}
+                  </span>
+                  {a}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Quick wins */}
+    <div className="border-2 border-[#0A0A0A] p-7 md:p-9">
+      <span
+        className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
+        style={{ color: "#059669" }}
+      >
+        Do this week — zero budget
+      </span>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {strategy.quickWins.map((q, i) => (
+          <div key={i} className="flex items-start">
+            <span
+              className="w-5 h-5 border-2 border-[#059669] flex-shrink-0 mr-3 mt-0.5 flex items-center justify-center text-[10px] font-black"
+              style={{ color: "#059669" }}
+            >
+              ✓
+            </span>
+            <p className="text-sm text-gray-700 font-light leading-relaxed">
+              {q}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Footer */}
+    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pt-2">
+      <p className="text-[10px] text-gray-400 font-light leading-relaxed max-w-md">
+        Benchmarks are published 2026 industry aggregates (Meta &amp; Google
+        benchmark studies, IPA effectiveness databank, DataReportal Qatar) —
+        directional guidance, not guarantees. The full engagement version is
+        built on your actual numbers.
+      </p>
+      <div className="flex items-center gap-6 flex-shrink-0">
+        <button
+          onClick={onReset}
+          className="text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors duration-300"
+        >
+          New Analysis
+        </button>
+        <a
+          href="#contact"
+          className="btn-lift inline-block px-10 py-5 text-white text-[11px] font-black uppercase tracking-[0.2em]"
+          style={{ background: "#0A0A0A" }}
+          onMouseEnter={(e) => {
+            (e.target as HTMLElement).style.background = "#059669";
+          }}
+          onMouseLeave={(e) => {
+            (e.target as HTMLElement).style.background = "#0A0A0A";
+          }}
+        >
+          Build this with us
+        </a>
+      </div>
+    </div>
+  </div>
+);
+
 const AIInsights = () => {
   const [loading, setLoading] = useState(false);
-  const [statusMsg, setStatusMsg] = useState('Initializing transformation core...');
-  const [input, setInput] = useState<UserInput>({ businessName: '', industry: '', mainChallenge: '' });
+  const [statusMsg, setStatusMsg] = useState("Segmenting your market (STP)...");
+  const [input, setInput] = useState<UserInput>({
+    businessName: "",
+    industry: "",
+    mainChallenge: "",
+  });
   const [strategy, setStrategy] = useState<StrategyType | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const LOADING_MSGS = [
-    'Analyzing market dynamics...',
-    'Benchmarking industry leaders...',
-    'Synthesizing unique value propositions...',
-    'Optimizing growth trajectory...',
-    'Calibrating strategic recommendations...',
+    "Segmenting your market (STP)...",
+    "Sequencing the RACE journey...",
+    "Pulling 2026 channel benchmarks...",
+    "Applying IPA budget evidence...",
+    "Localizing for Qatar & the GCC...",
+    "Assembling your 90-day roadmap...",
   ];
 
   useEffect(() => {
@@ -806,21 +1088,24 @@ const AIInsights = () => {
     const t = setInterval(() => {
       i = (i + 1) % LOADING_MSGS.length;
       setStatusMsg(LOADING_MSGS[i]);
-    }, 3000);
+    }, 2600);
     return () => clearInterval(t);
   }, [loading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.businessName || !input.industry) return;
-    setLoading(true); setError(null);
+    setLoading(true);
+    setError(null);
     try {
       setStrategy(await generateGrowthStrategy(input));
     } catch (err: unknown) {
-      if (err instanceof Error && err.message === 'RATE_LIMITED') {
-        setError('Too many requests — give it a minute and try again.');
+      if (err instanceof Error && err.message === "RATE_LIMITED") {
+        setError("Too many requests — give it a minute and try again.");
       } else {
-        setError('Our strategy engine encountered a momentary pause. Please try again.');
+        setError(
+          "Our strategy engine encountered a momentary pause. Please try again.",
+        );
       }
     } finally {
       setLoading(false);
@@ -828,109 +1113,166 @@ const AIInsights = () => {
   };
 
   return (
-    <section id="ai-strategy" className="py-32 md:py-48 px-6 md:px-12 text-white overflow-hidden relative" style={{ background: '#059669' }}>
+    <section
+      id="ai-strategy"
+      className="py-32 md:py-48 px-6 md:px-12 text-white overflow-hidden relative"
+      style={{ background: "#059669" }}
+    >
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 80% 50%, rgba(0,0,0,0.15) 0%, transparent 60%)' }}
+        style={{
+          background:
+            "radial-gradient(ellipse at 80% 50%, rgba(0,0,0,0.15) 0%, transparent 60%)",
+        }}
       />
       <div className="max-w-[1440px] mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-          <div className="reveal-left">
-            <h2 className="text-xs font-bold uppercase tracking-[0.3em] text-green-200 mb-6">AI Insights</h2>
-            <h3 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight mb-8">
-              Immediate <br /> growth roadmap.
-            </h3>
-            <p className="text-xl text-green-100 font-light leading-relaxed max-w-md">
-              Harness Outgrow Intelligence for an AI-powered preview of your business transformation path.
-            </p>
+        {strategy ? (
+          <div className="reveal active">
+            <div className="mb-10">
+              <h2 className="text-xs font-bold uppercase tracking-[0.3em] text-green-200 mb-4">
+                Outgrow Intelligence
+              </h2>
+              <h3 className="text-3xl md:text-5xl font-black tracking-tighter leading-tight">
+                Your strategy preview.
+              </h3>
+            </div>
+            <StrategyReport
+              strategy={strategy}
+              onReset={() => setStrategy(null)}
+            />
           </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+            <div className="reveal-left">
+              <h2 className="text-xs font-bold uppercase tracking-[0.3em] text-green-200 mb-6">
+                AI Insights
+              </h2>
+              <h3 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight mb-8">
+                Your growth plan, <br /> engineered.
+              </h3>
+              <p className="text-xl text-green-100 font-light leading-relaxed max-w-md mb-10">
+                Outgrow Intelligence drafts a strategy preview the way our
+                strategists do — positioning first, then the full customer
+                journey, budget split, and a 90-day roadmap.
+              </p>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {FRAMEWORK_CHIPS.map((f, i) => (
+                  <span
+                    key={i}
+                    className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border border-green-400/40 text-green-100"
+                  >
+                    {f}
+                  </span>
+                ))}
+              </div>
+              <p className="text-[11px] text-green-200/80 font-light max-w-md">
+                Built on the frameworks working strategists plan with, and
+                judged against published 2026 channel benchmarks — localized for
+                Qatar &amp; the GCC.
+              </p>
+            </div>
 
-          <div className="reveal-right">
-            {!strategy ? (
-              <form onSubmit={handleSubmit} className="bg-white p-10 md:p-12 shadow-2xl space-y-6 relative overflow-hidden">
+            <div className="reveal-right">
+              <form
+                onSubmit={handleSubmit}
+                className="bg-white p-10 md:p-12 shadow-2xl space-y-6 relative overflow-hidden"
+              >
                 {loading && (
                   <div className="absolute inset-0 z-30 flex flex-col items-center justify-center p-12 text-center bg-white/98">
                     <div className="w-16 h-0.5 bg-gray-100 mb-8 overflow-hidden relative">
-                      <div className="absolute inset-0" style={{ background: '#059669', animation: 'loadingBar 2s ease-in-out infinite' }} />
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          background: "#059669",
+                          animation: "loadingBar 2s ease-in-out infinite",
+                        }}
+                      />
                     </div>
-                    <p className="text-[#0A0A0A] font-black uppercase tracking-[0.2em] text-[11px] mb-2">{statusMsg}</p>
-                    <p className="text-gray-400 text-[9px] uppercase tracking-widest">Outgrow Intelligence</p>
+                    <p className="text-[#0A0A0A] font-black uppercase tracking-[0.2em] text-[11px] mb-2">
+                      {statusMsg}
+                    </p>
+                    <p className="text-gray-400 text-[9px] uppercase tracking-widest">
+                      Outgrow Intelligence
+                    </p>
                   </div>
                 )}
                 <div className="space-y-5">
                   {[
-                    { ph: 'Business Name', val: input.businessName, key: 'businessName' as const, type: 'input' },
-                    { ph: 'Industry', val: input.industry, key: 'industry' as const, type: 'input' },
-                  ].map(f => (
+                    {
+                      ph: "Business Name",
+                      val: input.businessName,
+                      key: "businessName" as const,
+                      type: "input",
+                    },
+                    {
+                      ph: "Industry (e.g. restaurant, fashion, real estate)",
+                      val: input.industry,
+                      key: "industry" as const,
+                      type: "input",
+                    },
+                  ].map((f) => (
                     <div key={f.key} className="group">
                       <input
                         type="text"
                         required
                         placeholder={f.ph}
                         className="w-full border-b-2 py-4 text-[#0A0A0A] placeholder-gray-300 focus:outline-none transition-colors duration-300 bg-transparent"
-                        style={{ borderColor: '#E5E7EB' }}
+                        style={{ borderColor: "#E5E7EB" }}
                         value={f.val}
-                        onChange={e => setInput({ ...input, [f.key]: e.target.value })}
-                        onFocus={e => { (e.target as HTMLElement).style.borderColor = '#059669'; }}
-                        onBlur={e => { (e.target as HTMLElement).style.borderColor = '#E5E7EB'; }}
+                        onChange={(e) =>
+                          setInput({ ...input, [f.key]: e.target.value })
+                        }
+                        onFocus={(e) => {
+                          (e.target as HTMLElement).style.borderColor =
+                            "#059669";
+                        }}
+                        onBlur={(e) => {
+                          (e.target as HTMLElement).style.borderColor =
+                            "#E5E7EB";
+                        }}
                       />
                     </div>
                   ))}
                   <textarea
-                    placeholder="Describe your core challenge"
+                    placeholder="Your main challenge (e.g. not enough leads, nobody knows us yet)"
                     rows={3}
                     className="w-full border-b-2 py-4 text-[#0A0A0A] placeholder-gray-300 focus:outline-none resize-none bg-transparent transition-colors duration-300"
-                    style={{ borderColor: '#E5E7EB' }}
+                    style={{ borderColor: "#E5E7EB" }}
                     value={input.mainChallenge}
-                    onChange={e => setInput({ ...input, mainChallenge: e.target.value })}
-                    onFocus={e => { (e.target as HTMLElement).style.borderColor = '#059669'; }}
-                    onBlur={e => { (e.target as HTMLElement).style.borderColor = '#E5E7EB'; }}
+                    onChange={(e) =>
+                      setInput({ ...input, mainChallenge: e.target.value })
+                    }
+                    onFocus={(e) => {
+                      (e.target as HTMLElement).style.borderColor = "#059669";
+                    }}
+                    onBlur={(e) => {
+                      (e.target as HTMLElement).style.borderColor = "#E5E7EB";
+                    }}
                   />
                 </div>
                 <button
                   disabled={loading}
                   className="btn-lift w-full py-5 text-white text-[11px] font-black uppercase tracking-[0.2em] transition-colors duration-300 disabled:opacity-50"
-                  style={{ background: '#0A0A0A' }}
-                  onMouseEnter={e => { if (!loading) (e.target as HTMLElement).style.background = '#059669'; }}
-                  onMouseLeave={e => { (e.target as HTMLElement).style.background = '#0A0A0A'; }}
+                  style={{ background: "#0A0A0A" }}
+                  onMouseEnter={(e) => {
+                    if (!loading)
+                      (e.target as HTMLElement).style.background = "#059669";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.target as HTMLElement).style.background = "#0A0A0A";
+                  }}
                 >
-                  Generate Insights
+                  Generate My Strategy
                 </button>
-                {error && <p className="text-red-500 text-[10px] font-bold text-center">{error}</p>}
+                {error && (
+                  <p className="text-red-500 text-[10px] font-bold text-center">
+                    {error}
+                  </p>
+                )}
               </form>
-            ) : (
-              <div className="bg-white p-10 md:p-12 text-gray-900 space-y-8 shadow-2xl">
-                <div className="flex justify-between items-start">
-                  <h4 className="text-xl font-black uppercase tracking-tighter text-[#0A0A0A] pr-4">{strategy.headline}</h4>
-                  <span className="text-[9px] font-black uppercase border border-gray-200 px-2 py-1 text-gray-400 flex-shrink-0">{strategy.demo ? 'Sample Preview' : 'AI Analysis'}</span>
-                </div>
-                <p className="text-gray-500 font-light leading-relaxed">{strategy.summary}</p>
-                <div className="space-y-3">
-                  {strategy.recommendations.map((rec, i) => (
-                    <div key={i} className="border-l-4 pl-5 py-2 hover:bg-gray-50 transition-colors duration-200" style={{ borderColor: '#059669' }}>
-                      <span className="text-[9px] font-black uppercase text-gray-400 tracking-widest">{rec.category}</span>
-                      <h5 className="font-bold text-sm mt-1 text-[#0A0A0A]">{rec.title}</h5>
-                      <p className="text-xs text-gray-500 mt-1 font-light">{rec.action}</p>
-                    </div>
-                  ))}
-                </div>
-                <a
-                  href="#contact"
-                  className="btn-lift block w-full text-center py-5 text-white text-[11px] font-black uppercase tracking-[0.2em]"
-                  style={{ background: '#059669' }}
-                >
-                  Bring this strategy to life — talk to us
-                </a>
-                <button
-                  onClick={() => setStrategy(null)}
-                  className="text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors duration-300"
-                >
-                  New Analysis
-                </button>
-              </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
