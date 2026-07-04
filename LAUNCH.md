@@ -60,3 +60,16 @@ then the widget shows a labeled sample.
 - `public/og.png` is the WhatsApp/social share card; a Vercel Analytics
   tag is in place and activates with one click in the dashboard
   (Project → Analytics → Enable).
+
+## Brand color system + design debt (AA-audited 2026-07-04)
+
+Tokens (`index.css`): `--color-brand #059669` · `--color-brand-ink #047857` (NEW — text-on-light green) · `--color-dark #0a0a0a` · `--color-tint #d1fae5` (unused; chips use green-100/200) · `--color-gray #6b7280` · `--color-border #e5e7eb`. Inter throughout.
+
+Measured contrast:
+- #059669 as text on white **3.77:1** (AA-large only) · on #0a0a0a **5.25:1 PASS** · white on #059669 fills **3.77:1**
+- #047857 on white **5.48:1 PASS** · on #0a0a0a **3.98:1 FAIL** — so a blanket swap is wrong in BOTH directions; classify per ground
+- gray-400 on white **2.54:1 FAIL** / on #0a0a0a **7.80:1 PASS** · gray-500 on white **4.83:1 PASS** · gray-600 on white **7.56:1 PASS**
+
+Debt item #1 (est. 2h, post-launch, needs visual regression): tokenize ~120 inline `#059669` sites in App.tsx → `var(--color-brand)` for fills/borders/text-on-dark/display-size, `var(--color-brand-ink)` for text on light grounds (~40 eyebrow labels). Same pass: audit 39 `text-gray-400` sites → gray-600 where ground is light. After tokenization the brand recolors in one CSS line — sellable as "rebrand in one token."
+
+Rule until then: new code consumes the CSS variables, never raw hexes.

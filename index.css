@@ -5,6 +5,7 @@
 /* ─── Design tokens (brand skill) ──────────────────── */
 :root {
   --color-brand: #059669;
+  --color-brand-ink: #047857; /* text-on-light green: 5.48:1 on white; do NOT use on dark (3.98:1) */
   --color-dark: #0a0a0a;
   --color-tint: #d1fae5;
   --color-gray: #6b7280;
