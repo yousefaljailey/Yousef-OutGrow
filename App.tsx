@@ -63,28 +63,27 @@ const WordCycler = () => {
    Floating Hero Stats (21st.dev-inspired)
 ───────────────────────────────────────────── */
 const FloatingHeroStats = () => {
-  const { count: c1, ref: r1 } = useCountUp(50);
-  const { count: c2, ref: r2 } = useCountUp(100);
-  const { count: c3, ref: r3 } = useCountUp(35);
+  const { count: c1, ref: r1 } = useCountUp(48);
+  const { count: c2, ref: r2 } = useCountUp(2);
   return (
     <div className="relative h-[420px] w-full select-none" aria-hidden="true">
       <div className="stat-card float-a" style={{ top: '4%', left: '5%' }}>
         <span className="stat-card-dot" />
-        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#059669' }}>Brands</span>
-        <div className="stat-card-num" ref={r1}>{c1}+</div>
-        <div className="stat-card-label">Brands Served</div>
+        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#059669' }}>Proposals</span>
+        <div className="stat-card-num" ref={r1}>{c1}h</div>
+        <div className="stat-card-label">Proposal Turnaround</div>
       </div>
       <div className="stat-card float-b" style={{ top: '30%', right: '2%' }}>
         <span className="stat-card-dot" />
-        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#059669' }}>Campaigns</span>
-        <div className="stat-card-num" ref={r2}>{c2}+</div>
-        <div className="stat-card-label">Campaigns Delivered</div>
+        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#059669' }}>Launch</span>
+        <div className="stat-card-num" ref={r2}>{c2}wk</div>
+        <div className="stat-card-label">Standard Campaign Launch</div>
       </div>
       <div className="stat-card float-c" style={{ bottom: '6%', left: '18%' }}>
         <span className="stat-card-dot" />
-        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#059669' }}>Events</span>
-        <div className="stat-card-num" ref={r3}>{c3}+</div>
-        <div className="stat-card-label">Events Managed</div>
+        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#059669' }}>Coverage</span>
+        <div className="stat-card-num">GCC</div>
+        <div className="stat-card-label">Qatar + Regional Reach</div>
       </div>
       {/* Decorative emerald ring */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full pointer-events-none" style={{ border: '1px solid rgba(5,150,105,0.08)' }} />
@@ -142,10 +141,10 @@ const StatsStrip = () => (
   <section className="py-20 px-6 md:px-12 bg-[#0A0A0A] reveal">
     <div className="max-w-[1440px] mx-auto">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-gray-800">
-        <AnimStat target={50}  suffix="+" label="Brands Served" />
-        <AnimStat target={100} suffix="+" label="Campaigns Delivered" />
-        <AnimStat target={35}  suffix="+" label="Events Managed" />
-        <AnimStat target={3}   suffix=""  label="Media Types" />
+        <AnimStat target={48} suffix="h"  label="Proposal Turnaround" />
+        <AnimStat target={2}  suffix="wk" label="Standard Campaign Launch" />
+        <AnimStat target={6}  suffix=""   label="Specialist Service Lines" />
+        <AnimStat target={2}  suffix=""   label="Revision Rounds Included" />
       </div>
     </div>
   </section>
@@ -487,22 +486,23 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
               Doha, Qatar · Advertising · Events
             </span>
             <h1 className="text-huge font-black text-[#0A0A0A] mb-6 leading-none">
-              We build <WordCycler /><br />
+              We build<br />
+              <WordCycler /><br />
               <span style={{ color: '#6B7280' }}>for your market.</span>
             </h1>
             <p className="max-w-xl text-xl md:text-2xl font-light leading-snug mt-8" style={{ color: '#6B7280' }}>
               Outgrow is a marketing, advertising, and event management company based in Doha, Qatar. We build brands that get noticed and create events that leave a lasting impression.
             </p>
             <div className="flex flex-wrap gap-4 mt-12">
-              <button
-                onClick={() => setView('about')}
+              <a
+                href="#contact"
                 className="btn-lift bg-[#0A0A0A] text-white px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em]"
                 style={{ transition: 'background 250ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)' }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#059669')}
-                onMouseLeave={e => (e.currentTarget.style.background = '#0A0A0A')}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = '#059669')}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = '#0A0A0A')}
               >
-                Who We Are
-              </button>
+                Get a Proposal
+              </a>
               <a
                 href="#capabilities"
                 className="btn-lift px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-[#0A0A0A]"
@@ -914,6 +914,13 @@ const AIInsights = () => {
                     </div>
                   ))}
                 </div>
+                <a
+                  href="#contact"
+                  className="btn-lift block w-full text-center py-5 text-white text-[11px] font-black uppercase tracking-[0.2em]"
+                  style={{ background: '#059669' }}
+                >
+                  Bring this strategy to life — talk to us
+                </a>
                 <button
                   onClick={() => setStrategy(null)}
                   className="text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors duration-300"
@@ -992,7 +999,7 @@ const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
       <div className="reveal">
         <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-12" style={{ color: '#059669' }}>Portfolio</h2>
         <h1 className="text-huge font-black tracking-tighter text-[#0A0A0A] mb-6">Our Works</h1>
-        <p className="text-xl text-gray-500 font-light max-w-xl mb-24">Selected client work across advertising, brand management, and event management in Qatar and the GCC region.</p>
+        <p className="text-xl text-gray-500 font-light max-w-xl mb-24">Representative engagements across advertising, brand management, and event management — the kind of work we deliver for brands in Qatar and the GCC.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100 reveal">
@@ -1000,7 +1007,6 @@ const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
           <div key={i} className="works-card bg-white p-10 md:p-14 group" style={{ minHeight: '340px' }}>
             <div className="flex justify-between items-start mb-8">
               <span className="text-[10px] font-black" style={{ color: '#059669' }}>{w.num}</span>
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{w.year}</span>
             </div>
             <span className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-400 block mb-4 group-hover:text-green-300" style={{ transition: 'color 300ms ease' }}>{w.category}</span>
             <h3 className="text-2xl md:text-3xl font-black tracking-tighter text-[#0A0A0A] mb-4 group-hover:text-white" style={{ transition: 'color 300ms ease' }}>{w.title}</h3>
@@ -1290,7 +1296,8 @@ const Contact = () => {
 
         {/* Form */}
         <div className="max-w-3xl mx-auto reveal">
-          <h4 className="text-xs font-black uppercase tracking-[0.3em] mb-12" style={{ color: '#059669' }}>Send us a message</h4>
+          <h4 className="text-xs font-black uppercase tracking-[0.3em] mb-4" style={{ color: '#059669' }}>Send us a message</h4>
+          <p className="text-sm text-gray-500 font-light mb-12">We reply within one business day — or message us on WhatsApp for an immediate answer.</p>
           {status === 'sent' ? (
             <div className="border-2 border-[#059669] p-16 text-center">
               <div
@@ -1431,14 +1438,19 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
             A marketing, advertising, and event management company dedicated to building powerful brands and delivering exceptional events in Qatar and beyond.
           </p>
           <div className="flex gap-4 mt-8">
-            {['LinkedIn', 'Instagram'].map(s => (
+            {[
+              { label: 'WhatsApp', href: `https://wa.me/${WHATSAPP_NUMBER}` },
+              { label: 'Email', href: 'mailto:info@outgrowagency.com' },
+            ].map(s => (
               <a
-                key={s}
-                href="#"
+                key={s.label}
+                href={s.href}
+                target={s.href.startsWith('http') ? '_blank' : undefined}
+                rel="noopener noreferrer"
                 className="text-[9px] font-black uppercase tracking-widest border border-gray-800 px-4 py-2.5 text-gray-600 hover:border-[#059669] hover:text-[#059669]"
                 style={{ transition: 'border-color 300ms ease, color 300ms ease' }}
               >
-                {s}
+                {s.label}
               </a>
             ))}
           </div>
