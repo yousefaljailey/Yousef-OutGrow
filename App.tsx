@@ -2457,7 +2457,7 @@ const WORKS: {
     year: "2025",
   },
   {
-    num: "02",
+    num: "03",
     title: "Annual Trade Exhibition",
     category: "Event Management",
     desc: "End-to-end organization of a multi-day trade exhibition in Qatar — venue coordination, vendor management, permits, and promotional campaign.",
@@ -2465,7 +2465,7 @@ const WORKS: {
     year: "2025",
   },
   {
-    num: "03",
+    num: "04",
     title: "Corporate Conference Series",
     category: "Event Management",
     desc: "Planning and delivery of a quarterly corporate conference series — scheduling, invitations, on-site coordination, and post-event reporting.",
@@ -2473,7 +2473,7 @@ const WORKS: {
     year: "2024",
   },
   {
-    num: "04",
+    num: "05",
     title: "Multi-Channel Ad Campaign",
     category: "Advertising & PR",
     desc: "Integrated advertising campaign covering TV, radio, press, and digital platforms — creative direction, ad design, and media distribution.",
