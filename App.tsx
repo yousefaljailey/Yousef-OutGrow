@@ -10,7 +10,8 @@ type View =
   | "terms"
   | "service-marketing"
   | "service-events"
-  | "works";
+  | "works"
+  | "work-zihay";
 
 /* ─────────────────────────────────────────────
    Utility hooks
@@ -2466,6 +2467,132 @@ const WORKS: {
   },
 ];
 
+/* ─────────────────────────────────────────────
+   Case Study — ZIHAY
+───────────────────────────────────────────── */
+const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
+  <div>
+    <section className="pt-40 pb-24 px-6 md:px-12 bg-[#0A0A0A] text-white">
+      <div className="max-w-[1440px] mx-auto">
+        <button
+          onClick={() => setView("works")}
+          className="text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-[#059669] transition-colors duration-300 mb-16 flex items-center gap-3"
+        >
+          <span>←</span> All works
+        </button>
+        <span className="inline-block text-xs font-bold uppercase tracking-[0.3em] mb-8" style={{ color: "#34D399" }}>
+          Case study — Web build
+        </span>
+        <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-10 reveal active">
+          A storefront that speaks<br />WhatsApp — <span className="text-gray-600">and Arabic.</span>
+        </h1>
+        <div className="flex flex-wrap items-center gap-3 mb-12">
+          {["2026", "Modest fashion", "E-commerce", "Doha-ready", "Bilingual"].map((t) => (
+            <span key={t} className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border border-gray-800 text-gray-500">
+              {t}
+            </span>
+          ))}
+        </div>
+        <a
+          href="https://zihay-preview.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-lift inline-block px-10 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-[#0A0A0A] bg-white hover:bg-[#059669] hover:text-white transition-colors duration-300"
+        >
+          Open the live build ↗
+        </a>
+      </div>
+    </section>
+
+    <section className="py-24 px-6 md:px-12 bg-gray-50">
+      <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {[
+          { src: "/case/zihay-en.png", label: "English · left-to-right" },
+          { src: "/case/zihay-ar.png", label: "العربية · نفس المتجر، بضغطة واحدة" },
+        ].map((shot) => (
+          <figure key={shot.src} className="m-0">
+            <div className="border border-gray-200 bg-white p-2 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+              <img src={shot.src} alt={shot.label} loading="lazy" className="w-full h-auto block" width={1280} height={900} />
+            </div>
+            <figcaption className="text-[10px] font-black uppercase tracking-widest text-gray-400 mt-4">{shot.label}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <section className="py-24 px-6 md:px-12 bg-white">
+      <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
+        <div>
+          <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: "#059669" }}>The brief</h2>
+          <p className="text-2xl font-light leading-snug text-gray-600 mb-6">
+            A modest-womenswear brand needed to go from idea to <span className="text-[#0A0A0A] font-medium">selling</span> — without waiting on payment gateways, photography, or a CMS.
+          </p>
+          <p className="text-gray-500 font-light leading-relaxed">
+            The answer was a zero-backend storefront that starts taking real orders through the channel Gulf customers already trust — WhatsApp — while every layer stays ready for payments, real photography, and scale.
+          </p>
+        </div>
+        <div>
+          <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: "#059669" }}>What we built</h2>
+          <ul className="space-y-4">
+            {[
+              "Working commerce: cart, sizes, free-shipping logic, and a WhatsApp checkout that arrives as a clean order message",
+              "Industry-correct merchandising: abayas sized by length (52\"–58\") with a bilingual height chart — the details modest-fashion customers check",
+              "A full Arabic experience: one-tap RTL interface with Arabic typography, deep-linkable for campaigns",
+              "Editorial art direction: photography, textile colour-fields and a palette system that survives real product photos",
+              "Growth wiring: newsletter into the agency lead pipeline, Instagram catalog feed, structured-data SEO, analytics-ready",
+            ].map((item, i) => (
+              <li key={i} className="flex items-start text-[15px] text-gray-700 font-light leading-relaxed">
+                <span className="w-1.5 h-1.5 mt-2.5 mr-4 flex-shrink-0" style={{ background: "#059669" }} />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section className="py-20 px-6 md:px-12 bg-gray-50">
+      <div className="max-w-[1440px] mx-auto">
+        <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-10" style={{ color: "#059669" }}>Under the hood</h2>
+        <div className="flex flex-wrap gap-3">
+          {[
+            "Zero-backend storefront",
+            "WhatsApp commerce",
+            "Arabic / RTL engine",
+            "Single-source catalog",
+            "Meta catalog feed",
+            "Structured-data SEO",
+            "Responsive imagery",
+            "Free-license editorial photography",
+          ].map((t) => (
+            <span key={t} className="text-[10px] font-black uppercase tracking-widest px-4 py-2 border border-gray-300 text-gray-600 bg-white">
+              {t}
+            </span>
+          ))}
+        </div>
+        <p className="text-[12px] text-gray-400 font-light mt-10 max-w-2xl">
+          Status: launch build, live on preview. Payment rails (Stripe / BNPL) and brand photography are scheduled with the client — the build is wired to receive both without rework.
+        </p>
+      </div>
+    </section>
+
+    <section className="py-24 px-6 md:px-12 text-white" style={{ background: "#059669" }}>
+      <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-12">
+        <div>
+          <h2 className="text-xs font-black uppercase tracking-[0.3em] text-green-200 mb-6">Your brand next?</h2>
+          <h3 className="text-4xl md:text-6xl font-black tracking-tighter leading-none">From idea to taking<br />orders — in weeks.</h3>
+        </div>
+        <a
+          href="#contact"
+          className="btn-lift flex-shrink-0 px-12 py-6 text-sm font-black uppercase tracking-widest bg-white text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-white transition-colors duration-300"
+        >
+          Start a build
+        </a>
+      </div>
+    </section>
+  </div>
+);
+
 const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
   <section className="pt-40 pb-32 px-6 md:px-12 bg-white">
     <div className="max-w-[1440px] mx-auto">
@@ -2552,6 +2679,15 @@ const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
               >
                 View the live build ↗
               </a>
+            )}
+            {w.href && (
+              <button
+                onClick={() => setView("work-zihay")}
+                className="inline-flex items-center gap-2 mt-8 ml-8 text-[10px] font-black uppercase tracking-widest border-b-2 pb-0.5 text-gray-400 border-gray-300 group-hover:text-white group-hover:border-white"
+                style={{ transition: "color 300ms ease, border-color 300ms ease" }}
+              >
+                Read the case study →
+              </button>
             )}
           </div>
         ))}
@@ -3442,6 +3578,7 @@ const VIEW_ROUTES: Record<View, string> = {
   home: "#/",
   about: "#/about",
   works: "#/works",
+  "work-zihay": "#/works/zihay",
   "service-marketing": "#/services/advertising",
   "service-events": "#/services/events",
   privacy: "#/privacy",
@@ -3493,6 +3630,8 @@ export default function App() {
           <AboutPage />
         ) : view === "works" ? (
           <WorksPage setView={setView} />
+        ) : view === "work-zihay" ? (
+          <CaseZihayPage setView={setView} />
         ) : view === "service-marketing" ? (
           <ServiceMarketingPage setView={setView} />
         ) : view === "service-events" ? (
