@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Brand Direction Board — Outgrow</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23059669'/%3E%3Ctext x='32' y='44' font-family='Inter,Arial,sans-serif' font-size='36' font-weight='900' fill='white' text-anchor='middle'%3EO%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,500&family=Cairo:wght@400..900&family=IBM+Plex+Sans+Arabic:wght@400;500;700&family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root { --brand: #059669; --ink-g: #047857; --dark: #0a0a0a; --gray: #4b5563; --line: #e5e7eb; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; color: var(--dark); font-family: Inter, -apple-system, sans-serif; line-height: 1.6; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px 120px; }
+  header { padding: 96px 0 48px; border-bottom: 2px solid var(--dark); }
+  .eyebrow { font-size: 11px; font-weight: 900; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-g); margin: 0 0 16px; }
+  h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 900; letter-spacing: -0.03em; margin: 0 0 12px; line-height: 1.02; }
+  .lede { font-size: 18px; color: var(--gray); max-width: 620px; font-weight: 400; }
+  .direction { padding: 72px 0; border-bottom: 1px solid var(--line); }
+  .dnum { font-size: 11px; font-weight: 900; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-g); }
+  h2 { font-size: 32px; font-weight: 900; letter-spacing: -0.02em; margin: 8px 0 6px; }
+  .concept { color: var(--gray); max-width: 640px; margin: 0 0 40px; }
+  .markrow { display: flex; flex-wrap: wrap; align-items: center; gap: 48px; padding: 40px; border: 1px solid var(--line); margin-bottom: 2px; }
+  .markrow.dark { background: var(--dark); }
+  .sizes { display: flex; align-items: center; gap: 24px; margin-left: auto; }
+  .lockups { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-top: 0; }
+  .lockup { padding: 36px 40px; display: flex; align-items: center; gap: 18px; }
+  .lockup + .lockup { border-inline-start: 1px solid var(--line); }
+  .lockup .ar { direction: rtl; }
+  .spec { border: 1px solid var(--line); border-top: 0; padding: 40px; }
+  .spec .label { font-size: 10px; font-weight: 900; letter-spacing: 0.25em; text-transform: uppercase; color: #6b7280; margin-bottom: 14px; }
+  .spec .display-en { font-size: clamp(28px, 4.5vw, 44px); line-height: 1.1; margin: 0 0 6px; }
+  .spec .display-ar { font-size: clamp(26px, 4vw, 40px); line-height: 1.4; direction: rtl; margin: 0 0 22px; }
+  .spec .body-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .spec .body-en { font-size: 15px; color: var(--gray); }
+  .spec .body-ar { font-size: 15px; color: var(--gray); direction: rtl; }
+  .whyrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .chip { font-size: 12px; font-weight: 600; border: 1px solid var(--line); border-radius: 999px; padding: 4px 14px; color: var(--gray); }
+  .chip.plus { border-color: var(--brand); color: var(--ink-g); }
+  .translit { background: #f9fafb; border: 1px solid var(--line); padding: 32px 40px; margin-top: 72px; }
+  .translit h3 { margin: 0 0 10px; font-size: 18px; font-weight: 900; }
+  .translit .opts { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 18px; font-family: Cairo, sans-serif; font-weight: 700; font-size: 26px; direction: rtl; justify-content: flex-end; }
+  .translit .opts span { border: 1px solid var(--line); padding: 8px 22px; }
+  footer { margin-top: 72px; }
+  footer h3 { font-size: 18px; font-weight: 900; margin: 0 0 12px; }
+  footer p { color: var(--gray); max-width: 720px; }
+  code { font-family: ui-monospace, Menlo, monospace; font-size: 13px; background: #f3f4f6; padding: 2px 7px; border-radius: 4px; }
+  .draft { font-size: 10px; font-weight: 900; letter-spacing: 0.25em; text-transform: uppercase; color: #6b7280; margin-top: 48px; }
+
+  /* Direction type systems */
+  .d1 .wordmark { font-family: Archivo, Inter, sans-serif; font-weight: 900; font-stretch: 110%; letter-spacing: -0.03em; }
+  .d1 .display-en, .d1 .display-ar { font-family: Archivo, sans-serif; font-weight: 800; letter-spacing: -0.02em; }
+  .d1 .display-ar, .d1 .body-ar, .d1 .lockup .ar { font-family: "IBM Plex Sans Arabic", sans-serif; }
+  .d2 .wordmark { font-family: Fraunces, Georgia, serif; font-weight: 600; letter-spacing: -0.01em; }
+  .d2 .display-en { font-family: Fraunces, serif; font-weight: 550; }
+  .d2 .display-ar, .d2 .body-ar, .d2 .lockup .ar { font-family: Tajawal, sans-serif; font-weight: 700; }
+  .d3 .wordmark, .d3 .display-en { font-family: Cairo, sans-serif; font-weight: 800; letter-spacing: 0; }
+  .d3 .display-ar, .d3 .body-ar, .d3 .lockup .ar { font-family: Cairo, sans-serif; font-weight: 700; }
+  .score table { border-collapse: collapse; width: 100%; font-size: 13.5px; min-width: 640px; }
+  .score .tablewrap { overflow-x: auto; border: 1px solid var(--line); }
+  .score th, .score td { text-align: left; padding: 10px 14px; border-top: 1px solid var(--line); }
+  .score thead th { border-top: 0; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #6b7280; }
+  .score .ok { color: var(--ink-g); font-weight: 800; }
+  .score .mid { color: #b45309; font-weight: 800; }
+  .evi { list-style: none; padding: 0; margin: 0 0 28px; display: grid; gap: 10px; }
+  .evi li { border: 1px solid var(--line); padding: 12px 16px; font-size: 13.5px; color: var(--gray); }
+  .evi b { color: var(--dark); }
+</style>
+</head>
+<body>
+<div style="background:#0a0a0a;color:#fff;padding:14px 24px;font:700 13px Inter,sans-serif;text-align:center">Superseded — the founder review moved to <a href="/brand2.html" style="color:#34D399">Board v2 (wordmark-first)</a>. This page stays as the audit record.</div>
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Brand Direction Board · v1 · July 2026</p>
+  <h1>Three ways Outgrow<br />can look grown-up.</h1>
+  <p class="lede">Directions, not finals. React to the one you <em>feel</em> — we refine from there. Every direction ships with an Arabic lockup and a bilingual type system, and the site swaps typefaces in one line thanks to the token setup.</p>
+</header>
+
+<!-- ═══════ DIRECTION 1 ═══════ -->
+<section class="direction d1">
+  <p class="dnum">Direction 01</p>
+  <h2>Breakout</h2>
+  <p class="concept">A perfect circle — the boundary every business starts inside — with the growth arrow escaping through it. Literal "out-grow". Engineered, confident, reads at 16 pixels. Type: Archivo (a working grotesque with real weight range) + IBM Plex Sans Arabic — the evidence-over-hype voice.</p>
+
+  <div class="markrow">
+    <svg width="120" height="120" viewBox="0 0 64 64" aria-label="Breakout mark">
+      <path d="M 41.3 12.06 A 22 22 0 1 0 51.94 22.7" fill="none" stroke="#059669" stroke-width="6" stroke-linecap="round"/>
+      <path d="M 34 30 L 54 10 M 42 10 H 54 V 22" fill="none" stroke="#0a0a0a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="wordmark" style="font-size:44px">outgrow</span>
+    <div class="sizes">
+      <svg width="48" height="48" viewBox="0 0 64 64"><path d="M 41.3 12.06 A 22 22 0 1 0 51.94 22.7" fill="none" stroke="#059669" stroke-width="6" stroke-linecap="round"/><path d="M 34 30 L 54 10 M 42 10 H 54 V 22" fill="none" stroke="#0a0a0a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="24" height="24" viewBox="0 0 64 64"><path d="M 41.3 12.06 A 22 22 0 1 0 51.94 22.7" fill="none" stroke="#059669" stroke-width="7" stroke-linecap="round"/><path d="M 34 30 L 54 10 M 42 10 H 54 V 22" fill="none" stroke="#0a0a0a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+  <div class="markrow dark">
+    <svg width="72" height="72" viewBox="0 0 64 64"><path d="M 41.3 12.06 A 22 22 0 1 0 51.94 22.7" fill="none" stroke="#059669" stroke-width="6" stroke-linecap="round"/><path d="M 34 30 L 54 10 M 42 10 H 54 V 22" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="wordmark" style="font-size:36px;color:#fff">outgrow</span>
+  </div>
+  <div class="lockups">
+    <div class="lockup"><svg width="40" height="40" viewBox="0 0 64 64"><path d="M 41.3 12.06 A 22 22 0 1 0 51.94 22.7" fill="none" stroke="#059669" stroke-width="6" stroke-linecap="round"/><path d="M 34 30 L 54 10 M 42 10 H 54 V 22" fill="none" stroke="#0a0a0a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="wordmark" style="font-size:28px">outgrow<span style="color:#059669">.qa</span></span></div>
+    <div class="lockup"><span class="ar" style="font-size:30px;font-weight:700">أوتغرو</span><svg width="40" height="40" viewBox="0 0 64 64"><path d="M 41.3 12.06 A 22 22 0 1 0 51.94 22.7" fill="none" stroke="#059669" stroke-width="6" stroke-linecap="round"/><path d="M 34 30 L 54 10 M 42 10 H 54 V 22" fill="none" stroke="#0a0a0a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  </div>
+  <div class="spec">
+    <p class="label">Type system — Archivo · IBM Plex Sans Arabic</p>
+    <p class="display-en">Brands that get noticed.</p>
+    <p class="display-ar">علامات تجارية تلفت الأنظار.</p>
+    <div class="body-2col">
+      <p class="body-en">We build advertising that performs and events that leave a lasting impression — measured, bilingual, and built for the Qatar market.</p>
+      <p class="body-ar">نصنع إعلانات تحقق نتائج وفعاليات تترك أثراً — بقياس دقيق، وبلغتين، ولسوق قطر تحديداً.</p>
+    </div>
+    <div class="whyrow">
+      <span class="chip plus">+ sharpest at small sizes</span>
+      <span class="chip plus">+ most "tech-confident" voice</span>
+      <span class="chip">− safest of the three (closest to current look)</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ DIRECTION 2 ═══════ -->
+<section class="direction d2">
+  <p class="dnum">Direction 02</p>
+  <h2>Sprout</h2>
+  <p class="concept">Three ascending bars — the chart every client wants to see — and the tallest one grows a leaf. Data meets organic growth. Type: Fraunces (an editorial serif with warmth) + Tajawal — and quietly, the same family system as the ZIHAY build, so the agency's own work already speaks this language.</p>
+
+  <div class="markrow">
+    <svg width="120" height="120" viewBox="0 0 64 64" aria-label="Sprout mark">
+      <rect x="12" y="38" width="9" height="16" rx="4.5" fill="#0a0a0a"/>
+      <rect x="27" y="28" width="9" height="26" rx="4.5" fill="#0a0a0a"/>
+      <rect x="42" y="16" width="9" height="38" rx="4.5" fill="#059669"/>
+      <path d="M 46.5 18 C 47 10 54 6 60 5 C 58 12 53 16 46.5 18 Z" fill="#059669"/>
+    </svg>
+    <span class="wordmark" style="font-size:46px">Outgrow</span>
+    <div class="sizes">
+      <svg width="48" height="48" viewBox="0 0 64 64"><rect x="12" y="38" width="9" height="16" rx="4.5" fill="#0a0a0a"/><rect x="27" y="28" width="9" height="26" rx="4.5" fill="#0a0a0a"/><rect x="42" y="16" width="9" height="38" rx="4.5" fill="#059669"/><path d="M 46.5 18 C 47 10 54 6 60 5 C 58 12 53 16 46.5 18 Z" fill="#059669"/></svg>
+      <svg width="24" height="24" viewBox="0 0 64 64"><rect x="12" y="38" width="10" height="16" rx="5" fill="#0a0a0a"/><rect x="27" y="28" width="10" height="26" rx="5" fill="#0a0a0a"/><rect x="42" y="16" width="10" height="38" rx="5" fill="#059669"/><path d="M 47 18 C 47 10 54 6 60 5 C 58 12 53 16 47 18 Z" fill="#059669"/></svg>
+    </div>
+  </div>
+  <div class="markrow dark">
+    <svg width="72" height="72" viewBox="0 0 64 64"><rect x="12" y="38" width="9" height="16" rx="4.5" fill="#ffffff"/><rect x="27" y="28" width="9" height="26" rx="4.5" fill="#ffffff"/><rect x="42" y="16" width="9" height="38" rx="4.5" fill="#059669"/><path d="M 46.5 18 C 47 10 54 6 60 5 C 58 12 53 16 46.5 18 Z" fill="#059669"/></svg>
+    <span class="wordmark" style="font-size:38px;color:#fff">Outgrow</span>
+  </div>
+  <div class="lockups">
+    <div class="lockup"><svg width="40" height="40" viewBox="0 0 64 64"><rect x="12" y="38" width="9" height="16" rx="4.5" fill="#0a0a0a"/><rect x="27" y="28" width="9" height="26" rx="4.5" fill="#0a0a0a"/><rect x="42" y="16" width="9" height="38" rx="4.5" fill="#059669"/><path d="M 46.5 18 C 47 10 54 6 60 5 C 58 12 53 16 46.5 18 Z" fill="#059669"/></svg><span class="wordmark" style="font-size:30px">Outgrow</span></div>
+    <div class="lockup"><span class="ar" style="font-size:30px">أوتغرو</span><svg width="40" height="40" viewBox="0 0 64 64"><rect x="12" y="38" width="9" height="16" rx="4.5" fill="#0a0a0a"/><rect x="27" y="28" width="9" height="26" rx="4.5" fill="#0a0a0a"/><rect x="42" y="16" width="9" height="38" rx="4.5" fill="#059669"/><path d="M 46.5 18 C 47 10 54 6 60 5 C 58 12 53 16 46.5 18 Z" fill="#059669"/></svg></div>
+  </div>
+  <div class="spec">
+    <p class="label">Type system — Fraunces · Tajawal</p>
+    <p class="display-en">Brands that get noticed.</p>
+    <p class="display-ar">علامات تجارية تلفت الأنظار.</p>
+    <div class="body-2col">
+      <p class="body-en">We build advertising that performs and events that leave a lasting impression — measured, bilingual, and built for the Qatar market.</p>
+      <p class="body-ar">نصنع إعلانات تحقق نتائج وفعاليات تترك أثراً — بقياس دقيق، وبلغتين، ولسوق قطر تحديداً.</p>
+    </div>
+    <div class="whyrow">
+      <span class="chip plus">+ warmest, most human of the three</span>
+      <span class="chip plus">+ family coherence with the ZIHAY build</span>
+      <span class="chip">− leaf needs care at 16px (favicon uses bars only)</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ DIRECTION 3 ═══════ -->
+<section class="direction d3">
+  <p class="dnum">Direction 03</p>
+  <h2>Kufi Rising</h2>
+  <p class="concept">A square-Kufic "O" whose corner rises out of the frame — Arabic geometry first, Latin second. The boldest positioning: a Doha agency whose identity is unmistakably of this region. Type: Cairo — one family that sets Arabic and Latin in perfect harmony, so the brand never code-switches.</p>
+
+  <div class="markrow">
+    <svg width="120" height="120" viewBox="0 0 64 64" aria-label="Kufi Rising mark">
+      <path fill-rule="evenodd" fill="#0a0a0a" d="M12 12 H52 V52 H12 Z M22 22 H42 V42 H22 Z"/>
+      <rect x="42" y="0" width="10" height="20" fill="#059669"/>
+    </svg>
+    <span class="wordmark" style="font-size:44px">outgrow</span>
+    <div class="sizes">
+      <svg width="48" height="48" viewBox="0 0 64 64"><path fill-rule="evenodd" fill="#0a0a0a" d="M12 12 H52 V52 H12 Z M22 22 H42 V42 H22 Z"/><rect x="42" y="0" width="10" height="20" fill="#059669"/></svg>
+      <svg width="24" height="24" viewBox="0 0 64 64"><path fill-rule="evenodd" fill="#0a0a0a" d="M12 12 H52 V52 H12 Z M22 22 H42 V42 H22 Z"/><rect x="42" y="0" width="10" height="20" fill="#059669"/></svg>
+    </div>
+  </div>
+  <div class="markrow dark">
+    <svg width="72" height="72" viewBox="0 0 64 64"><path fill-rule="evenodd" fill="#ffffff" d="M12 12 H52 V52 H12 Z M22 22 H42 V42 H22 Z"/><rect x="42" y="0" width="10" height="20" fill="#059669"/></svg>
+    <span class="wordmark" style="font-size:36px;color:#fff">outgrow</span>
+  </div>
+  <div class="lockups">
+    <div class="lockup"><svg width="40" height="40" viewBox="0 0 64 64"><path fill-rule="evenodd" fill="#0a0a0a" d="M12 12 H52 V52 H12 Z M22 22 H42 V42 H22 Z"/><rect x="42" y="0" width="10" height="20" fill="#059669"/></svg><span class="wordmark" style="font-size:28px">outgrow</span></div>
+    <div class="lockup"><span class="ar" style="font-size:32px;font-weight:800">أوتغرو</span><svg width="40" height="40" viewBox="0 0 64 64"><path fill-rule="evenodd" fill="#0a0a0a" d="M12 12 H52 V52 H12 Z M22 22 H42 V42 H22 Z"/><rect x="42" y="0" width="10" height="20" fill="#059669"/></svg></div>
+  </div>
+  <div class="spec">
+    <p class="label">Type system — Cairo (one family, both scripts)</p>
+    <p class="display-en">Brands that get noticed.</p>
+    <p class="display-ar">علامات تجارية تلفت الأنظار.</p>
+    <div class="body-2col">
+      <p class="body-en">We build advertising that performs and events that leave a lasting impression — measured, bilingual, and built for the Qatar market.</p>
+      <p class="body-ar">نصنع إعلانات تحقق نتائج وفعاليات تترك أثراً — بقياس دقيق، وبلغتين، ولسوق قطر تحديداً.</p>
+    </div>
+    <div class="whyrow">
+      <span class="chip plus">+ strongest regional differentiation</span>
+      <span class="chip plus">+ one typeface runs the whole bilingual brand</span>
+      <span class="chip">− boldest departure — commits the brand to Arabic-first</span>
+    </div>
+  </div>
+</section>
+
+<section class="direction score">
+  <p class="dnum">The test</p>
+  <h2>Scored against the canon</h2>
+  <p class="concept">Before you pick with your gut, here's what the research says a logo must do — and how each direction measures up. (One famous stat is missing on purpose: "color increases recognition by 80%" misquotes the Loyola study, so we don't use it. Evidence over hype, including about ourselves.)</p>
+  <ul class="evi">
+    <li><b>Simple → memorable → versatile.</b> The Rand/Haviv canon: reduction first; a mark must survive one color and 16 pixels. All three directions were drawn under that constraint.</li>
+    <li><b>Descriptive marks help unfamiliar brands.</b> HBR's study of 597 logos: marks that hint at what you do raise authenticity and willingness-to-buy for young brands. Sprout is the most descriptive of the three.</li>
+    <li><b>Distinctiveness beats differentiation.</b> Ehrenberg-Bass: a logo is a brand code for mental availability — pick the one you can repeat everywhere for a decade, not the prettiest today.</li>
+    <li><b>Shape carries meaning.</b> Peer-reviewed shape studies: angular reads premium and disciplined; round reads warm and approachable. Breakout is hybrid, Sprout rounds, Kufi is fully angular.</li>
+  </ul>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Criterion</th><th>01 Breakout</th><th>02 Sprout</th><th>03 Kufi Rising</th></tr></thead>
+    <tbody>
+      <tr><td>Simplicity / 16px</td><td class="ok">Strong</td><td class="mid">Good (bars-only favicon)</td><td class="ok">Strong</td></tr>
+      <tr><td>Descriptive (HBR)</td><td class="mid">Abstract "escape"</td><td class="ok">Most descriptive — growth chart</td><td class="mid">Abstract-cultural</td></tr>
+      <tr><td>Shape signal</td><td>Hybrid: warm circle, driven arrow</td><td>Warm / human</td><td>Premium / disciplined</td></tr>
+      <tr><td>Regional distinctiveness</td><td class="mid">Global look</td><td class="mid">Global look</td><td class="ok">Unmistakably Gulf</td></tr>
+      <tr><td>One color survives</td><td class="ok">Yes</td><td class="ok">Yes</td><td class="ok">Yes</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<div class="translit">
+  <h3>One decision inside the decision: the Arabic name</h3>
+  <p style="color:var(--gray);margin:0">"Outgrow" has no fixed Arabic spelling — the transliteration is itself a brand choice. Three candidates, left to right from most phonetic to most Gulf-flavored:</p>
+  <div class="opts"><span>أوتغرو</span><span>أوتجرو</span><span>آوت قرو</span></div>
+</div>
+
+<footer>
+  <h3>How a chosen direction rolls out</h3>
+  <p>The site's fonts are tokenized — <code>--font-display</code> and <code>--font-body</code> in one CSS file — so the type system applies in a single line. The mark replaces the favicon, the og-card, and the header wordmark the same day. Print and signage follow at leisure. Nothing here requires a rebuild; that was the point of the token work.</p>
+  <p style="margin-top:28px"><strong>Take the files:</strong>
+    <a href="/brand/breakout.svg" download>breakout.svg</a> · <a href="/brand/breakout-dark.svg" download>dark</a> &nbsp;|&nbsp;
+    <a href="/brand/sprout.svg" download>sprout.svg</a> · <a href="/brand/sprout-dark.svg" download>dark</a> &nbsp;|&nbsp;
+    <a href="/brand/kufi.svg" download>kufi.svg</a> · <a href="/brand/kufi-dark.svg" download>dark</a>
+  </p>
+  <p class="draft">Draft directions · react &amp; refine · nothing applied to the live site yet</p>
+</footer>
+
+</div>
+</body>
+</html>

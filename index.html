@@ -4,334 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Outgrow | Advertising · PR · Brand Management · Event Management</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="description" content="Outgrow is a marketing, advertising, and event management company in Doha, Qatar. We build brands that get noticed and deliver trade shows, conferences, and corporate events that leave a lasting impression.">
+    <meta name="author" content="Outgrow Agency">
+    <meta name="theme-color" content="#059669">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23059669'/%3E%3Ctext x='32' y='44' font-family='Inter,Arial,sans-serif' font-size='36' font-weight='900' fill='white' text-anchor='middle'%3EO%3C/text%3E%3C/svg%3E">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Outgrow Agency">
+    <meta property="og:title" content="Outgrow | Advertising · PR · Brand Management · Event Management">
+    <meta property="og:description" content="Marketing, advertising, and event management in Doha, Qatar. Brands that get noticed. Events that leave a lasting impression.">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://outgrow-preview-pi.vercel.app/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Outgrow | Advertising · PR · Brand Management · Event Management">
+    <meta name="twitter:description" content="Marketing, advertising, and event management in Doha, Qatar.">
+    <meta name="twitter:image" content="https://outgrow-preview-pi.vercel.app/og.png">
+
+    <script defer src="/_vercel/insights/script.js"></script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {"@type": "Question", "name": "What types of businesses do you work with?", "acceptedAnswer": {"@type": "Answer", "text": "We work with startups, SMEs, and established brands across a wide range of industries in Qatar and the wider GCC region — from launching new brands to running annual conferences and scaling advertising campaigns."}},
+        {"@type": "Question", "name": "How long does an advertising campaign take to launch?", "acceptedAnswer": {"@type": "Answer", "text": "Standard campaigns are delivered within 2 weeks from project kick-off and receipt of required content. Timelines may vary based on complexity, media channels, and client approval cycles."}},
+        {"@type": "Question", "name": "Do you manage events outside of Qatar?", "acceptedAnswer": {"@type": "Answer", "text": "Our core operations are based in Doha, Qatar, with deep knowledge of the local regulatory environment, venues, and suppliers. For events outside Qatar, we coordinate on a case-by-case basis."}},
+        {"@type": "Question", "name": "What is the difference between your packages?", "acceptedAnswer": {"@type": "Answer", "text": "Brand Essentials suits businesses establishing their presence; Full-Scale Marketing is our most comprehensive advertising package; Event + Brand combines advertising and event management. All packages are custom-scoped."}},
+        {"@type": "Question", "name": "How do I get started with Outgrow?", "acceptedAnswer": {"@type": "Answer", "text": "Reach out via the contact form or info@outgrowagency.com. We schedule a discovery call, then come back with a scoped proposal within 48 hours."}}
+      ]
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        /* ─── Design tokens (brand skill) ──────────────────── */
-        :root {
-            --color-brand:    #059669;
-            --color-dark:     #0A0A0A;
-            --color-tint:     #D1FAE5;
-            --color-gray:     #6B7280;
-            --color-border:   #E5E7EB;
-            --font-display:   'Inter', sans-serif;
-            --font-body:      'Inter', sans-serif;
-            --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
-            --ease-out:       cubic-bezier(0.22, 1, 0.36, 1);
-            --ease-in:        cubic-bezier(0.64, 0, 0.78, 0);
-            --dur-fast:       150ms;
-            --dur-base:       250ms;
-            --dur-slow:       400ms;
-            --shadow-brand:   0 8px 32px rgba(5, 150, 105, 0.12), 0 2px 8px rgba(0,0,0,0.06);
-            --shadow-float:   0 20px 60px rgba(0,0,0,0.08), 0 4px 16px rgba(5,150,105,0.06);
-        }
 
-        *, *::before, *::after { box-sizing: border-box; }
-        body {
-            font-family: var(--font-body);
-            scroll-behavior: smooth;
-            -webkit-font-smoothing: antialiased;
-            cursor: none;
-        }
-        a, button { cursor: none; }
-
-        /* ─── Focus-visible (ui-ux-pro-max: CRITICAL accessibility) ── */
-        :focus-visible {
-            outline: 2px solid var(--color-brand);
-            outline-offset: 3px;
-            border-radius: 2px;
-        }
-        button:focus-visible,
-        a:focus-visible {
-            outline: 2px solid var(--color-brand);
-            outline-offset: 3px;
-        }
-
-        /* ─── Custom cursor ──────────────────────────────── */
-        #cursor-dot {
-            width: 8px; height: 8px;
-            background: var(--color-brand);
-            border-radius: 50%;
-            position: fixed; top: 0; left: 0;
-            pointer-events: none; z-index: 9999;
-            transform: translate(-50%,-50%);
-            transition: width var(--dur-base) var(--ease-out),
-                        height var(--dur-base) var(--ease-out),
-                        background var(--dur-base) ease;
-        }
-        #cursor-ring {
-            width: 36px; height: 36px;
-            border: 1.5px solid rgba(5,150,105,0.4);
-            border-radius: 50%;
-            position: fixed; top: 0; left: 0;
-            pointer-events: none; z-index: 9998;
-            transform: translate(-50%,-50%);
-            transition: width 0.3s var(--ease-out),
-                        height 0.3s var(--ease-out),
-                        opacity 0.3s ease;
-        }
-        body:has(button:hover) #cursor-dot,
-        body:has(a:hover) #cursor-dot { width:14px; height:14px; background: var(--color-dark); }
-        body:has(button:hover) #cursor-ring,
-        body:has(a:hover) #cursor-ring { width:56px; height:56px; opacity:0.5; }
-
-        /* ─── Hero grid bg ───────────────────────────────── */
-        .hero-grid {
-            background-image:
-                linear-gradient(rgba(5,150,105,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(5,150,105,0.04) 1px, transparent 1px);
-            background-size: 64px 64px;
-        }
-
-        /* ─── Grain texture (brand skill: depth layer) ───── */
-        .grain-overlay {
-            position: absolute; inset: 0; z-index: 1; pointer-events: none;
-            opacity: 0.035;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            background-repeat: repeat;
-            background-size: 128px 128px;
-        }
-
-        /* ─── Typography (Syne for display headings) ─────── */
-        .text-huge {
-            font-family: var(--font-display);
-            font-size: clamp(3rem, 8vw, 6rem);
-            line-height: 0.95;
-            letter-spacing: -0.04em;
-        }
-        .text-display {
-            font-family: var(--font-display);
-            font-size: clamp(2rem, 5vw, 4rem);
-            line-height: 1;
-            letter-spacing: -0.03em;
-        }
-        .font-syne { font-family: var(--font-display); }
-
-        /* ─── Reveal animations ──────────────────────────── */
-        .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
-        }
-        .reveal-left {
-            opacity: 0;
-            transform: translateX(-40px);
-            transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
-        }
-        .reveal-right {
-            opacity: 0;
-            transform: translateX(40px);
-            transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
-        }
-        .reveal-scale {
-            opacity: 0;
-            transform: scale(0.94);
-            transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
-        }
-        .reveal.active, .reveal-left.active, .reveal-right.active, .reveal-scale.active {
-            opacity: 1;
-            transform: translateY(0) translateX(0) scale(1);
-        }
-        .stagger-1 { transition-delay: 0.08s; }
-        .stagger-2 { transition-delay: 0.16s; }
-        .stagger-3 { transition-delay: 0.24s; }
-        .stagger-4 { transition-delay: 0.32s; }
-        .stagger-5 { transition-delay: 0.40s; }
-        .stagger-6 { transition-delay: 0.48s; }
-
-        /* ─── Word cycler ────────────────────────────────── */
-        @keyframes wordReveal {
-            0%   { opacity:0; transform: translateY(14px); }
-            12%  { opacity:1; transform: translateY(0); }
-            88%  { opacity:1; transform: translateY(0); }
-            100% { opacity:0; transform: translateY(-14px); }
-        }
-        .word-cycle-anim {
-            display: inline-block;
-            animation: wordReveal 2.8s var(--ease-out) forwards;
-        }
-
-        /* ─── Marquee ────────────────────────────────────── */
-        @keyframes marquee {
-            from { transform: translateX(0); }
-            to   { transform: translateX(-50%); }
-        }
-        .marquee-track { animation: marquee 28s linear infinite; }
-        .marquee-track:hover { animation-play-state: paused; }
-
-        /* ─── Float animation for hero stat cards ─────────── */
-        @keyframes floatA {
-            0%, 100% { transform: translateY(0) rotate(-2deg); }
-            50%       { transform: translateY(-8px) rotate(-2deg); }
-        }
-        @keyframes floatB {
-            0%, 100% { transform: translateY(-4px) rotate(1.5deg); }
-            50%       { transform: translateY(4px) rotate(1.5deg); }
-        }
-        @keyframes floatC {
-            0%, 100% { transform: translateY(0) rotate(-1deg); }
-            50%       { transform: translateY(-6px) rotate(-1deg); }
-        }
-        .float-a { animation: floatA 5s ease-in-out infinite; }
-        .float-b { animation: floatB 6.5s ease-in-out infinite; }
-        .float-c { animation: floatC 4.5s ease-in-out infinite; }
-
-        /* ─── Capability card underline ──────────────────── */
-        .cap-underline { position: relative; }
-        .cap-underline::after {
-            content: '';
-            position: absolute;
-            bottom: -4px; left: 0;
-            width: 0; height: 2px;
-            background: var(--color-brand);
-            transition: width var(--dur-slow) var(--ease-out);
-        }
-        .capability-group:hover .cap-underline::after { width: 100%; }
-
-        /* ─── 3D card tilt ───────────────────────────────── */
-        .card-3d {
-            transform-style: preserve-3d;
-            transition: transform 0.35s var(--ease-out), box-shadow 0.35s ease;
-            will-change: transform;
-        }
-        .card-3d:hover {
-            transform: perspective(800px) rotateX(-3deg) rotateY(4deg) translateY(-4px);
-            box-shadow: var(--shadow-brand);
-        }
-
-        /* ─── Accordion ──────────────────────────────────── */
-        .accordion-body {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s var(--ease-out), opacity var(--dur-slow) ease;
-            opacity: 0;
-        }
-        .accordion-body.open { max-height: 480px; opacity: 1; }
-        .accordion-chevron {
-            transition: transform var(--dur-slow) var(--ease-out);
-        }
-        .accordion-chevron.open { transform: rotate(45deg); }
-
-        /* ─── Calculator tab ─────────────────────────────── */
-        .calc-tab {
-            position: relative;
-            overflow: hidden;
-            transition: color var(--dur-base) ease, border-color var(--dur-base) ease;
-        }
-        .calc-tab::after {
-            content: '';
-            position: absolute; inset: 0;
-            background: var(--color-brand);
-            transform: translateY(100%);
-            transition: transform 0.35s var(--ease-out);
-            z-index: 0;
-        }
-        .calc-tab.active::after, .calc-tab:hover::after { transform: translateY(0); }
-        .calc-tab span { position: relative; z-index: 1; }
-
-        /* ─── Button lift (spring physics) ───────────────── */
-        .btn-lift {
-            transition: transform var(--dur-base) var(--ease-spring),
-                        background var(--dur-base) ease,
-                        color var(--dur-base) ease;
-        }
-        .btn-lift:hover { transform: translateY(-2px); }
-        .btn-lift:active { transform: translateY(0) scale(0.98); }
-
-        /* ─── Stat number ────────────────────────────────── */
-        .stat-num {
-            font-family: var(--font-display);
-            font-variant-numeric: tabular-nums;
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            line-height: 1;
-            letter-spacing: -0.04em;
-        }
-
-        /* ─── Floating stat cards (hero) ─────────────────── */
-        .stat-card {
-            background: white;
-            border: 1px solid rgba(5,150,105,0.12);
-            box-shadow: var(--shadow-float);
-            padding: 1.5rem 2rem;
-            position: absolute;
-            min-width: 180px;
-        }
-        .stat-card-num {
-            font-family: var(--font-display);
-            font-size: 2.8rem;
-            line-height: 1;
-            letter-spacing: -0.04em;
-            color: var(--color-dark);
-            font-weight: 800;
-        }
-        .stat-card-label {
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--color-gray);
-            margin-top: 0.35rem;
-        }
-        .stat-card-dot {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--color-brand);
-            display: inline-block;
-            margin-right: 0.4rem;
-        }
-
-        /* ─── Map overlay ────────────────────────────────── */
-        .map-container { position: relative; }
-        .map-container::before {
-            content: '';
-            position: absolute; inset: 0; z-index: 1;
-            pointer-events: none;
-            box-shadow: inset 0 0 60px rgba(10,10,10,0.15);
-        }
-
-        /* ─── Progress bar ───────────────────────────────── */
-        .progress-fill {
-            height: 100%;
-            background: var(--color-brand);
-            transition: width 1.2s var(--ease-out);
-        }
-
-        /* ─── Works page ─────────────────────────────────── */
-        .works-card {
-            position: relative; overflow: hidden;
-        }
-        .works-card::before {
-            content: '';
-            position: absolute; inset: 0;
-            background: var(--color-dark);
-            transform: translateY(100%);
-            transition: transform var(--dur-slow) var(--ease-out);
-            z-index: 0;
-        }
-        .works-card:hover::before { transform: translateY(0); }
-        .works-card > * { position: relative; z-index: 1; }
-
-        /* ─── Scrollbar (emerald brand) ──────────────────── */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--color-brand); border-radius: 4px; }
-
-        /* ─── Prefers-reduced-motion (ui-ux-pro-max rule) ── */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-            .reveal, .reveal-left, .reveal-right, .reveal-scale {
-                opacity: 1;
-                transform: none;
-            }
-            .float-a, .float-b, .float-c { animation: none; }
-        }
-    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "Outgrow Agency",
+      "description": "Marketing, advertising, and event management company in Doha, Qatar.",
+      "email": "info@outgrowagency.com",
+      "telephone": "+974 5595 4896",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Doha",
+        "addressCountry": "QA"
+      },
+      "areaServed": "Qatar and the GCC region",
+      "knowsAbout": ["Advertising", "Public Relations", "Brand Management", "Event Management", "Trade Shows", "Conferences"]
+    }
+    </script>
 </head>
 <body class="bg-white text-gray-900 overflow-x-hidden">
     <div id="cursor-dot" aria-hidden="true"></div>
@@ -339,19 +66,21 @@
     <div id="root"></div>
 
     <script>
-        /* ── Custom cursor ── */
-        const dot  = document.getElementById('cursor-dot');
-        const ring = document.getElementById('cursor-ring');
-        let mx = -100, my = -100, rx = -100, ry = -100;
-        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-        function animCursor() {
-            rx += (mx - rx) * 0.14;
-            ry += (my - ry) * 0.14;
-            dot.style.left  = mx + 'px'; dot.style.top  = my + 'px';
-            ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-            requestAnimationFrame(animCursor);
+        /* ── Custom cursor (desktop pointers only) ── */
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            const dot  = document.getElementById('cursor-dot');
+            const ring = document.getElementById('cursor-ring');
+            let mx = -100, my = -100, rx = -100, ry = -100;
+            document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+            function animCursor() {
+                rx += (mx - rx) * 0.14;
+                ry += (my - ry) * 0.14;
+                dot.style.left  = mx + 'px'; dot.style.top  = my + 'px';
+                ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+                requestAnimationFrame(animCursor);
+            }
+            animCursor();
         }
-        animCursor();
 
         /* ── Intersection observer for reveal classes ── */
         const revealObserver = new IntersectionObserver(entries => {

@@ -33,6 +33,18 @@ export const SERVICES: Service[] = [
       "Venue Selection & Permitting",
       "Budgeting & Timeline Management"
     ]
+  },
+  {
+    id: 3,
+    title: "Web & Digital Development",
+    description: "Bilingual websites and storefronts engineered to sell — Arabic-first when the market calls for it, measured from day one, and verified against the standards we publish. Your digital presence, built like a product and proven like a case study.",
+    icon: "🛠",
+    features: [
+      "Bilingual Sites (AR/EN, true RTL)",
+      "E-commerce & WhatsApp Ordering",
+      "SEO, Analytics & Schema Foundations",
+      "PWA & App-Class Experiences"
+    ]
   }
 ];
 

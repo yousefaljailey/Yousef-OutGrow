@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="t">
+  <title id="t">Outgrow app tile</title>
+  <rect width="512" height="512" rx="118" fill="#0a0a0a"/>
+  <path fill="#059669" transform="translate(132.2 358.3) scale(0.3100 -0.3100)" d="M133 0L8 528L180 528L241 136L246 136L314 528L493 528L559 136L564 136L630 528L791 528L668 0L457 0L403 356L398 356L342 0Z"/>
+</svg>

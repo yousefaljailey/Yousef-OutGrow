@@ -1,9 +1,22 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { SERVICES, PACKAGES } from './constants.tsx';
-import { UserInput, GrowthStrategy as StrategyType } from './types.ts';
-import { generateGrowthStrategy } from './services/geminiService.ts';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { SERVICES, PACKAGES } from "./constants.tsx";
+import { UserInput, GrowthStrategy as StrategyType } from "./types.ts";
+import { generateGrowthStrategy } from "./services/geminiService.ts";
 
-type View = 'home' | 'about' | 'privacy' | 'terms' | 'service-marketing' | 'service-events' | 'works';
+type View =
+  | "home"
+  | "about"
+  | "privacy"
+  | "terms"
+  | "service-marketing"
+  | "service-events"
+  | "service-web"
+  | "works"
+  | "work-zihay"
+  | "insights"
+  | "insight-budget"
+  | "insight-whatsapp"
+  | "insight-instagram";
 
 /* ─────────────────────────────────────────────
    Utility hooks
@@ -16,18 +29,21 @@ function useCountUp(target: number, duration = 1800) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const obs = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !started.current) {
-        started.current = true;
-        const step = target / (duration / 16);
-        let cur = 0;
-        const timer = setInterval(() => {
-          cur = Math.min(cur + step, target);
-          setCount(Math.floor(cur));
-          if (cur >= target) clearInterval(timer);
-        }, 16);
-      }
-    }, { threshold: 0.4 });
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const step = target / (duration / 16);
+          let cur = 0;
+          const timer = setInterval(() => {
+            cur = Math.min(cur + step, target);
+            setCount(Math.floor(cur));
+            if (cur >= target) clearInterval(timer);
+          }, 16);
+        }
+      },
+      { threshold: 0.4 },
+    );
     obs.observe(el);
     return () => obs.disconnect();
   }, [target, duration]);
@@ -38,7 +54,7 @@ function useCountUp(target: number, duration = 1800) {
 /* ─────────────────────────────────────────────
    Word Cycler
 ───────────────────────────────────────────── */
-const CYCLE_WORDS = ['Campaigns.', 'Events.', 'Stories.', 'Impact.'];
+const CYCLE_WORDS = ["Campaigns.", "Events.", "Stories.", "Impact."];
 
 const WordCycler = () => {
   const [idx, setIdx] = useState(0);
@@ -46,14 +62,14 @@ const WordCycler = () => {
 
   useEffect(() => {
     const t = setInterval(() => {
-      setIdx(i => (i + 1) % CYCLE_WORDS.length);
-      setKey(k => k + 1);
+      setIdx((i) => (i + 1) % CYCLE_WORDS.length);
+      setKey((k) => k + 1);
     }, 2800);
     return () => clearInterval(t);
   }, []);
 
   return (
-    <span key={key} className="word-cycle-anim" style={{ color: '#059669' }}>
+    <span key={key} className="word-cycle-anim" style={{ color: "var(--color-brand)" }}>
       {CYCLE_WORDS[idx]}
     </span>
   );
@@ -63,32 +79,56 @@ const WordCycler = () => {
    Floating Hero Stats (21st.dev-inspired)
 ───────────────────────────────────────────── */
 const FloatingHeroStats = () => {
-  const { count: c1, ref: r1 } = useCountUp(50);
-  const { count: c2, ref: r2 } = useCountUp(100);
-  const { count: c3, ref: r3 } = useCountUp(35);
+  const { count: c1, ref: r1 } = useCountUp(48);
+  const { count: c2, ref: r2 } = useCountUp(2);
   return (
     <div className="relative h-[420px] w-full select-none" aria-hidden="true">
-      <div className="stat-card float-a" style={{ top: '4%', left: '5%' }}>
+      <div className="stat-card float-a" style={{ top: "4%", left: "5%" }}>
         <span className="stat-card-dot" />
-        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#059669' }}>Brands</span>
-        <div className="stat-card-num" ref={r1}>{c1}+</div>
-        <div className="stat-card-label">Brands Served</div>
+        <span
+          className="text-[9px] font-black uppercase tracking-widest"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          Proposals
+        </span>
+        <div className="stat-card-num" ref={r1}>
+          {c1}h
+        </div>
+        <div className="stat-card-label">Proposal Turnaround</div>
       </div>
-      <div className="stat-card float-b" style={{ top: '30%', right: '2%' }}>
+      <div className="stat-card float-b" style={{ top: "30%", right: "2%" }}>
         <span className="stat-card-dot" />
-        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#059669' }}>Campaigns</span>
-        <div className="stat-card-num" ref={r2}>{c2}+</div>
-        <div className="stat-card-label">Campaigns Delivered</div>
+        <span
+          className="text-[9px] font-black uppercase tracking-widest"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          Launch
+        </span>
+        <div className="stat-card-num" ref={r2}>
+          {c2}wk
+        </div>
+        <div className="stat-card-label">Standard Campaign Launch</div>
       </div>
-      <div className="stat-card float-c" style={{ bottom: '6%', left: '18%' }}>
+      <div className="stat-card float-c" style={{ bottom: "6%", left: "18%" }}>
         <span className="stat-card-dot" />
-        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: '#059669' }}>Events</span>
-        <div className="stat-card-num" ref={r3}>{c3}+</div>
-        <div className="stat-card-label">Events Managed</div>
+        <span
+          className="text-[9px] font-black uppercase tracking-widest"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          Coverage
+        </span>
+        <div className="stat-card-num">GCC</div>
+        <div className="stat-card-label">Qatar + Regional Reach</div>
       </div>
       {/* Decorative emerald ring */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full pointer-events-none" style={{ border: '1px solid rgba(5,150,105,0.08)' }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full pointer-events-none" style={{ border: '1px solid rgba(5,150,105,0.06)' }} />
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full pointer-events-none"
+        style={{ border: "1px solid rgba(5,150,105,0.08)" }}
+      />
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full pointer-events-none"
+        style={{ border: "1px solid rgba(5,150,105,0.06)" }}
+      />
     </div>
   );
 };
@@ -97,9 +137,17 @@ const FloatingHeroStats = () => {
    Marquee Ticker
 ───────────────────────────────────────────── */
 const TICKER_ITEMS = [
-  'ADVERTISING', 'PR', 'BRAND MANAGEMENT', 'EVENT MANAGEMENT',
-  'DOHA · QATAR', 'OUTGROW AGENCY', 'TRADE SHOWS', 'CONFERENCES',
-  'DIGITAL MEDIA', 'BROADCAST', 'CREATIVE STRATEGY',
+  "ADVERTISING",
+  "PR",
+  "BRAND MANAGEMENT",
+  "EVENT MANAGEMENT",
+  "DOHA · QATAR",
+  "OUTGROW AGENCY",
+  "TRADE SHOWS",
+  "CONFERENCES",
+  "DIGITAL MEDIA",
+  "BROADCAST",
+  "CREATIVE STRATEGY",
 ];
 
 const MarqueeTicker = () => {
@@ -108,9 +156,15 @@ const MarqueeTicker = () => {
     <div className="bg-[#0A0A0A] py-4 overflow-hidden border-y border-gray-900 select-none">
       <div className="marquee-track flex gap-10 whitespace-nowrap w-max">
         {items.map((item, i) => (
-          <span key={i} className="flex items-center gap-10 text-[11px] font-black uppercase tracking-[0.25em] text-gray-600">
+          <span
+            key={i}
+            className="flex items-center gap-10 text-[11px] font-black uppercase tracking-[0.25em] text-gray-400"
+          >
             {item}
-            <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#059669' }} />
+            <span
+              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+              style={{ background: "var(--color-brand)" }}
+            />
           </span>
         ))}
       </div>
@@ -121,14 +175,26 @@ const MarqueeTicker = () => {
 /* ─────────────────────────────────────────────
    Animated Stat
 ───────────────────────────────────────────── */
-const AnimStat = ({ target, suffix, label }: { target: number; suffix: string; label: string }) => {
+const AnimStat = ({
+  target,
+  suffix,
+  label,
+}: {
+  target: number;
+  suffix: string;
+  label: string;
+}) => {
   const { count, ref } = useCountUp(target);
   return (
     <div className="text-center group">
-      <div className="stat-num font-black text-white mb-2 tabular-nums" ref={ref}>
-        {count}{suffix}
+      <div
+        className="stat-num font-black text-white mb-2 tabular-nums"
+        ref={ref}
+      >
+        {count}
+        {suffix}
       </div>
-      <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-gray-600 group-hover:text-[#059669] transition-colors duration-300">
+      <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-gray-400 group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
         {label}
       </div>
     </div>
@@ -142,10 +208,10 @@ const StatsStrip = () => (
   <section className="py-20 px-6 md:px-12 bg-[#0A0A0A] reveal">
     <div className="max-w-[1440px] mx-auto">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-gray-800">
-        <AnimStat target={50}  suffix="+" label="Brands Served" />
-        <AnimStat target={100} suffix="+" label="Campaigns Delivered" />
-        <AnimStat target={35}  suffix="+" label="Events Managed" />
-        <AnimStat target={3}   suffix=""  label="Media Types" />
+        <AnimStat target={48} suffix="h" label="Proposal Turnaround" />
+        <AnimStat target={2} suffix="wk" label="Standard Campaign Launch" />
+        <AnimStat target={6} suffix="" label="Specialist Service Lines" />
+        <AnimStat target={2} suffix="" label="Revision Rounds Included" />
       </div>
     </div>
   </section>
@@ -155,49 +221,86 @@ const StatsStrip = () => (
    Service Calculator
 ───────────────────────────────────────────── */
 const CALC_SERVICES = [
-  { id: 'marketing', label: 'Advertising & PR', sub: 'Campaigns, brand consultancy, media placement' },
-  { id: 'events',    label: 'Event Management', sub: 'Trade shows, conferences, corporate events' },
-  { id: 'both',      label: 'Full-Service',     sub: 'Advertising + events combined' },
+  {
+    id: "marketing",
+    label: "Advertising & PR",
+    sub: "Campaigns, brand consultancy, media placement",
+  },
+  {
+    id: "events",
+    label: "Event Management",
+    sub: "Trade shows, conferences, corporate events",
+  },
+  { id: "both", label: "Full-Service", sub: "Advertising + events combined" },
 ];
 const CALC_SCALES = [
-  { id: 'launch',     label: 'Launch',     sub: 'New brand or first campaign', weeks: '2–4', pkg: 'Brand Essentials' },
-  { id: 'growth',     label: 'Growth',     sub: 'Active business, ready to scale', weeks: '4–8', pkg: 'Full-Scale Marketing' },
-  { id: 'enterprise', label: 'Enterprise', sub: 'Large brand or major event', weeks: '8–16', pkg: 'Event + Brand' },
+  {
+    id: "launch",
+    label: "Launch",
+    sub: "New brand or first campaign",
+    weeks: "2–4",
+    pkg: "Brand Essentials",
+  },
+  {
+    id: "growth",
+    label: "Growth",
+    sub: "Active business, ready to scale",
+    weeks: "4–8",
+    pkg: "Full-Scale Marketing",
+  },
+  {
+    id: "enterprise",
+    label: "Enterprise",
+    sub: "Large brand or major event",
+    weeks: "8–16",
+    pkg: "Event + Brand",
+  },
 ];
 
 const ServiceCalculator = () => {
   const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [service, setService] = useState('');
-  const [scale, setScale] = useState('');
+  const [service, setService] = useState("");
+  const [scale, setScale] = useState("");
 
-  const selectedScale = CALC_SCALES.find(s => s.id === scale);
-  const selectedService = CALC_SERVICES.find(s => s.id === service);
+  const selectedScale = CALC_SCALES.find((s) => s.id === scale);
+  const selectedService = CALC_SERVICES.find((s) => s.id === service);
 
-  const reset = () => { setStep(1); setService(''); setScale(''); };
+  const reset = () => {
+    setStep(1);
+    setService("");
+    setScale("");
+  };
 
   return (
     <section className="py-32 md:py-48 px-6 md:px-12 bg-[#D1FAE5]">
       <div className="max-w-[1440px] mx-auto">
         <div className="mb-16 reveal">
-          <h2 className="text-xs font-bold uppercase tracking-[0.3em] mb-6" style={{ color: '#059669' }}>
+          <h2
+            className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
+            style={{ color: "var(--color-brand-ink)" }}
+          >
             Scope Your Project
           </h2>
           <h3 className="text-display font-black tracking-tighter text-[#0A0A0A]">
             Find the right fit.
           </h3>
           <p className="text-gray-600 mt-4 font-light max-w-lg">
-            Answer two quick questions — we'll match you with the right service scope and timeline.
+            Answer two quick questions — we'll match you with the right service
+            scope and timeline.
           </p>
         </div>
 
         <div className="max-w-3xl reveal-scale">
           {/* Progress */}
           <div className="flex gap-2 mb-12">
-            {[1,2,3].map(n => (
-              <div key={n} className="flex-1 h-0.5 bg-gray-300 overflow-hidden rounded-full">
+            {[1, 2, 3].map((n) => (
+              <div
+                key={n}
+                className="flex-1 h-0.5 bg-gray-300 overflow-hidden rounded-full"
+              >
                 <div
                   className="progress-fill rounded-full"
-                  style={{ width: step >= n ? '100%' : '0%' }}
+                  style={{ width: step >= n ? "100%" : "0%" }}
                 />
               </div>
             ))}
@@ -205,16 +308,25 @@ const ServiceCalculator = () => {
 
           {step === 1 && (
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-500 mb-8">Step 01 — What service do you need?</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-500 mb-8">
+                Step 01 — What service do you need?
+              </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {CALC_SERVICES.map(s => (
+                {CALC_SERVICES.map((s) => (
                   <button
                     key={s.id}
-                    onClick={() => { setService(s.id); setStep(2); }}
+                    onClick={() => {
+                      setService(s.id);
+                      setStep(2);
+                    }}
                     className="calc-tab btn-lift text-left p-8 border-2 border-[#0A0A0A] bg-white group"
                   >
-                    <span className="block text-base font-black tracking-tighter text-[#0A0A0A] group-hover:text-white mb-2">{s.label}</span>
-                    <span className="block text-xs text-gray-500 group-hover:text-green-100 font-light leading-relaxed">{s.sub}</span>
+                    <span className="block text-base font-black tracking-tighter text-[#0A0A0A] group-hover:text-white mb-2">
+                      {s.label}
+                    </span>
+                    <span className="block text-xs text-gray-500 group-hover:text-green-100 font-light leading-relaxed">
+                      {s.sub}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -223,20 +335,32 @@ const ServiceCalculator = () => {
 
           {step === 2 && (
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-500 mb-8">Step 02 — What's your scale?</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-400 mb-8">
+                Step 02 — What's your scale?
+              </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                {CALC_SCALES.map(s => (
+                {CALC_SCALES.map((s) => (
                   <button
                     key={s.id}
-                    onClick={() => { setScale(s.id); setStep(3); }}
+                    onClick={() => {
+                      setScale(s.id);
+                      setStep(3);
+                    }}
                     className="calc-tab btn-lift text-left p-8 border-2 border-[#0A0A0A] bg-white group"
                   >
-                    <span className="block text-base font-black tracking-tighter text-[#0A0A0A] group-hover:text-white mb-2">{s.label}</span>
-                    <span className="block text-xs text-gray-500 group-hover:text-green-100 font-light leading-relaxed">{s.sub}</span>
+                    <span className="block text-base font-black tracking-tighter text-[#0A0A0A] group-hover:text-white mb-2">
+                      {s.label}
+                    </span>
+                    <span className="block text-xs text-gray-400 group-hover:text-green-100 font-light leading-relaxed">
+                      {s.sub}
+                    </span>
                   </button>
                 ))}
               </div>
-              <button onClick={() => setStep(1)} className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[#0A0A0A] transition-colors">
+              <button
+                onClick={() => setStep(1)}
+                className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-[#0A0A0A] transition-colors"
+              >
                 ← Back
               </button>
             </div>
@@ -244,28 +368,45 @@ const ServiceCalculator = () => {
 
           {step === 3 && selectedScale && selectedService && (
             <div className="bg-[#0A0A0A] p-10 md:p-14 text-white">
-              <p className="text-[10px] font-black uppercase tracking-[0.25em] mb-8" style={{ color: '#059669' }}>
+              <p
+                className="text-[10px] font-black uppercase tracking-[0.25em] mb-8"
+                style={{ color: "var(--color-brand)" }}
+              >
                 Your Recommendation
               </p>
-              <h4 className="text-3xl font-black tracking-tighter mb-2">{selectedScale.pkg}</h4>
+              <h4 className="text-3xl font-black tracking-tighter mb-2">
+                {selectedScale.pkg}
+              </h4>
               <p className="text-gray-400 font-light mb-10">
                 {selectedService.label} · {selectedScale.label} scope
               </p>
               <div className="grid grid-cols-2 gap-6 mb-12">
                 <div className="border border-gray-800 p-6">
-                  <span className="block text-[9px] font-black uppercase tracking-widest text-gray-600 mb-2">Est. Timeline</span>
-                  <span className="text-2xl font-black">{selectedScale.weeks} weeks</span>
+                  <span className="block text-[9px] font-black uppercase tracking-widest text-gray-400 mb-2">
+                    Est. Timeline
+                  </span>
+                  <span className="text-2xl font-black">
+                    {selectedScale.weeks} weeks
+                  </span>
                 </div>
                 <div className="border border-gray-800 p-6">
-                  <span className="block text-[9px] font-black uppercase tracking-widest text-gray-600 mb-2">Investment</span>
+                  <span className="block text-[9px] font-black uppercase tracking-widest text-gray-600 mb-2">
+                    Investment
+                  </span>
                   <span className="text-2xl font-black">Custom Quote</span>
                 </div>
               </div>
               <div className="flex gap-4 flex-wrap">
-                <a href="#contact" className="btn-lift inline-block py-4 px-10 text-[11px] font-black uppercase tracking-[0.2em] text-[#0A0A0A] bg-white hover:bg-[#059669] hover:text-white transition-colors">
+                <a
+                  href="#contact"
+                  className="btn-lift inline-block py-4 px-10 text-[11px] font-black uppercase tracking-[0.2em] text-[#0A0A0A] bg-white hover:bg-[color:var(--color-brand)] hover:text-white transition-colors"
+                >
                   Get a Quote
                 </a>
-                <button onClick={reset} className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-white transition-colors py-4">
+                <button
+                  onClick={reset}
+                  className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-white transition-colors py-4"
+                >
                   Start Over
                 </button>
               </div>
@@ -282,47 +423,61 @@ const ServiceCalculator = () => {
 ───────────────────────────────────────────── */
 const FAQ_ITEMS = [
   {
-    q: 'What types of businesses do you work with?',
-    a: 'We work with startups, SMEs, and established brands across a wide range of industries in Qatar and the wider GCC region. Whether you\'re launching a new brand, running an annual conference, or scaling your advertising campaigns — we have the experience to deliver.',
+    q: "What types of businesses do you work with?",
+    a: "We work with startups, SMEs, and established brands across a wide range of industries in Qatar and the wider GCC region. Whether you're launching a new brand, running an annual conference, or scaling your advertising campaigns — we have the experience to deliver.",
   },
   {
-    q: 'How long does an advertising campaign take to launch?',
-    a: 'Standard campaigns are delivered within 2 weeks from project kick-off and receipt of required content. Timelines may vary based on complexity, media channels, and client approval cycles. We\'ll provide a clear timeline at project start.',
+    q: "How long does an advertising campaign take to launch?",
+    a: "Standard campaigns are delivered within 2 weeks from project kick-off and receipt of required content. Timelines may vary based on complexity, media channels, and client approval cycles. We'll provide a clear timeline at project start.",
   },
   {
-    q: 'Do you manage events outside of Qatar?',
-    a: 'Our core operations are based in Doha, Qatar, with deep knowledge of the local regulatory environment, venues, and suppliers. For events outside Qatar, we can coordinate on a case-by-case basis — contact us to discuss your specific requirements.',
+    q: "Do you manage events outside of Qatar?",
+    a: "Our core operations are based in Doha, Qatar, with deep knowledge of the local regulatory environment, venues, and suppliers. For events outside Qatar, we can coordinate on a case-by-case basis — contact us to discuss your specific requirements.",
   },
   {
-    q: 'What\'s the difference between your packages?',
-    a: 'Brand Essentials is suited for businesses establishing their presence. Full-Scale Marketing is our most comprehensive advertising package for growing brands. Event + Brand combines both advertising and event management for businesses running activations or conferences. All packages are custom-scoped to your exact needs.',
+    q: "What's the difference between your packages?",
+    a: "Brand Essentials is suited for businesses establishing their presence. Full-Scale Marketing is our most comprehensive advertising package for growing brands. Event + Brand combines both advertising and event management for businesses running activations or conferences. All packages are custom-scoped to your exact needs.",
   },
   {
-    q: 'How do I get started with Outgrow?',
-    a: 'Simply reach out via our contact form or email us at info@outgrowagency.com. We\'ll schedule a discovery call to understand your objectives, then come back with a scoped proposal within 48 hours.',
+    q: "How do I get started with Outgrow?",
+    a: "Simply reach out via our contact form or email us at info@outgrowagency.com. We'll schedule a discovery call to understand your objectives, then come back with a scoped proposal within 48 hours.",
   },
 ];
 
-const FAQItem: React.FC<{ item: typeof FAQ_ITEMS[0]; isOpen: boolean; toggle: () => void }> = ({ item, isOpen, toggle }) => (
+const FAQItem: React.FC<{
+  item: (typeof FAQ_ITEMS)[0];
+  isOpen: boolean;
+  toggle: () => void;
+}> = ({ item, isOpen, toggle }) => (
   <div className="border-t border-gray-200">
     <button
       onClick={toggle}
       className="w-full flex items-start justify-between py-8 text-left group"
     >
-      <span className="text-lg font-bold text-[#0A0A0A] pr-8 group-hover:text-[#059669] transition-colors duration-300">
+      <span className="text-lg font-bold text-[#0A0A0A] pr-8 group-hover:text-[color:var(--color-brand-ink)] transition-colors duration-300">
         {item.q}
       </span>
       <span
-        className={`accordion-chevron flex-shrink-0 w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-400 group-hover:border-[#059669] group-hover:text-[#059669] transition-colors ${isOpen ? 'open' : ''}`}
-        style={{ transition: 'transform 0.4s cubic-bezier(0.22,1,0.36,1), border-color 0.3s, color 0.3s' }}
+        className={`accordion-chevron flex-shrink-0 w-7 h-7 border border-gray-300 flex items-center justify-center text-gray-500 group-hover:border-[color:var(--color-brand)] group-hover:text-[color:var(--color-brand-ink)] transition-colors ${isOpen ? "open" : ""}`}
+        style={{
+          transition:
+            "transform 0.4s cubic-bezier(0.22,1,0.36,1), border-color 0.3s, color 0.3s",
+        }}
       >
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+          <path
+            d="M6 1v10M1 6h10"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
         </svg>
       </span>
     </button>
-    <div className={`accordion-body ${isOpen ? 'open' : ''}`}>
-      <p className="text-gray-500 font-light leading-relaxed pb-8 max-w-2xl">{item.a}</p>
+    <div className={`accordion-body ${isOpen ? "open" : ""}`}>
+      <p className="text-gray-500 font-light leading-relaxed pb-8 max-w-2xl">
+        {item.a}
+      </p>
     </div>
   </div>
 );
@@ -335,13 +490,22 @@ const FAQSection = () => {
       <div className="max-w-[1440px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           <div className="lg:col-span-4 reveal-left">
-            <h2 className="text-xs font-bold uppercase tracking-[0.3em] mb-6" style={{ color: '#059669' }}>FAQ</h2>
+            <h2
+              className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
+              style={{ color: "var(--color-brand-ink)" }}
+            >
+              FAQ
+            </h2>
             <h3 className="text-display font-black tracking-tighter text-[#0A0A0A] mb-8">
               Common questions.
             </h3>
             <p className="text-gray-500 font-light leading-relaxed">
-              Everything you need to know before working with us. Can't find your answer?{' '}
-              <a href="#contact" className="font-bold text-[#0A0A0A] border-b border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors">
+              Everything you need to know before working with us. Can't find
+              your answer?{" "}
+              <a
+                href="#contact"
+                className="font-bold text-[#0A0A0A] border-b border-[#0A0A0A] hover:text-[color:var(--color-brand-ink)] hover:border-[color:var(--color-brand)] transition-colors"
+              >
                 Contact us directly.
               </a>
             </p>
@@ -366,40 +530,54 @@ const FAQSection = () => {
 /* ─────────────────────────────────────────────
    Header
 ───────────────────────────────────────────── */
-const Header = ({ setView, currentView }: { setView: (v: View) => void; currentView: View }) => {
+const Header = ({
+  setView,
+  currentView,
+}: {
+  setView: (v: View) => void;
+  currentView: View;
+}) => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 bg-white border-b duration-500 ${scrolled ? 'border-gray-200 shadow-[0_2px_20px_rgba(0,0,0,0.06)]' : 'border-gray-100'}`}
-      style={{ transition: 'border-color 500ms ease, box-shadow 500ms ease' }}
+      className={`fixed top-0 left-0 right-0 z-50 bg-white border-b duration-500 ${scrolled ? "border-gray-200 shadow-[0_2px_20px_rgba(0,0,0,0.06)]" : "border-gray-100"}`}
+      style={{ transition: "border-color 500ms ease, box-shadow 500ms ease" }}
     >
       <div className="max-w-[1440px] mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
         <button
-          onClick={() => setView('home')}
+          onClick={() => setView("home")}
           aria-label="Outgrow — go to homepage"
           className="flex items-center space-x-2.5 outline-none group"
         >
           <div
             className="w-7 h-7 flex items-center justify-center group-hover:scale-110"
-            style={{ background: '#059669', transition: 'transform 250ms cubic-bezier(0.34,1.56,0.64,1)' }}
+            style={{
+              background: "var(--color-brand)",
+              transition: "transform 250ms cubic-bezier(0.34,1.56,0.64,1)",
+            }}
           >
             <span className="text-white font-black text-sm">O</span>
           </div>
-          <span className="text-lg font-black tracking-tighter uppercase text-[#0A0A0A]">outgrow</span>
+          <span className="text-lg font-black tracking-tighter uppercase text-[#0A0A0A]">
+            outgrow
+          </span>
         </button>
 
-        <nav className="hidden lg:flex items-center space-x-10 text-[12px] font-black uppercase tracking-[0.15em] text-gray-400" aria-label="Main navigation">
+        <nav
+          className="hidden lg:flex items-center space-x-10 text-[12px] font-black uppercase tracking-[0.15em] text-gray-500"
+          aria-label="Main navigation"
+        >
           <button
-            onClick={() => setView('about')}
-            aria-current={currentView === 'about' ? 'page' : undefined}
-            className={`transition-colors duration-200 ${currentView === 'about' ? 'text-[#0A0A0A]' : 'hover:text-[#0A0A0A]'}`}
+            onClick={() => setView("about")}
+            aria-current={currentView === "about" ? "page" : undefined}
+            className={`transition-colors duration-200 ${currentView === "about" ? "text-[#0A0A0A]" : "hover:text-[#0A0A0A]"}`}
           >
             Who we are
           </button>
@@ -407,60 +585,165 @@ const Header = ({ setView, currentView }: { setView: (v: View) => void; currentV
           <div className="relative group">
             <button
               aria-haspopup="true"
-              className={`flex items-center gap-1.5 transition-colors duration-200 ${currentView === 'service-marketing' || currentView === 'service-events' ? 'text-[#0A0A0A]' : 'hover:text-[#0A0A0A]'}`}
+              className={`flex items-center gap-1.5 transition-colors duration-200 ${currentView === "service-marketing" || currentView === "service-events" ? "text-[#0A0A0A]" : "hover:text-[#0A0A0A]"}`}
             >
               Services
-              <svg className="w-3 h-3 group-hover:rotate-180" style={{ transition: 'transform 300ms ease' }} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+              <svg
+                className="w-3 h-3 group-hover:rotate-180"
+                style={{ transition: "transform 300ms ease" }}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2.5}
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </button>
-            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-80 bg-white border border-gray-100 shadow-[0_8px_40px_rgba(0,0,0,0.12)] opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 z-50 translate-y-2" style={{ transition: 'opacity 200ms ease, visibility 200ms ease, transform 200ms ease' }} role="menu">
+            <div
+              className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-80 bg-white border border-gray-100 shadow-[0_8px_40px_rgba(0,0,0,0.12)] opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 z-50 translate-y-2"
+              style={{
+                transition:
+                  "opacity 200ms ease, visibility 200ms ease, transform 200ms ease",
+              }}
+              role="menu"
+            >
               <button
-                onClick={() => setView('service-marketing')}
+                onClick={() => setView("service-marketing")}
                 role="menuitem"
                 className="w-full text-left px-6 py-5 border-b border-gray-50 group/item"
-                style={{ transition: 'background 300ms ease, color 300ms ease' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#0A0A0A'; (e.currentTarget as HTMLElement).style.color = 'white'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = ''; (e.currentTarget as HTMLElement).style.color = ''; }}
+                style={{
+                  transition: "background 300ms ease, color 300ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "#0A0A0A";
+                  (e.currentTarget as HTMLElement).style.color = "white";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "";
+                  (e.currentTarget as HTMLElement).style.color = "";
+                }}
               >
-                <span className="block text-[9px] font-black uppercase tracking-widest mb-1.5" style={{ color: '#059669' }}>01</span>
-                <span className="block text-[13px] font-bold normal-case tracking-normal mb-1">Advertising, PR & Brand Management</span>
-                <span className="block text-[11px] text-gray-400 normal-case tracking-normal font-normal">Marketing consultancy, ad design & placement</span>
+                <span
+                  className="block text-[9px] font-black uppercase tracking-widest mb-1.5"
+                  style={{ color: "var(--color-brand-ink)" }}
+                >
+                  01
+                </span>
+                <span className="block text-[13px] font-bold normal-case tracking-normal mb-1">
+                  Advertising, PR & Brand Management
+                </span>
+                <span className="block text-[11px] text-gray-500 normal-case tracking-normal font-normal">
+                  Marketing consultancy, ad design & placement
+                </span>
               </button>
               <button
-                onClick={() => setView('service-events')}
+                onClick={() => setView("service-events")}
                 role="menuitem"
                 className="w-full text-left px-6 py-5"
-                style={{ transition: 'background 300ms ease, color 300ms ease' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#0A0A0A'; (e.currentTarget as HTMLElement).style.color = 'white'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = ''; (e.currentTarget as HTMLElement).style.color = ''; }}
+                style={{
+                  transition: "background 300ms ease, color 300ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "#0A0A0A";
+                  (e.currentTarget as HTMLElement).style.color = "white";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "";
+                  (e.currentTarget as HTMLElement).style.color = "";
+                }}
               >
-                <span className="block text-[9px] font-black uppercase tracking-widest mb-1.5" style={{ color: '#059669' }}>02</span>
-                <span className="block text-[13px] font-bold normal-case tracking-normal mb-1">Event Management Services</span>
-                <span className="block text-[11px] text-gray-400 normal-case tracking-normal font-normal">Trade shows, conferences & corporate events</span>
+                <span
+                  className="block text-[9px] font-black uppercase tracking-widest mb-1.5"
+                  style={{ color: "var(--color-brand-ink)" }}
+                >
+                  02
+                </span>
+                <span className="block text-[13px] font-bold normal-case tracking-normal mb-1">
+                  Event Management Services
+                </span>
+                <span className="block text-[11px] text-gray-500 normal-case tracking-normal font-normal">
+                  Trade shows, conferences & corporate events
+                </span>
+              </button>
+              <button
+                onClick={() => setView("service-web")}
+                role="menuitem"
+                className="w-full text-left px-6 py-5"
+                style={{
+                  transition: "background 300ms ease, color 300ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "#0A0A0A";
+                  (e.currentTarget as HTMLElement).style.color = "white";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "";
+                  (e.currentTarget as HTMLElement).style.color = "";
+                }}
+              >
+                <span
+                  className="block text-[9px] font-black uppercase tracking-widest mb-1.5"
+                  style={{ color: "var(--color-brand-ink)" }}
+                >
+                  03
+                </span>
+                <span className="block text-[13px] font-bold normal-case tracking-normal mb-1">
+                  Web & Digital Development
+                </span>
+                <span className="block text-[11px] text-gray-500 normal-case tracking-normal font-normal">
+                  Bilingual sites, e-commerce & measurable digital
+                </span>
               </button>
             </div>
           </div>
 
           <button
-            onClick={() => setView('works')}
-            aria-current={currentView === 'works' ? 'page' : undefined}
-            className={`transition-colors duration-200 ${currentView === 'works' ? 'text-[#0A0A0A]' : 'hover:text-[#0A0A0A]'}`}
+            onClick={() => setView("works")}
+            aria-current={currentView === "works" ? "page" : undefined}
+            className={`transition-colors duration-200 ${currentView === "works" ? "text-[#0A0A0A]" : "hover:text-[#0A0A0A]"}`}
           >
             Works
           </button>
 
-          {currentView !== 'home' && (
-            <button onClick={() => setView('home')} className="hover:text-[#0A0A0A] transition-colors duration-200">Home</button>
+          <button
+            onClick={() => setView("insights")}
+            aria-current={currentView === "insights" ? "page" : undefined}
+            className={`transition-colors duration-200 ${currentView === "insights" ? "text-[#0A0A0A]" : "hover:text-[#0A0A0A]"}`}
+          >
+            Insights
+          </button>
+
+          {currentView !== "home" && (
+            <button
+              onClick={() => setView("home")}
+              className="hover:text-[#0A0A0A] transition-colors duration-200"
+            >
+              Home
+            </button>
           )}
         </nav>
 
         <a
           href="#contact"
           className="btn-lift hidden md:block text-[11px] font-black uppercase tracking-[0.15em] border-b-2 pb-1"
-          style={{ borderColor: '#0A0A0A', color: '#0A0A0A', transition: 'color 250ms ease, border-color 250ms ease' }}
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#059669'; (e.currentTarget as HTMLElement).style.borderColor = '#059669'; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#0A0A0A'; (e.currentTarget as HTMLElement).style.borderColor = '#0A0A0A'; }}
+          style={{
+            borderColor: "#0A0A0A",
+            color: "#0A0A0A",
+            transition: "color 250ms ease, border-color 250ms ease",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.color = "var(--color-brand-ink)";
+            (e.currentTarget as HTMLElement).style.borderColor = "var(--color-brand)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.color = "#0A0A0A";
+            (e.currentTarget as HTMLElement).style.borderColor = "#0A0A0A";
+          }}
         >
           Contact
         </a>
@@ -477,38 +760,76 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
     {/* Hero */}
     <section className="min-h-screen flex items-center pt-20 px-6 md:px-12 hero-grid relative overflow-hidden bg-white">
       <div className="grain-overlay" />
-      <div className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(5,150,105,0.07) 0%, transparent 70%)' }} />
+      <div
+        className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(5,150,105,0.07) 0%, transparent 70%)",
+        }}
+      />
       <div className="max-w-[1440px] mx-auto w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left — text */}
           <div className="lg:col-span-7 reveal">
-            <span className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] mb-10" style={{ color: '#059669' }}>
-              <span className="w-8 h-px" style={{ background: '#059669' }} />
+            <span
+              className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] mb-10"
+              style={{ color: "var(--color-brand-ink)" }}
+            >
+              <span className="w-8 h-px" style={{ background: "var(--color-brand)" }} />
               Doha, Qatar · Advertising · Events
             </span>
             <h1 className="text-huge font-black text-[#0A0A0A] mb-6 leading-none">
-              We build <WordCycler /><br />
-              <span style={{ color: '#6B7280' }}>for your market.</span>
+              We build
+              <br />
+              <WordCycler />
+              <br />
+              <span style={{ color: "#6B7280" }}>for your market.</span>
             </h1>
-            <p className="max-w-xl text-xl md:text-2xl font-light leading-snug mt-8" style={{ color: '#6B7280' }}>
-              Outgrow is a marketing, advertising, and event management company based in Doha, Qatar. We build brands that get noticed and create events that leave a lasting impression.
+            <p
+              className="max-w-xl text-xl md:text-2xl font-light leading-snug mt-8"
+              style={{ color: "#6B7280" }}
+            >
+              Outgrow is a marketing, advertising, and event management company
+              based in Doha, Qatar. We build brands that get noticed and create
+              events that leave a lasting impression.
             </p>
             <div className="flex flex-wrap gap-4 mt-12">
-              <button
-                onClick={() => setView('about')}
+              <a
+                href="#contact"
                 className="btn-lift bg-[#0A0A0A] text-white px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em]"
-                style={{ transition: 'background 250ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)' }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#059669')}
-                onMouseLeave={e => (e.currentTarget.style.background = '#0A0A0A')}
+                style={{
+                  transition:
+                    "background 250ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)",
+                }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLElement).style.background =
+                    "var(--color-brand)")
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLElement).style.background =
+                    "#0A0A0A")
+                }
               >
-                Who We Are
-              </button>
+                Get a Proposal
+              </a>
               <a
                 href="#capabilities"
                 className="btn-lift px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-[#0A0A0A]"
-                style={{ border: '2px solid #0A0A0A', transition: 'border-color 250ms ease, color 250ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#059669'; (e.currentTarget as HTMLElement).style.color = '#059669'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#0A0A0A'; (e.currentTarget as HTMLElement).style.color = '#0A0A0A'; }}
+                style={{
+                  border: "2px solid #0A0A0A",
+                  transition:
+                    "border-color 250ms ease, color 250ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor =
+                    "var(--color-brand)";
+                  (e.currentTarget as HTMLElement).style.color = "var(--color-brand-ink)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor =
+                    "#0A0A0A";
+                  (e.currentTarget as HTMLElement).style.color = "#0A0A0A";
+                }}
               >
                 Our Services
               </a>
@@ -529,11 +850,21 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
     <StatsStrip />
 
     {/* Capabilities */}
-    <section id="capabilities" className="py-32 md:py-48 px-6 md:px-12 bg-[#0A0A0A] text-white">
+    <section
+      id="capabilities"
+      className="py-32 md:py-48 px-6 md:px-12 bg-[#0A0A0A] text-white"
+    >
       <div className="max-w-[1440px] mx-auto">
         <div className="mb-24 reveal">
-          <h2 className="text-xs font-bold uppercase tracking-[0.3em] mb-6" style={{ color: '#059669' }}>What we do</h2>
-          <h3 className="text-5xl md:text-6xl font-black tracking-tighter">Capabilities</h3>
+          <h2
+            className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
+            style={{ color: "var(--color-brand)" }}
+          >
+            What we do
+          </h2>
+          <h3 className="text-5xl md:text-6xl font-black tracking-tighter">
+            Capabilities
+          </h3>
         </div>
         <div className="grid grid-cols-1">
           {SERVICES.map((service, i) => (
@@ -542,19 +873,30 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
               className={`capability-group border-t border-gray-800 py-14 flex flex-col lg:flex-row items-start lg:items-center justify-between group reveal stagger-${i + 1}`}
             >
               <div className="flex items-center space-x-10 mb-6 lg:mb-0">
-                <span className="text-[10px] font-black tabular-nums" style={{ color: '#059669' }}>0{i + 1}</span>
-                <h4 className="cap-underline text-3xl md:text-4xl font-black tracking-tighter group-hover:text-[#059669] transition-colors duration-300">
+                <span
+                  className="text-[10px] font-black tabular-nums"
+                  style={{ color: "var(--color-brand)" }}
+                >
+                  0{i + 1}
+                </span>
+                <h4 className="cap-underline text-3xl md:text-4xl font-black tracking-tighter group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
                   {service.title}
                 </h4>
               </div>
               <div className="lg:max-w-md">
-                <p className="text-gray-400 text-base leading-relaxed mb-6 font-light">{service.description}</p>
+                <p className="text-gray-400 text-base leading-relaxed mb-6 font-light">
+                  {service.description}
+                </p>
                 <ul className="flex flex-wrap gap-2">
                   {service.features.map((feature, idx) => (
                     <li
                       key={idx}
-                      className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border group-hover:border-[#059669]/40 group-hover:text-[#059669]"
-                      style={{ borderColor: '#374151', color: '#6B7280', transition: 'border-color 300ms ease, color 300ms ease' }}
+                      className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border group-hover:border-[#059669]/40 group-hover:text-[color:var(--color-brand)]"
+                      style={{
+                        borderColor: "#374151",
+                        color: "#9CA3AF",
+                        transition: "border-color 300ms ease, color 300ms ease",
+                      }}
                     >
                       {feature}
                     </li>
@@ -572,8 +914,15 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
     <section id="packages" className="py-32 md:py-48 px-6 md:px-12 bg-white">
       <div className="max-w-[1440px] mx-auto">
         <div className="text-center mb-24 reveal">
-          <h2 className="text-xs font-bold uppercase tracking-[0.3em] mb-6" style={{ color: '#059669' }}>Growth Plans</h2>
-          <h3 className="text-4xl md:text-5xl font-black tracking-tighter text-[#0A0A0A]">Structured for success.</h3>
+          <h2
+            className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
+            style={{ color: "var(--color-brand-ink)" }}
+          >
+            Growth Plans
+          </h2>
+          <h3 className="text-4xl md:text-5xl font-black tracking-tighter text-[#0A0A0A]">
+            Structured for success.
+          </h3>
         </div>
         <div className="flex flex-col items-center space-y-12">
           {PACKAGES.map((pkg, i) => (
@@ -581,25 +930,48 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
               key={i}
               className={`w-full max-w-5xl group card-3d reveal stagger-${i + 1}`}
             >
-              <div className="flex flex-col md:flex-row md:items-stretch border-2 border-gray-100 group-hover:border-[#0A0A0A]" style={{ transition: 'border-color 500ms ease' }}>
+              <div
+                className="flex flex-col md:flex-row md:items-stretch border-2 border-gray-100 group-hover:border-[#0A0A0A]"
+                style={{ transition: "border-color 500ms ease" }}
+              >
                 <div className="p-10 md:p-16 flex-1 bg-white">
                   <div className="flex items-center justify-between mb-8">
-                    <h3 className="text-3xl font-black uppercase tracking-tighter text-[#0A0A0A]">{pkg.name}</h3>
+                    <h3 className="text-3xl font-black uppercase tracking-tighter text-[#0A0A0A]">
+                      {pkg.name}
+                    </h3>
                     {pkg.isPopular && (
-                      <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 text-white" style={{ background: '#059669' }}>
+                      <span
+                        className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 text-white"
+                        style={{ background: "var(--color-brand)" }}
+                      >
                         Recommended
                       </span>
                     )}
                   </div>
-                  <p className="text-lg text-gray-500 font-light leading-relaxed mb-8">{pkg.description}</p>
-                  <div className="text-4xl font-black text-[#0A0A0A]">{pkg.price}</div>
+                  <p className="text-lg text-gray-500 font-light leading-relaxed mb-8">
+                    {pkg.description}
+                  </p>
+                  <div className="text-4xl font-black text-[#0A0A0A]">
+                    {pkg.price}
+                  </div>
                 </div>
-                <div className="p-10 md:p-16 flex-1 bg-gray-50 border-t md:border-t-0 md:border-l border-gray-100 group-hover:bg-white" style={{ transition: 'background 500ms ease' }}>
-                  <h4 className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-400 mb-8">Engagement Details</h4>
+                <div
+                  className="p-10 md:p-16 flex-1 bg-gray-50 border-t md:border-t-0 md:border-l border-gray-100 group-hover:bg-white"
+                  style={{ transition: "background 500ms ease" }}
+                >
+                  <h4 className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-500 mb-8">
+                    Engagement Details
+                  </h4>
                   <ul className="space-y-4 mb-12">
                     {pkg.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center text-sm font-medium text-gray-700">
-                        <div className="w-1.5 h-1.5 mr-4 flex-shrink-0" style={{ background: '#059669' }} />
+                      <li
+                        key={idx}
+                        className="flex items-center text-sm font-medium text-gray-700"
+                      >
+                        <div
+                          className="w-1.5 h-1.5 mr-4 flex-shrink-0"
+                          style={{ background: "var(--color-brand)" }}
+                        />
                         {feature}
                       </li>
                     ))}
@@ -607,9 +979,13 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
                   <a
                     href="#contact"
                     className="btn-lift inline-block w-full text-center py-5 text-[10px] font-black uppercase tracking-[0.2em] text-white transition-colors duration-300 hover:opacity-90"
-                    style={{ background: '#0A0A0A' }}
-                    onMouseEnter={e => { (e.target as HTMLElement).style.background = '#059669'; }}
-                    onMouseLeave={e => { (e.target as HTMLElement).style.background = '#0A0A0A'; }}
+                    style={{ background: "#0A0A0A" }}
+                    onMouseEnter={(e) => {
+                      (e.target as HTMLElement).style.background = "var(--color-brand)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.target as HTMLElement).style.background = "#0A0A0A";
+                    }}
                   >
                     Get in Touch
                   </a>
@@ -624,6 +1000,12 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
     {/* Service Calculator */}
     <ServiceCalculator />
 
+    {/* Presence Grader */}
+    <PresenceGrader />
+
+    {/* AI Insights */}
+    <AIInsights />
+
     {/* FAQ */}
     <FAQSection />
 
@@ -631,19 +1013,29 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
     <section className="py-32 md:py-48 px-6 md:px-12 bg-[#0A0A0A]">
       <div className="max-w-[1440px] mx-auto">
         <div className="mb-16 reveal">
-          <h2 className="text-xs font-bold uppercase tracking-[0.3em] mb-6" style={{ color: '#059669' }}>Find Us</h2>
-          <h3 className="text-4xl md:text-5xl font-black tracking-tighter text-white">Our Office</h3>
-          <p className="text-gray-500 font-light mt-4">
+          <h2
+            className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
+            style={{ color: "var(--color-brand)" }}
+          >
+            Find Us
+          </h2>
+          <h3 className="text-4xl md:text-5xl font-black tracking-tighter text-white">
+            Our Office
+          </h3>
+          <p className="text-gray-400 font-light mt-4">
             Floor 16, Tornado Tower · West Bay, Doha, Qatar
           </p>
         </div>
-        <div className="map-container reveal-scale overflow-hidden" style={{ height: '480px' }}>
+        <div
+          className="map-container reveal-scale overflow-hidden"
+          style={{ height: "480px" }}
+        >
           <iframe
             title="Outgrow Office Location"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.2!2d51.532879!3d25.286732!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45c534ffdce87f%3A0x1f2a3b4c5d6e7f8a!2sTornado+Tower%2C+West+Bay%2C+Doha%2C+Qatar!5e0!3m2!1sen!2sqa!4v1700000000000!5m2!1sen!2sqa"
             width="100%"
             height="100%"
-            style={{ border: 0, filter: 'grayscale(20%) contrast(1.05)' }}
+            style={{ border: 0, filter: "grayscale(20%) contrast(1.05)" }}
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
@@ -651,13 +1043,23 @@ const HomePage = ({ setView }: { setView: (v: View) => void }) => (
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-800 mt-px">
           {[
-            { label: 'Address', value: 'Tornado Tower, Floor 16\nWest Bay, Doha, Qatar' },
-            { label: 'Email', value: 'info@outgrowagency.com' },
-            { label: 'Phone', value: '+974 5595 4896' },
+            {
+              label: "Address",
+              value: "Tornado Tower, Floor 16\nWest Bay, Doha, Qatar",
+            },
+            { label: "Email", value: "info@outgrowagency.com" },
+            { label: "Phone", value: "+974 5595 4896" },
           ].map((item, i) => (
             <div key={i} className="bg-[#0A0A0A] px-8 py-8">
-              <span className="block text-[9px] font-black uppercase tracking-widest mb-3" style={{ color: '#059669' }}>{item.label}</span>
-              <span className="block text-white font-bold whitespace-pre-line">{item.value}</span>
+              <span
+                className="block text-[9px] font-black uppercase tracking-widest mb-3"
+                style={{ color: "var(--color-brand)" }}
+              >
+                {item.label}
+              </span>
+              <span className="block text-white font-bold whitespace-pre-line">
+                {item.value}
+              </span>
             </div>
           ))}
         </div>
@@ -673,58 +1075,115 @@ const AboutPage = () => (
   <section className="pt-40 pb-32 px-6 md:px-12 bg-white">
     <div className="max-w-[1440px] mx-auto">
       <div className="reveal">
-        <h2 className="text-xs font-bold uppercase tracking-[0.3em] mb-12" style={{ color: '#059669' }}>Who we are</h2>
-        <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-[#0A0A0A] mb-16">About Us</h1>
+        <h2
+          className="text-xs font-bold uppercase tracking-[0.3em] mb-12"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          Who we are
+        </h2>
+        <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-[#0A0A0A] mb-16">
+          About Us
+        </h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start mb-32">
         <div className="lg:col-span-5 reveal-left">
-          <p className="text-3xl md:text-4xl font-light leading-tight text-gray-400 mb-8">
-            At Outgrow, we help brands move from{' '}
-            <span className="text-[#0A0A0A] font-medium">potential to performance.</span>
+          <p className="text-3xl md:text-4xl font-light leading-tight text-gray-500 mb-8">
+            At Outgrow, we help brands move from{" "}
+            <span className="text-[#0A0A0A] font-medium">
+              potential to performance.
+            </span>
           </p>
         </div>
         <div className="lg:col-span-7 space-y-8 text-xl text-gray-600 font-light leading-relaxed reveal-right">
           <p>
-            We are a marketing, advertising, and event management company built to help brands make an impact — through compelling advertising across all media and expertly managed events that create real connections.
+            We are a marketing, advertising, and event management company built
+            to help brands make an impact — through compelling advertising
+            across all media and expertly managed events that create real
+            connections.
           </p>
           <p>
-            We believe great brands are built through consistent, well-placed messaging — and great relationships are forged at well-run events. That's why we work closely with our clients as partners, not just service providers.
+            We believe great brands are built through consistent, well-placed
+            messaging — and great relationships are forged at well-run events.
+            That's why we work closely with our clients as partners, not just
+            service providers.
           </p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-24 mb-32">
         <div className="border-t-2 border-[#0A0A0A] pt-12 reveal-left">
-          <h3 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: '#059669' }}>What We Do</h3>
+          <h3
+            className="text-xs font-black uppercase tracking-[0.3em] mb-8"
+            style={{ color: "var(--color-brand-ink)" }}
+          >
+            What We Do
+          </h3>
           <div className="space-y-8">
             {[
-              { title: 'Marketing & brand management consultancy', desc: 'Strategic brand guidance tailored to your market.' },
-              { title: 'Advertising design, creation & placement', desc: 'Creative that performs across every format and channel.' },
-              { title: 'Print, broadcast & digital media advertising', desc: 'Reaching your audience wherever they are.' },
-              { title: 'PR & advertising material distribution', desc: 'Getting your message out through the right channels.' },
-              { title: 'Event organization, promotion & management', desc: 'End-to-end event delivery from brief to execution.' },
-              { title: 'Trade shows, conferences & corporate meetings', desc: 'Professional events that make the right impression.' },
+              {
+                title: "Marketing & brand management consultancy",
+                desc: "Strategic brand guidance tailored to your market.",
+              },
+              {
+                title: "Advertising design, creation & placement",
+                desc: "Creative that performs across every format and channel.",
+              },
+              {
+                title: "Print, broadcast & digital media advertising",
+                desc: "Reaching your audience wherever they are.",
+              },
+              {
+                title: "PR & advertising material distribution",
+                desc: "Getting your message out through the right channels.",
+              },
+              {
+                title: "Event organization, promotion & management",
+                desc: "End-to-end event delivery from brief to execution.",
+              },
+              {
+                title: "Trade shows, conferences & corporate meetings",
+                desc: "Professional events that make the right impression.",
+              },
             ].map((item, i) => (
-              <div key={i} className="group cursor-default border-b border-gray-100 pb-6 last:border-0">
-                <h4 className="text-lg font-bold tracking-tighter mb-1 group-hover:text-[#059669] transition-colors duration-300 text-[#0A0A0A]">{item.title}</h4>
-                <p className="text-gray-400 text-sm font-light">{item.desc}</p>
+              <div
+                key={i}
+                className="group cursor-default border-b border-gray-100 pb-6 last:border-0"
+              >
+                <h4 className="text-lg font-bold tracking-tighter mb-1 group-hover:text-[color:var(--color-brand-ink)] transition-colors duration-300 text-[#0A0A0A]">
+                  {item.title}
+                </h4>
+                <p className="text-gray-500 text-sm font-light">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
         <div className="border-t-2 border-[#0A0A0A] pt-12 reveal-right">
-          <h3 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: '#059669' }}>Our Approach</h3>
-          <p className="text-gray-500 mb-10 font-light">No generic templates. No guesswork. Just clear direction and measurable results.</p>
+          <h3
+            className="text-xs font-black uppercase tracking-[0.3em] mb-8"
+            style={{ color: "var(--color-brand-ink)" }}
+          >
+            Our Approach
+          </h3>
+          <p className="text-gray-500 mb-10 font-light">
+            No generic templates. No guesswork. Just clear direction and
+            measurable results.
+          </p>
           <ul className="space-y-6">
             {[
-              'Understanding your business first',
-              'Creating strategies that are practical and scalable',
-              'Executing with clarity and accountability',
-              'Tracking results and continuously improving',
+              "Understanding your business first",
+              "Creating strategies that are practical and scalable",
+              "Executing with clarity and accountability",
+              "Tracking results and continuously improving",
             ].map((item, i) => (
-              <li key={i} className={`text-xl font-medium text-[#0A0A0A] flex items-start group cursor-default hover:text-[#059669] transition-colors duration-300 reveal stagger-${i + 1}`}>
-                <span className="w-1.5 h-1.5 mt-2.5 mr-4 flex-shrink-0 group-hover:scale-150 transition-transform duration-300" style={{ background: '#059669' }} />
+              <li
+                key={i}
+                className={`text-xl font-medium text-[#0A0A0A] flex items-start group cursor-default hover:text-[color:var(--color-brand)] transition-colors duration-300 reveal stagger-${i + 1}`}
+              >
+                <span
+                  className="w-1.5 h-1.5 mt-2.5 mr-4 flex-shrink-0 group-hover:scale-150 transition-transform duration-300"
+                  style={{ background: "var(--color-brand)" }}
+                />
                 {item}
               </li>
             ))}
@@ -733,44 +1192,157 @@ const AboutPage = () => (
       </div>
 
       <div className="bg-[#0A0A0A] text-white p-12 md:p-24 mb-32 reveal-scale">
-        <h3 className="text-xs font-black uppercase tracking-[0.3em] mb-12" style={{ color: '#059669' }}>Why Outgrow?</h3>
+        <h3
+          className="text-xs font-black uppercase tracking-[0.3em] mb-12"
+          style={{ color: "var(--color-brand)" }}
+        >
+          Why Outgrow?
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24">
           {[
-            { title: 'Strategic thinking backed by execution', desc: "We don't just plan; we deliver the results we promise." },
-            { title: 'Modern tools and creative solutions', desc: 'Leveraging the latest in tech and creativity.' },
-            { title: 'Clear communication and transparency', desc: 'Honesty is the bedrock of our partnerships.' },
-            { title: 'Long-term growth focus', desc: 'Building sustainable value, not short-term hype.' },
-            { title: 'Results-driven mindset', desc: 'Metrics that matter to your bottom line.' },
+            {
+              title: "Strategic thinking backed by execution",
+              desc: "We don't just plan; we deliver the results we promise.",
+            },
+            {
+              title: "Modern tools and creative solutions",
+              desc: "Leveraging the latest in tech and creativity.",
+            },
+            {
+              title: "Clear communication and transparency",
+              desc: "Honesty is the bedrock of our partnerships.",
+            },
+            {
+              title: "Long-term growth focus",
+              desc: "Building sustainable value, not short-term hype.",
+            },
+            {
+              title: "Results-driven mindset",
+              desc: "Metrics that matter to your bottom line.",
+            },
           ].map((item, i) => (
             <div key={i} className="group">
-              <h4 className="text-lg font-bold mb-2 group-hover:text-[#059669] transition-colors duration-300">{item.title}</h4>
+              <h4 className="text-lg font-bold mb-2 group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
+                {item.title}
+              </h4>
               <p className="text-gray-400 text-sm font-light">{item.desc}</p>
             </div>
           ))}
-          <p className="text-xl font-black tracking-tighter pt-4" style={{ color: '#059669' }}>
-            We don't just help businesses look good — we help them outgrow their limits.
+          <p
+            className="text-xl font-black tracking-tighter pt-4"
+            style={{ color: "var(--color-brand)" }}
+          >
+            We don't just help businesses look good — we help them outgrow their
+            limits.
           </p>
         </div>
       </div>
 
+      <div className="mb-32 reveal active">
+        <h3
+          className="text-xs font-black uppercase tracking-[0.3em] mb-4"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          The Outgrow Playbook
+        </h3>
+        <p className="text-3xl md:text-4xl font-black tracking-tighter text-[#0A0A0A] mb-4">
+          Twelve disciplines. Every engagement.
+        </p>
+        <p className="text-gray-500 font-light max-w-2xl mb-14">
+          The same operating system our AI strategy preview runs on — applied by
+          humans, measured in numbers.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-100 border border-gray-100">
+          {[
+            {
+              t: "Data before opinions",
+              d: "Analytics, platform insights and customer feedback make the decisions; hunches only propose.",
+            },
+            {
+              t: "Segment & personalize",
+              d: "Audiences split by behaviour and need — every segment gets its own message, never one blast for all.",
+            },
+            {
+              t: "Content that earns attention",
+              d: "Blogs, video and guides that answer real questions — and compound through search over time.",
+            },
+            {
+              t: "Community over broadcast",
+              d: "Replies, polls, live moments and user-generated content that make the audience part of the brand.",
+            },
+            {
+              t: "Email & WhatsApp lifecycles",
+              d: "Segmented lists and behaviour-triggered flows — welcome, abandoned cart, win-back — measured in revenue.",
+            },
+            {
+              t: "Search, both halves",
+              d: "SEO for the demand that already exists, SEM for the demand you want next; keywords chosen from data.",
+            },
+            {
+              t: "Credible influencer partnerships",
+              d: "Creators matched to brand values and audience, briefed for authenticity, tracked for actual ROI.",
+            },
+            {
+              t: "AI & automation",
+              d: "Chatbots for first response, predictive analytics, automated reporting — humans stay on the judgment calls.",
+            },
+            {
+              t: "Always be testing",
+              d: "A/B tests on hooks, CTAs, subject lines and landing pages; the numbers pick the winners.",
+            },
+            {
+              t: "KPIs, not vanity metrics",
+              d: "CAC, conversion rate, ROI and retention on one dashboard, reviewed on a fixed rhythm.",
+            },
+            {
+              t: "One brand, every channel",
+              d: "A consistent identity across social, web and email — with retargeting to re-engage the almost-converted.",
+            },
+            {
+              t: "Teach to win trust",
+              d: "Webinars and workshops that showcase expertise, add real value, and quietly fill the pipeline.",
+            },
+          ].map((item, i) => (
+            <div key={i} className="bg-white p-8 group">
+              <h4 className="text-base font-black tracking-tight text-[#0A0A0A] mb-2 group-hover:text-[color:var(--color-brand-ink)] transition-colors duration-300">
+                {item.t}
+              </h4>
+              <p className="text-[13px] text-gray-500 font-light leading-relaxed">
+                {item.d}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="max-w-4xl mx-auto text-center mb-32 reveal">
-        <h3 className="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mb-8">Our Vision</h3>
+        <h3 className="text-xs font-black uppercase tracking-[0.3em] text-gray-500 mb-8">
+          Our Vision
+        </h3>
         <blockquote className="text-4xl md:text-5xl font-light italic leading-tight text-[#0A0A0A] mb-12">
-          "To become a trusted growth partner for businesses looking to build strong brands and create long-lasting impact in their markets."
+          "To become a trusted growth partner for businesses looking to build
+          strong brands and create long-lasting impact in their markets."
         </blockquote>
       </div>
 
       <div className="border-t-2 border-[#0A0A0A] pt-24 text-center reveal">
-        <h3 className="text-huge font-black tracking-tighter mb-12 text-[#0A0A0A]">Let's Grow Together</h3>
+        <h3 className="text-huge font-black tracking-tighter mb-12 text-[#0A0A0A]">
+          Let's Grow Together
+        </h3>
         <p className="text-xl text-gray-500 max-w-2xl mx-auto mb-12 font-light">
-          Whether you're launching, rebranding, or planning your next major event — Outgrow is here to help you take the next step.
+          Whether you're launching, rebranding, or planning your next major
+          event — Outgrow is here to help you take the next step.
         </p>
         <a
           href="#contact"
           className="btn-lift inline-block text-white px-12 py-6 text-sm font-black uppercase tracking-widest transition-colors duration-300"
-          style={{ background: '#0A0A0A' }}
-          onMouseEnter={e => { (e.target as HTMLElement).style.background = '#059669'; }}
-          onMouseLeave={e => { (e.target as HTMLElement).style.background = '#0A0A0A'; }}
+          style={{ background: "#0A0A0A" }}
+          onMouseEnter={(e) => {
+            (e.target as HTMLElement).style.background = "var(--color-brand)";
+          }}
+          onMouseLeave={(e) => {
+            (e.target as HTMLElement).style.background = "#0A0A0A";
+          }}
         >
           Start the Conversation
         </a>
@@ -780,22 +1352,881 @@ const AboutPage = () => (
 );
 
 /* ─────────────────────────────────────────────
+   Presence Grader — interactive audit lead magnet
+───────────────────────────────────────────── */
+const GRADER_DIMS = [
+  {
+    key: "search",
+    label: "Search presence",
+    q: "Someone googles your category in Doha. Do you show up?",
+    opts: [
+      { t: "Yes — complete profile, fresh reviews", s: 100 },
+      { t: "We're listed, but it's thin", s: 50 },
+      { t: "Not really", s: 0 },
+    ],
+    fix: "Claim and complete the Google Business Profile — photos, services, hours, weekly posts. Maps is the highest-intent shelf in local business.",
+  },
+  {
+    key: "rhythm",
+    label: "Publishing rhythm",
+    q: "How often does your brand actually post?",
+    opts: [
+      { t: "Fixed rhythm, several times a week", s: 100 },
+      { t: "Bursts — active weeks, silent months", s: 50 },
+      { t: "Rarely", s: 0 },
+    ],
+    fix: "Consistency beats bursts: one monthly content session feeding a fixed weekly cadence keeps the brand visible without daily effort.",
+  },
+  {
+    key: "contact",
+    label: "One-tap contact",
+    q: "Can a customer reach you in one tap from any ad or profile?",
+    opts: [
+      { t: "WhatsApp button everywhere", s: 100 },
+      { t: "Phone number / DMs, scattered", s: 50 },
+      { t: "Contact forms only — slow replies", s: 0 },
+    ],
+    fix: "Put WhatsApp click-to-chat on every ad, bio and page — then hold a 5-minute response SLA in working hours. Speed-to-lead decides who wins the deal.",
+  },
+  {
+    key: "capture",
+    label: "Lead capture",
+    q: "What happens to interested people who don’t buy today?",
+    opts: [
+      { t: "They join our list; flows follow up", s: 100 },
+      { t: "We collect contacts, rarely follow up", s: 50 },
+      { t: "Nothing — they scroll away", s: 0 },
+    ],
+    fix: "Build the first-party list: one conversion page, a genuine incentive, and triggered follow-ups. Owned audiences are the hedge against rising ad costs.",
+  },
+  {
+    key: "measure",
+    label: "Measurement",
+    q: "Do you know what a customer costs you to acquire?",
+    opts: [
+      { t: "Pixels + dashboard, reviewed weekly", s: 100 },
+      { t: "We check platform stats sometimes", s: 50 },
+      { t: "No idea", s: 0 },
+    ],
+    fix: "Install pixels/CAPI and UTM discipline, then one dashboard with CAC, conversion rate and ROI — reviewed on a fixed rhythm. Data before opinions.",
+  },
+  {
+    key: "proof",
+    label: "Reviews & proof",
+    q: "How does social proof get created?",
+    opts: [
+      { t: "We systematically ask at the right moment", s: 100 },
+      { t: "Reviews happen organically", s: 50 },
+      { t: "Few or none", s: 0 },
+    ],
+    fix: "Systematize reviews at the happiest customer moment and surface outcomes on your site — proof compounds while ads only rent attention.",
+  },
+];
+
+const gradeBand = (score: number) =>
+  score >= 85
+    ? {
+        title: "Sharp. Now scale it.",
+        line: "The foundations are in place — the next win is concentrating budget on what already works.",
+      }
+    : score >= 65
+      ? {
+          title: "Solid — with leaks.",
+          line: "The basics are there, but demand is slipping through specific gaps. Fix the three below first.",
+        }
+      : score >= 40
+        ? {
+            title: "Visible gaps.",
+            line: "Customers are looking for a business like yours and finding competitors. The fixes below are where to start.",
+          }
+        : {
+            title: "Invisible where it counts.",
+            line: "Almost every buying moment is passing you by — the good news: the first fixes are cheap and fast.",
+          };
+
+const PresenceGrader = () => {
+  const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [done, setDone] = useState(false);
+  const [scoring, setScoring] = useState(false);
+  const [lead, setLead] = useState({ name: "", email: "" });
+  const [leadStatus, setLeadStatus] = useState<
+    "idle" | "sending" | "sent" | "error"
+  >("idle");
+
+  const answered = Object.keys(answers).length;
+  const score = done
+    ? Math.round(
+        GRADER_DIMS.reduce((n, d) => n + (answers[d.key] ?? 0), 0) /
+          GRADER_DIMS.length,
+      )
+    : 0;
+  const band = gradeBand(score);
+  const weakest = [...GRADER_DIMS]
+    .sort((a, b) => (answers[a.key] ?? 0) - (answers[b.key] ?? 0))
+    .slice(0, 3)
+    .filter((d) => (answers[d.key] ?? 0) < 100);
+
+  const submitLead = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (leadStatus === "sending") return;
+    setLeadStatus("sending");
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...lead,
+          phone: "",
+          comments: "Requested their Presence Check results + recommendations.",
+          source: "grader",
+          context: `Scored ${score}/100 — weakest: ${weakest.map((w) => w.label).join(", ") || "none"}`,
+        }),
+      });
+      if (!res.ok) throw new Error(`lead endpoint ${res.status}`);
+      setLeadStatus("sent");
+    } catch (err) {
+      console.error("grader lead submit failed:", err);
+      setLeadStatus("error");
+    }
+  };
+
+  const ringLen = 2 * Math.PI * 54;
+
+  return (
+    <section
+      id="presence-check"
+      className="py-32 md:py-48 px-6 md:px-12 bg-white"
+    >
+      <div className="max-w-[1440px] mx-auto">
+        <div className="mb-16 reveal active">
+          <h2
+            className="text-xs font-bold uppercase tracking-[0.3em] mb-6"
+            style={{ color: "var(--color-brand-ink)" }}
+          >
+            Free Presence Check
+          </h2>
+          <h3 className="text-display font-black tracking-tighter text-[#0A0A0A]">
+            How visible is your business, really?
+          </h3>
+          <p className="text-gray-600 mt-4 font-light max-w-lg">
+            Six honest questions, thirty seconds, an instant score — and the
+            three fixes that would move it most.
+          </p>
+        </div>
+
+        {!done ? (
+          <div className="max-w-3xl">
+            <div className="flex gap-2 mb-10">
+              {GRADER_DIMS.map((d) => (
+                <div
+                  key={d.key}
+                  className="flex-1 h-0.5 bg-gray-200 overflow-hidden rounded-full"
+                >
+                  <div
+                    className="progress-fill rounded-full"
+                    style={{
+                      width: answers[d.key] !== undefined ? "100%" : "0%",
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="space-y-10">
+              {GRADER_DIMS.map((d, i) => (
+                <div key={d.key}>
+                  <p className="text-[10px] font-black uppercase tracking-[0.25em] text-gray-500 mb-3">
+                    {String(i + 1).padStart(2, "0")} — {d.label}
+                  </p>
+                  <p className="text-lg font-bold tracking-tight text-[#0A0A0A] mb-4">
+                    {d.q}
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    {d.opts.map((o) => (
+                      <button
+                        key={o.t}
+                        onClick={() => setAnswers({ ...answers, [d.key]: o.s })}
+                        className="text-left p-5 border-2 text-[13px] font-medium leading-snug transition-colors duration-200"
+                        style={{
+                          borderColor:
+                            answers[d.key] === o.s ? "var(--color-brand)" : "#E5E7EB",
+                          background:
+                            answers[d.key] === o.s ? "#ECFDF5" : "#fff",
+                          color: "#0A0A0A",
+                        }}
+                      >
+                        {o.t}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button
+              disabled={answered < GRADER_DIMS.length || scoring}
+              onClick={() => {
+                setScoring(true);
+                setTimeout(() => {
+                  setScoring(false);
+                  setDone(true);
+                }, 1400);
+              }}
+              className="btn-lift mt-12 px-12 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-white disabled:opacity-40"
+              style={{ background: "#0A0A0A" }}
+            >
+              {scoring
+                ? "Scoring your presence…"
+                : answered < GRADER_DIMS.length
+                  ? `Answer ${GRADER_DIMS.length - answered} more`
+                  : "Get my score"}
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 items-start">
+            <div className="lg:col-span-4">
+              <div className="relative w-44 h-44 mb-8">
+                <svg
+                  viewBox="0 0 120 120"
+                  className="w-full h-full"
+                  style={{ transform: "rotate(-90deg)" }}
+                >
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="54"
+                    fill="none"
+                    stroke="#F3F4F6"
+                    strokeWidth="10"
+                  />
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="54"
+                    fill="none"
+                    stroke={
+                      score >= 65
+                        ? "var(--color-brand)"
+                        : score >= 40
+                          ? "#B45309"
+                          : "#B91C1C"
+                    }
+                    strokeWidth="10"
+                    strokeLinecap="butt"
+                    strokeDasharray={ringLen}
+                    strokeDashoffset={ringLen * (1 - score / 100)}
+                    style={{
+                      transition:
+                        "stroke-dashoffset 1s cubic-bezier(0.22,1,0.36,1)",
+                    }}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-5xl font-black tabular-nums text-[#0A0A0A]">
+                    {score}
+                  </span>
+                  <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">
+                    out of 100
+                  </span>
+                </div>
+              </div>
+              <h4 className="text-3xl font-black tracking-tighter text-[#0A0A0A] mb-3">
+                {band.title}
+              </h4>
+              <p className="text-gray-500 font-light leading-relaxed mb-8">
+                {band.line}
+              </p>
+              <div className="space-y-2.5">
+                {GRADER_DIMS.map((d) => (
+                  <div key={d.key} className="flex items-center gap-3">
+                    <span className="w-32 text-[10px] font-black uppercase tracking-widest text-gray-500 flex-shrink-0">
+                      {d.label}
+                    </span>
+                    <div className="flex-1 h-1.5 bg-gray-100 overflow-hidden">
+                      <div
+                        style={{
+                          width: `${answers[d.key] ?? 0}%`,
+                          height: "100%",
+                          background:
+                            (answers[d.key] ?? 0) >= 100
+                              ? "var(--color-brand)"
+                              : (answers[d.key] ?? 0) >= 50
+                                ? "#B45309"
+                                : "#B91C1C",
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={() => {
+                  setDone(false);
+                  setAnswers({});
+                  setLeadStatus("idle");
+                }}
+                className="mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[color:var(--color-brand-ink)] hover:border-[color:var(--color-brand)] transition-colors duration-300"
+              >
+                Retake
+              </button>
+            </div>
+
+            <div className="lg:col-span-8">
+              <p
+                className="text-[10px] font-black uppercase tracking-[0.25em] mb-6"
+                style={{ color: "var(--color-brand-ink)" }}
+              >
+                Fix these first
+              </p>
+              <div className="space-y-px bg-gray-100 border border-gray-100 mb-10">
+                {(weakest.length ? weakest : GRADER_DIMS.slice(0, 3)).map(
+                  (d, i) => (
+                    <div
+                      key={d.key}
+                      className="bg-white p-7 flex items-start gap-5"
+                    >
+                      <span
+                        className="text-[11px] font-black tabular-nums mt-0.5"
+                        style={{ color: "var(--color-brand-ink)" }}
+                      >
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <div>
+                        <h5 className="text-base font-black tracking-tight text-[#0A0A0A] mb-1">
+                          {d.label}
+                        </h5>
+                        <p className="text-sm text-gray-500 font-light leading-relaxed">
+                          {d.fix}
+                        </p>
+                      </div>
+                    </div>
+                  ),
+                )}
+              </div>
+
+              <div className="bg-[#0A0A0A] p-8 text-white">
+                {leadStatus === "sent" ? (
+                  <p className="text-sm font-bold text-center py-2">
+                    Done — your results and recommendations are on the way to{" "}
+                    <span style={{ color: "#34D399" }}>{lead.email}</span>.
+                  </p>
+                ) : (
+                  <form
+                    onSubmit={submitLead}
+                    className="flex flex-col md:flex-row md:items-end gap-5"
+                  >
+                    <p className="text-sm font-black tracking-tight md:max-w-[200px] flex-shrink-0">
+                      Get your full results + a fix-it plan by email.
+                    </p>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Your name"
+                      value={lead.name}
+                      onChange={(e) =>
+                        setLead({ ...lead, name: e.target.value })
+                      }
+                      className="flex-1 bg-transparent border-b-2 border-gray-700 focus:border-[color:var(--color-brand)] py-3 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors duration-300"
+                    />
+                    <input
+                      type="email"
+                      required
+                      placeholder="Work email"
+                      value={lead.email}
+                      onChange={(e) =>
+                        setLead({ ...lead, email: e.target.value })
+                      }
+                      className="flex-1 bg-transparent border-b-2 border-gray-700 focus:border-[color:var(--color-brand)] py-3 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors duration-300"
+                    />
+                    <button
+                      type="submit"
+                      disabled={leadStatus === "sending"}
+                      className="btn-lift flex-shrink-0 px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-white disabled:opacity-60"
+                      style={{ background: "var(--color-brand)" }}
+                    >
+                      {leadStatus === "sending"
+                        ? "Sending…"
+                        : "Send my results"}
+                    </button>
+                  </form>
+                )}
+                {leadStatus === "error" && (
+                  <p className="text-red-400 text-[11px] font-bold mt-3">
+                    Couldn't send right now — try again, or use the contact form
+                    below.
+                  </p>
+                )}
+              </div>
+
+              <p className="text-[12px] text-gray-500 font-light mt-6">
+                Want the full 90-day plan behind these fixes?{" "}
+                <a
+                  href="#ai-strategy"
+                  className="font-bold text-[#0A0A0A] border-b border-[#0A0A0A] hover:text-[color:var(--color-brand-ink)] hover:border-[color:var(--color-brand)] transition-colors"
+                >
+                  Generate your strategy below ↓
+                </a>
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
+
+/* ─────────────────────────────────────────────
    AI Insights
 ───────────────────────────────────────────── */
+const FRAMEWORK_CHIPS = [
+  "STP",
+  "RACE",
+  "IPA 60/40",
+  "95-5 Rule",
+  "2026 Benchmarks",
+];
+
+const StrategyReport = ({
+  strategy,
+  onReset,
+}: {
+  strategy: StrategyType;
+  onReset: () => void;
+}) => {
+  const [lead, setLead] = useState({ name: "", email: "", phone: "" });
+  const [leadStatus, setLeadStatus] = useState<
+    "idle" | "sending" | "sent" | "error"
+  >("idle");
+  const [hp, setHp] = useState("");
+
+  const submitLead = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (leadStatus === "sending") return;
+    setLeadStatus("sending");
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...lead,
+          comments: "Requested their AI strategy report + a strategy session.",
+          company: hp,
+          source: "strategy-widget",
+          context: strategy.headline,
+        }),
+      });
+      if (!res.ok) throw new Error(`lead endpoint ${res.status}`);
+      setLeadStatus("sent");
+    } catch (err) {
+      console.error("strategy lead submit failed:", err);
+      setLeadStatus("error");
+    }
+  };
+
+  return (
+    <div
+      id="strategy-report"
+      className="bg-white text-gray-900 shadow-2xl p-8 md:p-14 space-y-12"
+    >
+      {/* Print-only letterhead */}
+      <div className="print-letterhead items-center justify-between">
+        <span className="flex items-center gap-2">
+          <span
+            className="w-6 h-6 flex items-center justify-center"
+            style={{ background: "var(--color-brand)" }}
+          >
+            <span className="text-white font-black text-xs">O</span>
+          </span>
+          <span className="text-base font-black tracking-tighter uppercase">
+            outgrow
+          </span>
+        </span>
+        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
+          Growth Strategy Preview · info@outgrowagency.com · +974 5595 4896 ·
+          Doha, Qatar
+        </span>
+      </div>
+      {/* Header */}
+      <div>
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+          <span
+            className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 text-white"
+            style={{ background: strategy.demo ? "#0A0A0A" : "var(--color-brand)" }}
+          >
+            {strategy.demo
+              ? "Sample Preview — engine output"
+              : "Live AI Analysis"}
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {(strategy.frameworks || []).map((f, i) => (
+              <span
+                key={i}
+                className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 border border-gray-200 text-gray-500"
+              >
+                {f}
+              </span>
+            ))}
+          </div>
+        </div>
+        <h4 className="text-3xl md:text-4xl font-black tracking-tighter text-[#0A0A0A] mb-6">
+          {strategy.headline}
+        </h4>
+        <p className="text-gray-500 font-light leading-relaxed max-w-3xl">
+          {strategy.summary}
+        </p>
+      </div>
+
+      {/* Positioning + North star / Budget */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-gray-100 border border-gray-100">
+        <div className="bg-white p-8 md:p-10">
+          <span
+            className="block text-[9px] font-black uppercase tracking-[0.25em] mb-4"
+            style={{ color: "var(--color-brand-ink)" }}
+          >
+            Positioning (STP)
+          </span>
+          <p className="text-lg font-bold tracking-tight text-[#0A0A0A] leading-snug mb-5">
+            {strategy.positioning}
+          </p>
+          <span className="block text-[9px] font-black uppercase tracking-[0.25em] text-gray-500 mb-2">
+            Beachhead segment
+          </span>
+          <p className="text-sm text-gray-500 font-light leading-relaxed">
+            {strategy.targetSegment}
+          </p>
+        </div>
+        <div className="bg-white p-8 md:p-10 flex flex-col justify-between gap-8">
+          <div>
+            <span
+              className="block text-[9px] font-black uppercase tracking-[0.25em] mb-4"
+              style={{ color: "var(--color-brand-ink)" }}
+            >
+              North-star metric
+            </span>
+            <p className="text-lg font-bold tracking-tight text-[#0A0A0A] leading-snug">
+              {strategy.northStar}
+            </p>
+          </div>
+          <div>
+            <div className="flex items-baseline justify-between mb-3">
+              <span className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-500">
+                Budget split
+              </span>
+              <span className="text-[10px] font-black tabular-nums text-gray-500">
+                {strategy.budgetSplit.brand}% brand ·{" "}
+                {strategy.budgetSplit.activation}% activation
+              </span>
+            </div>
+            <div className="flex h-2.5 w-full overflow-hidden">
+              <div
+                style={{
+                  width: `${strategy.budgetSplit.brand}%`,
+                  background: "#0A0A0A",
+                }}
+              />
+              <div
+                style={{
+                  width: `${strategy.budgetSplit.activation}%`,
+                  background: "var(--color-brand)",
+                }}
+              />
+            </div>
+            <p className="text-[11px] text-gray-500 font-light leading-relaxed mt-3">
+              {strategy.budgetSplit.note}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* RACE funnel */}
+      <div>
+        <span
+          className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          The plan — RACE journey
+        </span>
+        <div className="space-y-px bg-gray-100 border border-gray-100">
+          {strategy.funnel.map((s, i) => {
+            const priority = s.focus.startsWith("Priority");
+            return (
+              <div
+                key={i}
+                className="bg-white p-7 md:p-9 grid grid-cols-1 md:grid-cols-12 gap-6"
+                style={
+                  priority ? { boxShadow: "inset 4px 0 0 var(--color-brand)" } : undefined
+                }
+              >
+                <div className="md:col-span-3">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-xl font-black tracking-tighter text-[#0A0A0A]">
+                      {s.stage}
+                    </span>
+                    {priority && (
+                      <span
+                        className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 text-white"
+                        style={{ background: "var(--color-brand)" }}
+                      >
+                        Priority
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-gray-500 font-light leading-relaxed">
+                    {priority
+                      ? s.focus.replace(/^Priority\s*—\s*/, "")
+                      : s.focus}
+                  </p>
+                </div>
+                <div className="md:col-span-6">
+                  <ul className="space-y-3">
+                    {s.tactics.map((t, j) => (
+                      <li
+                        key={j}
+                        className="flex items-start text-sm text-gray-700 font-light leading-relaxed"
+                      >
+                        <span
+                          className="w-1.5 h-1.5 mt-2 mr-3 flex-shrink-0"
+                          style={{ background: "var(--color-brand)" }}
+                        />
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="md:col-span-3 md:border-l md:border-gray-100 md:pl-6">
+                  <span className="block text-[8px] font-black uppercase tracking-widest text-gray-500 mb-1.5">
+                    KPI
+                  </span>
+                  <p className="text-xs font-bold text-[#0A0A0A] mb-4 leading-snug">
+                    {s.kpi}
+                  </p>
+                  <span className="block text-[8px] font-black uppercase tracking-widest text-gray-500 mb-1.5">
+                    Benchmark
+                  </span>
+                  <p className="text-[11px] text-gray-500 font-light leading-relaxed">
+                    {s.benchmark}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Roadmap */}
+      <div>
+        <span
+          className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          90-day roadmap
+        </span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-100 border border-gray-100">
+          {strategy.roadmap.map((r, i) => (
+            <div key={i} className="bg-white p-7 md:p-9">
+              <span
+                className="block text-[10px] font-black tabular-nums mb-1"
+                style={{ color: "var(--color-brand-ink)" }}
+              >
+                {r.phase}
+              </span>
+              <h5 className="text-lg font-black tracking-tighter text-[#0A0A0A] mb-5">
+                {r.theme}
+              </h5>
+              <ul className="space-y-3">
+                {r.actions.map((a, j) => (
+                  <li
+                    key={j}
+                    className="flex items-start text-[13px] text-gray-600 font-light leading-relaxed"
+                  >
+                    <span className="text-[10px] font-black mr-3 mt-0.5 tabular-nums text-gray-300">
+                      {String(j + 1).padStart(2, "0")}
+                    </span>
+                    {a}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Quick wins */}
+      <div className="border-2 border-[#0A0A0A] p-7 md:p-9">
+        <span
+          className="block text-[9px] font-black uppercase tracking-[0.25em] mb-6"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          Do this week — zero budget
+        </span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {strategy.quickWins.map((q, i) => (
+            <div key={i} className="flex items-start">
+              <span
+                className="w-5 h-5 border-2 border-[color:var(--color-brand)] flex-shrink-0 mr-3 mt-0.5 flex items-center justify-center text-[10px] font-black"
+                style={{ color: "var(--color-brand-ink)" }}
+              >
+                ✓
+              </span>
+              <p className="text-sm text-gray-700 font-light leading-relaxed">
+                {q}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Take it with you — lead capture */}
+      <div className="print-hide bg-[#0A0A0A] p-7 md:p-10 text-white">
+        {leadStatus === "sent" ? (
+          <div className="text-center py-4">
+            <div
+              className="w-10 h-10 mx-auto mb-5 flex items-center justify-center text-white font-black"
+              style={{ background: "var(--color-brand)" }}
+            >
+              ✓
+            </div>
+            <p className="text-xl font-black tracking-tighter mb-2">
+              Strategy on its way.
+            </p>
+            <p className="text-gray-400 text-sm font-light">
+              We'll follow up at{" "}
+              <span className="text-white font-bold">{lead.email}</span> within
+              one business day to book your session.
+            </p>
+          </div>
+        ) : (
+          <form onSubmit={submitLead}>
+            <div className="flex flex-col lg:flex-row lg:items-end gap-8">
+              <div className="lg:max-w-xs flex-shrink-0">
+                <span
+                  className="block text-[9px] font-black uppercase tracking-[0.25em] mb-3"
+                  style={{ color: "#34D399" }}
+                >
+                  Take this with you
+                </span>
+                <p className="text-lg font-black tracking-tight leading-snug">
+                  Get this strategy in your inbox — plus a free 30-minute
+                  session to pressure-test it.
+                </p>
+              </div>
+              <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  {
+                    ph: "Your name",
+                    key: "name" as const,
+                    type: "text",
+                    req: true,
+                  },
+                  {
+                    ph: "Work email",
+                    key: "email" as const,
+                    type: "email",
+                    req: true,
+                  },
+                  {
+                    ph: "WhatsApp (optional)",
+                    key: "phone" as const,
+                    type: "tel",
+                    req: false,
+                  },
+                ].map((f) => (
+                  <input
+                    key={f.key}
+                    type={f.type}
+                    required={f.req}
+                    placeholder={f.ph}
+                    value={lead[f.key]}
+                    onChange={(e) =>
+                      setLead({ ...lead, [f.key]: e.target.value })
+                    }
+                    className="w-full bg-transparent border-b-2 border-gray-700 focus:border-[color:var(--color-brand)] py-3 text-sm text-white placeholder-gray-600 focus:outline-none transition-colors duration-300"
+                  />
+                ))}
+              </div>
+              <div className="absolute -left-[9999px]" aria-hidden="true">
+                <label>
+                  Company
+                  <input
+                    tabIndex={-1}
+                    autoComplete="off"
+                    type="text"
+                    value={hp}
+                    onChange={(e) => setHp(e.target.value)}
+                  />
+                </label>
+              </div>
+              <button
+                type="submit"
+                disabled={leadStatus === "sending"}
+                className="btn-lift flex-shrink-0 px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-white disabled:opacity-60"
+                style={{ background: "var(--color-brand)" }}
+              >
+                {leadStatus === "sending" ? "Sending…" : "Send it to me"}
+              </button>
+            </div>
+            {leadStatus === "error" && (
+              <p className="text-red-400 text-[11px] font-bold mt-4">
+                Couldn't send right now —{" "}
+                <a
+                  className="underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`https://wa.me/97455954896?text=${encodeURIComponent(`Hello Outgrow! I'd like the strategy preview "${strategy.headline}" and a session. — ${lead.name}`)}`}
+                >
+                  message us on WhatsApp instead
+                </a>
+                .
+              </p>
+            )}
+          </form>
+        )}
+      </div>
+
+      {/* Footer */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pt-2">
+        <p className="text-[10px] text-gray-500 font-light leading-relaxed max-w-md">
+          Benchmarks are published 2026 industry aggregates (Meta &amp; Google
+          benchmark studies, IPA effectiveness databank, DataReportal Qatar) —
+          directional guidance, not guarantees. The full engagement version is
+          built on your actual numbers.
+        </p>
+        <div className="print-hide flex items-center gap-6 flex-shrink-0">
+          <button
+            onClick={onReset}
+            className="text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[color:var(--color-brand-ink)] hover:border-[color:var(--color-brand)] transition-colors duration-300"
+          >
+            New Analysis
+          </button>
+          <button
+            onClick={() => window.print()}
+            className="btn-lift inline-block px-8 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-[#0A0A0A]"
+            style={{ border: "2px solid #0A0A0A" }}
+          >
+            Save as PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const AIInsights = () => {
   const [loading, setLoading] = useState(false);
-  const [statusMsg, setStatusMsg] = useState('Initializing transformation core...');
-  const [input, setInput] = useState<UserInput>({ businessName: '', industry: '', mainChallenge: '' });
+  const [statusMsg, setStatusMsg] = useState("Segmenting your market (STP)...");
+  const [input, setInput] = useState<UserInput>({
+    businessName: "",
+    industry: "",
+    mainChallenge: "",
+  });
   const [strategy, setStrategy] = useState<StrategyType | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [keyRequired, setKeyRequired] = useState(false);
 
   const LOADING_MSGS = [
-    'Analyzing market dynamics...',
-    'Benchmarking industry leaders...',
-    'Synthesizing unique value propositions...',
-    'Optimizing growth trajectory...',
-    'Calibrating strategic recommendations...',
+    "Segmenting your market (STP)...",
+    "Sequencing the RACE journey...",
+    "Pulling 2026 channel benchmarks...",
+    "Applying IPA budget evidence...",
+    "Localizing for Qatar & the GCC...",
+    "Assembling your 90-day roadmap...",
   ];
 
   useEffect(() => {
@@ -804,146 +2235,197 @@ const AIInsights = () => {
     const t = setInterval(() => {
       i = (i + 1) % LOADING_MSGS.length;
       setStatusMsg(LOADING_MSGS[i]);
-    }, 3000);
+    }, 2600);
     return () => clearInterval(t);
   }, [loading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.businessName || !input.industry) return;
-    // @ts-ignore
-    if (typeof window.aistudio !== 'undefined') {
-      // @ts-ignore
-      const hasKey = await window.aistudio.hasSelectedApiKey();
-      if (!hasKey) { setKeyRequired(true); return; }
-    }
-    setLoading(true); setError(null);
+    setLoading(true);
+    setError(null);
     try {
-      setStrategy(await generateGrowthStrategy(input));
-    } catch (err: any) {
-      if (err.message === 'API_KEY_NOT_FOUND') setKeyRequired(true);
-      else setError('Our strategy engine encountered a momentary pause. Please try again.');
+      /* Hold the reveal to live-AI timing: instant results read as cheap
+         (labor-illusion effect), and the sample path is near-instant. */
+      const started = Date.now();
+      const result = await generateGrowthStrategy(input);
+      const remaining = 3200 - (Date.now() - started);
+      if (remaining > 0) await new Promise((r) => setTimeout(r, remaining));
+      setStrategy(result);
+    } catch (err: unknown) {
+      if (err instanceof Error && err.message === "RATE_LIMITED") {
+        setError("Too many requests — give it a minute and try again.");
+      } else {
+        setError(
+          "Our strategy engine encountered a momentary pause. Please try again.",
+        );
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section id="ai-strategy" className="py-32 md:py-48 px-6 md:px-12 text-white overflow-hidden relative" style={{ background: '#059669' }}>
+    <section
+      id="ai-strategy"
+      className="py-32 md:py-48 px-6 md:px-12 text-white overflow-hidden relative"
+      style={{ background: "var(--color-brand)" }}
+    >
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 80% 50%, rgba(0,0,0,0.15) 0%, transparent 60%)' }}
+        style={{
+          background:
+            "radial-gradient(ellipse at 80% 50%, rgba(0,0,0,0.15) 0%, transparent 60%)",
+        }}
       />
       <div className="max-w-[1440px] mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
-          <div className="reveal-left">
-            <h2 className="text-xs font-bold uppercase tracking-[0.3em] text-green-200 mb-6">AI Insights</h2>
-            <h3 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight mb-8">
-              Immediate <br /> growth roadmap.
-            </h3>
-            <p className="text-xl text-green-100 font-light leading-relaxed max-w-md">
-              Harness Outgrow Intelligence for an AI-powered preview of your business transformation path.
-            </p>
+        {strategy ? (
+          <div className="reveal active">
+            <div className="mb-10">
+              <h2 className="text-xs font-bold uppercase tracking-[0.3em] text-green-200 mb-4">
+                Outgrow Intelligence
+              </h2>
+              <h3 className="text-3xl md:text-5xl font-black tracking-tighter leading-tight">
+                Your strategy preview.
+              </h3>
+            </div>
+            <StrategyReport
+              strategy={strategy}
+              onReset={() => setStrategy(null)}
+            />
           </div>
-
-          <div className="reveal-right">
-            {keyRequired ? (
-              <div className="bg-white p-10 md:p-12 text-gray-900 shadow-2xl">
-                <h4 className="text-xl font-black uppercase tracking-widest mb-6" style={{ color: '#059669' }}>Setup Required</h4>
-                <p className="text-sm text-gray-500 leading-relaxed mb-8">Please select your API key to unlock the strategic engine.</p>
-                <button
-                  onClick={async () => {
-                    try {
-                      // @ts-ignore
-                      if (window.aistudio?.openSelectKey) { await window.aistudio.openSelectKey(); setKeyRequired(false); }
-                    } catch {}
-                  }}
-                  className="btn-lift w-full py-5 text-white text-[11px] font-black uppercase tracking-[0.2em] transition-colors duration-300"
-                  style={{ background: '#0A0A0A' }}
-                  onMouseEnter={e => { (e.target as HTMLElement).style.background = '#059669'; }}
-                  onMouseLeave={e => { (e.target as HTMLElement).style.background = '#0A0A0A'; }}
-                >
-                  Manage API Key
-                </button>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+            <div className="reveal-left">
+              <h2 className="text-xs font-bold uppercase tracking-[0.3em] text-green-200 mb-6">
+                AI Insights
+              </h2>
+              <h3 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight mb-8">
+                Your growth plan, <br /> engineered.
+              </h3>
+              <p className="text-xl text-green-100 font-light leading-relaxed max-w-md mb-10">
+                Outgrow Intelligence drafts a strategy preview the way our
+                strategists do — positioning first, then the full customer
+                journey, budget split, and a 90-day roadmap.
+              </p>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {FRAMEWORK_CHIPS.map((f, i) => (
+                  <span
+                    key={i}
+                    className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border border-green-400/40 text-green-100"
+                  >
+                    {f}
+                  </span>
+                ))}
               </div>
-            ) : !strategy ? (
-              <form onSubmit={handleSubmit} className="bg-white p-10 md:p-12 shadow-2xl space-y-6 relative overflow-hidden">
+              <p className="text-[11px] text-green-200/80 font-light max-w-md">
+                Built on the frameworks working strategists plan with, and
+                judged against published 2026 channel benchmarks — localized for
+                Qatar &amp; the GCC.
+              </p>
+            </div>
+
+            <div className="reveal-right">
+              <form
+                onSubmit={handleSubmit}
+                className="bg-white p-10 md:p-12 shadow-2xl space-y-6 relative overflow-hidden"
+              >
                 {loading && (
                   <div className="absolute inset-0 z-30 flex flex-col items-center justify-center p-12 text-center bg-white/98">
                     <div className="w-16 h-0.5 bg-gray-100 mb-8 overflow-hidden relative">
-                      <div className="absolute inset-0" style={{ background: '#059669', animation: 'loadingBar 2s ease-in-out infinite' }} />
+                      <div
+                        className="absolute inset-0"
+                        style={{
+                          background: "var(--color-brand)",
+                          animation: "loadingBar 2s ease-in-out infinite",
+                        }}
+                      />
                     </div>
-                    <p className="text-[#0A0A0A] font-black uppercase tracking-[0.2em] text-[11px] mb-2">{statusMsg}</p>
-                    <p className="text-gray-400 text-[9px] uppercase tracking-widest">Outgrow Intelligence</p>
+                    <p className="text-[#0A0A0A] font-black uppercase tracking-[0.2em] text-[11px] mb-2">
+                      {statusMsg}
+                    </p>
+                    <p className="text-gray-500 text-[9px] uppercase tracking-widest">
+                      Outgrow Intelligence
+                    </p>
                   </div>
                 )}
                 <div className="space-y-5">
                   {[
-                    { ph: 'Business Name', val: input.businessName, key: 'businessName' as const, type: 'input' },
-                    { ph: 'Industry', val: input.industry, key: 'industry' as const, type: 'input' },
-                  ].map(f => (
+                    {
+                      ph: "Business Name",
+                      val: input.businessName,
+                      key: "businessName" as const,
+                      type: "input",
+                    },
+                    {
+                      ph: "Industry (e.g. restaurant, fashion, real estate)",
+                      val: input.industry,
+                      key: "industry" as const,
+                      type: "input",
+                    },
+                  ].map((f) => (
                     <div key={f.key} className="group">
                       <input
                         type="text"
                         required
                         placeholder={f.ph}
                         className="w-full border-b-2 py-4 text-[#0A0A0A] placeholder-gray-300 focus:outline-none transition-colors duration-300 bg-transparent"
-                        style={{ borderColor: '#E5E7EB' }}
+                        style={{ borderColor: "#E5E7EB" }}
                         value={f.val}
-                        onChange={e => setInput({ ...input, [f.key]: e.target.value })}
-                        onFocus={e => { (e.target as HTMLElement).style.borderColor = '#059669'; }}
-                        onBlur={e => { (e.target as HTMLElement).style.borderColor = '#E5E7EB'; }}
+                        onChange={(e) =>
+                          setInput({ ...input, [f.key]: e.target.value })
+                        }
+                        onFocus={(e) => {
+                          (e.target as HTMLElement).style.borderColor =
+                            "var(--color-brand)";
+                        }}
+                        onBlur={(e) => {
+                          (e.target as HTMLElement).style.borderColor =
+                            "#E5E7EB";
+                        }}
                       />
                     </div>
                   ))}
                   <textarea
-                    placeholder="Describe your core challenge"
+                    placeholder="Your main challenge (e.g. not enough leads, nobody knows us yet)"
                     rows={3}
                     className="w-full border-b-2 py-4 text-[#0A0A0A] placeholder-gray-300 focus:outline-none resize-none bg-transparent transition-colors duration-300"
-                    style={{ borderColor: '#E5E7EB' }}
+                    style={{ borderColor: "#E5E7EB" }}
                     value={input.mainChallenge}
-                    onChange={e => setInput({ ...input, mainChallenge: e.target.value })}
-                    onFocus={e => { (e.target as HTMLElement).style.borderColor = '#059669'; }}
-                    onBlur={e => { (e.target as HTMLElement).style.borderColor = '#E5E7EB'; }}
+                    onChange={(e) =>
+                      setInput({ ...input, mainChallenge: e.target.value })
+                    }
+                    onFocus={(e) => {
+                      (e.target as HTMLElement).style.borderColor = "var(--color-brand)";
+                    }}
+                    onBlur={(e) => {
+                      (e.target as HTMLElement).style.borderColor = "#E5E7EB";
+                    }}
                   />
                 </div>
                 <button
                   disabled={loading}
                   className="btn-lift w-full py-5 text-white text-[11px] font-black uppercase tracking-[0.2em] transition-colors duration-300 disabled:opacity-50"
-                  style={{ background: '#0A0A0A' }}
-                  onMouseEnter={e => { if (!loading) (e.target as HTMLElement).style.background = '#059669'; }}
-                  onMouseLeave={e => { (e.target as HTMLElement).style.background = '#0A0A0A'; }}
+                  style={{ background: "#0A0A0A" }}
+                  onMouseEnter={(e) => {
+                    if (!loading)
+                      (e.target as HTMLElement).style.background = "var(--color-brand)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.target as HTMLElement).style.background = "#0A0A0A";
+                  }}
                 >
-                  Generate Insights
+                  Generate My Strategy
                 </button>
-                {error && <p className="text-red-500 text-[10px] font-bold text-center">{error}</p>}
+                {error && (
+                  <p className="text-red-500 text-[10px] font-bold text-center">
+                    {error}
+                  </p>
+                )}
               </form>
-            ) : (
-              <div className="bg-white p-10 md:p-12 text-gray-900 space-y-8 shadow-2xl">
-                <div className="flex justify-between items-start">
-                  <h4 className="text-xl font-black uppercase tracking-tighter text-[#0A0A0A] pr-4">{strategy.headline}</h4>
-                  <span className="text-[9px] font-black uppercase border border-gray-200 px-2 py-1 text-gray-400 flex-shrink-0">AI Analysis</span>
-                </div>
-                <p className="text-gray-500 font-light leading-relaxed">{strategy.summary}</p>
-                <div className="space-y-3">
-                  {strategy.recommendations.map((rec, i) => (
-                    <div key={i} className="border-l-4 pl-5 py-2 hover:bg-gray-50 transition-colors duration-200" style={{ borderColor: '#059669' }}>
-                      <span className="text-[9px] font-black uppercase text-gray-400 tracking-widest">{rec.category}</span>
-                      <h5 className="font-bold text-sm mt-1 text-[#0A0A0A]">{rec.title}</h5>
-                      <p className="text-xs text-gray-500 mt-1 font-light">{rec.action}</p>
-                    </div>
-                  ))}
-                </div>
-                <button
-                  onClick={() => setStrategy(null)}
-                  className="text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors duration-300"
-                >
-                  New Analysis
-                </button>
-              </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
@@ -952,18 +2434,37 @@ const AIInsights = () => {
 /* ─────────────────────────────────────────────
    Service Pages
 ───────────────────────────────────────────── */
-const ServiceCard: React.FC<{ num: string; title: string; desc: string }> = ({ num, title, desc }) => (
+const ServiceCard: React.FC<{ num: string; title: string; desc: string }> = ({
+  num,
+  title,
+  desc,
+}) => (
   <div className="card-3d bg-white p-10 md:p-12 group border border-gray-100 hover:border-[#0A0A0A] transition-colors duration-300">
-    <span className="block text-[10px] font-black mb-6 transition-colors duration-300" style={{ color: '#059669' }}>{num}</span>
-    <h3 className="text-xl font-black tracking-tighter mb-4 text-[#0A0A0A] group-hover:text-[#059669] transition-colors duration-300">{title}</h3>
+    <span
+      className="block text-[10px] font-black mb-6 transition-colors duration-300"
+      style={{ color: "var(--color-brand-ink)" }}
+    >
+      {num}
+    </span>
+    <h3 className="text-xl font-black tracking-tighter mb-4 text-[#0A0A0A] group-hover:text-[color:var(--color-brand)] transition-colors duration-300">
+      {title}
+    </h3>
     <p className="text-gray-500 text-sm leading-relaxed font-light">{desc}</p>
   </div>
 );
 
-const ProcessStep: React.FC<{ step: string; title: string; desc: string }> = ({ step, title, desc }) => (
-  <div className="border-t-2 border-[#0A0A0A] pt-10 pr-8 pb-10 group hover:border-[#059669] transition-colors duration-300">
-    <span className="block text-5xl font-black text-gray-100 group-hover:text-[#D1FAE5] mb-6 transition-colors duration-300">{step}</span>
-    <h3 className="text-lg font-black tracking-tighter mb-3 group-hover:text-[#059669] transition-colors duration-300 text-[#0A0A0A]">{title}</h3>
+const ProcessStep: React.FC<{ step: string; title: string; desc: string }> = ({
+  step,
+  title,
+  desc,
+}) => (
+  <div className="border-t-2 border-[#0A0A0A] pt-10 pr-8 pb-10 group hover:border-[color:var(--color-brand)] transition-colors duration-300">
+    <span className="block text-5xl font-black text-gray-100 group-hover:text-[#D1FAE5] mb-6 transition-colors duration-300">
+      {step}
+    </span>
+    <h3 className="text-lg font-black tracking-tighter mb-3 group-hover:text-[color:var(--color-brand-ink)] transition-colors duration-300 text-[#0A0A0A]">
+      {title}
+    </h3>
     <p className="text-gray-500 text-sm leading-relaxed font-light">{desc}</p>
   </div>
 );
@@ -971,78 +2472,302 @@ const ProcessStep: React.FC<{ step: string; title: string; desc: string }> = ({ 
 /* ─────────────────────────────────────────────
    Works Page
 ───────────────────────────────────────────── */
-const WORKS = [
+const WORKS: {
+  num: string;
+  title: string;
+  category: string;
+  desc: string;
+  tags: string[];
+  year: string;
+  href?: string;
+}[] = [
   {
-    num: '01',
-    title: 'Regional Brand Launch',
-    category: 'Advertising & Brand Management',
-    desc: 'Full-spectrum brand identity, media placement, and advertising campaign across digital and broadcast channels for a Doha-based client.',
-    tags: ['Brand Strategy', 'Media Placement', 'Digital Advertising'],
-    year: '2025',
+    num: "01",
+    title: "ZIHAY — Modest Fashion E-Commerce",
+    category: "Web Build & Brand Systems",
+    desc: "Launch build for a modest womenswear brand: working storefront with cart and WhatsApp ordering, editorial art direction, structured-data SEO, and a single-source content system the client can edit.",
+    tags: ["E-Commerce", "WhatsApp Commerce", "Art Direction"],
+    year: "2026",
+    href: "https://zihay-preview.vercel.app",
   },
   {
-    num: '02',
-    title: 'Annual Trade Exhibition',
-    category: 'Event Management',
-    desc: 'End-to-end organization of a multi-day trade exhibition in Qatar — venue coordination, vendor management, permits, and promotional campaign.',
-    tags: ['Trade Show', 'Venue & Permits', 'Event Promotion'],
-    year: '2025',
+    num: "02",
+    title: "Regional Brand Launch",
+    category: "Advertising & Brand Management",
+    desc: "Full-spectrum brand identity, media placement, and advertising campaign across digital and broadcast channels for a Doha-based client.",
+    tags: ["Brand Strategy", "Media Placement", "Digital Advertising"],
+    year: "2025",
   },
   {
-    num: '03',
-    title: 'Corporate Conference Series',
-    category: 'Event Management',
-    desc: 'Planning and delivery of a quarterly corporate conference series — scheduling, invitations, on-site coordination, and post-event reporting.',
-    tags: ['Corporate Events', 'Budgeting', 'Logistics'],
-    year: '2024',
+    num: "03",
+    title: "Annual Trade Exhibition",
+    category: "Event Management",
+    desc: "End-to-end organization of a multi-day trade exhibition in Qatar — venue coordination, vendor management, permits, and promotional campaign.",
+    tags: ["Trade Show", "Venue & Permits", "Event Promotion"],
+    year: "2025",
   },
   {
-    num: '04',
-    title: 'Multi-Channel Ad Campaign',
-    category: 'Advertising & PR',
-    desc: 'Integrated advertising campaign covering TV, radio, press, and digital platforms — creative direction, ad design, and media distribution.',
-    tags: ['TV & Radio', 'Press Advertising', 'Creative Direction'],
-    year: '2024',
+    num: "04",
+    title: "Corporate Conference Series",
+    category: "Event Management",
+    desc: "Planning and delivery of a quarterly corporate conference series — scheduling, invitations, on-site coordination, and post-event reporting.",
+    tags: ["Corporate Events", "Budgeting", "Logistics"],
+    year: "2024",
+  },
+  {
+    num: "05",
+    title: "Multi-Channel Ad Campaign",
+    category: "Advertising & PR",
+    desc: "Integrated advertising campaign covering TV, radio, press, and digital platforms — creative direction, ad design, and media distribution.",
+    tags: ["TV & Radio", "Press Advertising", "Creative Direction"],
+    year: "2024",
   },
 ];
+
+/* ─────────────────────────────────────────────
+   Case Study — ZIHAY
+───────────────────────────────────────────── */
+const CaseZihayPage = ({ setView }: { setView: (v: View) => void }) => (
+  <div>
+    <section className="pt-40 pb-24 px-6 md:px-12 bg-[#0A0A0A] text-white">
+      <div className="max-w-[1440px] mx-auto">
+        <button
+          onClick={() => setView("works")}
+          className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
+        >
+          <span>←</span> All works
+        </button>
+        <span className="inline-block text-xs font-bold uppercase tracking-[0.3em] mb-8" style={{ color: "#34D399" }}>
+          Case study — Web build
+        </span>
+        <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-none mb-10 reveal active">
+          A storefront that speaks<br />WhatsApp — <span className="text-gray-400">and Arabic.</span>
+        </h1>
+        <div className="flex flex-wrap items-center gap-3 mb-12">
+          {["2026", "Modest fashion", "E-commerce", "Doha-ready", "Bilingual"].map((t) => (
+            <span key={t} className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border border-gray-800 text-gray-400">
+              {t}
+            </span>
+          ))}
+        </div>
+        <a
+          href="https://zihay-preview.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-lift inline-block px-10 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-[#0A0A0A] bg-white hover:bg-[color:var(--color-brand)] hover:text-white transition-colors duration-300"
+        >
+          Open the live build ↗
+        </a>
+      </div>
+    </section>
+
+    <section className="py-24 px-6 md:px-12 bg-gray-50">
+      <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {[
+          { src: "/case/zihay-en.png", label: "English · left-to-right" },
+          { src: "/case/zihay-ar.png", label: "العربية · نفس المتجر، بضغطة واحدة" },
+        ].map((shot) => (
+          <figure key={shot.src} className="m-0">
+            <div className="border border-gray-200 bg-white p-2 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+              <img src={shot.src} alt={shot.label} loading="lazy" className="w-full h-auto block" width={1280} height={900} />
+            </div>
+            <figcaption className="text-[10px] font-black uppercase tracking-widest text-gray-500 mt-4">{shot.label}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <section className="py-24 px-6 md:px-12 bg-white">
+      <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
+        <div>
+          <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: "var(--color-brand-ink)" }}>The brief</h2>
+          <p className="text-2xl font-light leading-snug text-gray-600 mb-6">
+            A modest-womenswear brand needed to go from idea to <span className="text-[#0A0A0A] font-medium">selling</span> — without waiting on payment gateways, photography, or a CMS.
+          </p>
+          <p className="text-gray-500 font-light leading-relaxed">
+            The answer was a zero-backend storefront that starts taking real orders through the channel Gulf customers already trust — WhatsApp — while every layer stays ready for payments, real photography, and scale.
+          </p>
+        </div>
+        <div>
+          <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-8" style={{ color: "var(--color-brand-ink)" }}>What we built</h2>
+          <ul className="space-y-4">
+            {[
+              "Working commerce: cart, sizes, free-shipping logic, and a WhatsApp checkout that arrives as a clean order message",
+              "Industry-correct merchandising: abayas sized by length (52\"–58\") with a bilingual height chart — the details modest-fashion customers check",
+              "A full Arabic experience: one-tap RTL interface with Arabic typography, deep-linkable for campaigns",
+              "Editorial art direction: photography, textile colour-fields and a palette system that survives real product photos",
+              "Growth wiring: newsletter into the agency lead pipeline, Instagram catalog feed, structured-data SEO, analytics-ready",
+            ].map((item, i) => (
+              <li key={i} className="flex items-start text-[15px] text-gray-700 font-light leading-relaxed">
+                <span className="w-1.5 h-1.5 mt-2.5 mr-4 flex-shrink-0" style={{ background: "var(--color-brand)" }} />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section className="py-20 px-6 md:px-12 bg-gray-50">
+      <div className="max-w-[1440px] mx-auto">
+        <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-10" style={{ color: "var(--color-brand-ink)" }}>Under the hood</h2>
+        <div className="flex flex-wrap gap-3">
+          {[
+            "Zero-backend storefront",
+            "WhatsApp commerce",
+            "Arabic / RTL engine",
+            "Single-source catalog",
+            "Meta catalog feed",
+            "Structured-data SEO",
+            "Responsive imagery",
+            "Free-license editorial photography",
+          ].map((t) => (
+            <span key={t} className="text-[10px] font-black uppercase tracking-widest px-4 py-2 border border-gray-300 text-gray-600 bg-white">
+              {t}
+            </span>
+          ))}
+        </div>
+        <p className="text-[12px] text-gray-500 font-light mt-10 max-w-2xl">
+          Status: launch build, live on preview. Payment rails (Stripe / BNPL) and brand photography are scheduled with the client — the build is wired to receive both without rework.
+        </p>
+      </div>
+    </section>
+
+    <section className="py-24 px-6 md:px-12 text-white" style={{ background: "var(--color-brand)" }}>
+      <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-12">
+        <div>
+          <h2 className="text-xs font-black uppercase tracking-[0.3em] text-green-200 mb-6">Your brand next?</h2>
+          <h3 className="text-4xl md:text-6xl font-black tracking-tighter leading-none">From idea to taking<br />orders — in weeks.</h3>
+        </div>
+        <a
+          href="#contact"
+          className="btn-lift flex-shrink-0 px-12 py-6 text-sm font-black uppercase tracking-widest bg-white text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-white transition-colors duration-300"
+        >
+          Start a build
+        </a>
+      </div>
+    </section>
+  </div>
+);
 
 const WorksPage = ({ setView }: { setView: (v: View) => void }) => (
   <section className="pt-40 pb-32 px-6 md:px-12 bg-white">
     <div className="max-w-[1440px] mx-auto">
       <div className="reveal">
-        <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-12" style={{ color: '#059669' }}>Portfolio</h2>
-        <h1 className="text-huge font-black tracking-tighter text-[#0A0A0A] mb-6">Our Works</h1>
-        <p className="text-xl text-gray-500 font-light max-w-xl mb-24">Selected client work across advertising, brand management, and event management in Qatar and the GCC region.</p>
+        <h2
+          className="text-xs font-black uppercase tracking-[0.3em] mb-12"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          Portfolio
+        </h2>
+        <h1 className="text-huge font-black tracking-tighter text-[#0A0A0A] mb-6">
+          Our Works
+        </h1>
+        <p className="text-xl text-gray-500 font-light max-w-xl mb-24">
+          Representative engagements across advertising, brand management, and
+          event management — the kind of work we deliver for brands in Qatar and
+          the GCC.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100 reveal">
         {WORKS.map((w, i) => (
-          <div key={i} className="works-card bg-white p-10 md:p-14 group" style={{ minHeight: '340px' }}>
+          <div
+            key={i}
+            className="works-card bg-white p-10 md:p-14 group"
+            style={{ minHeight: "340px" }}
+          >
             <div className="flex justify-between items-start mb-8">
-              <span className="text-[10px] font-black" style={{ color: '#059669' }}>{w.num}</span>
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{w.year}</span>
+              <span
+                className="text-[10px] font-black"
+                style={{ color: "var(--color-brand-ink)" }}
+              >
+                {w.num}
+              </span>
+              {w.href && (
+                <span
+                  className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 text-white"
+                  style={{ background: "var(--color-brand)" }}
+                >
+                  Live
+                </span>
+              )}
             </div>
-            <span className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-400 block mb-4 group-hover:text-green-300" style={{ transition: 'color 300ms ease' }}>{w.category}</span>
-            <h3 className="text-2xl md:text-3xl font-black tracking-tighter text-[#0A0A0A] mb-4 group-hover:text-white" style={{ transition: 'color 300ms ease' }}>{w.title}</h3>
-            <p className="text-gray-500 text-sm leading-relaxed font-light mb-8 group-hover:text-gray-300" style={{ transition: 'color 300ms ease' }}>{w.desc}</p>
+            <span
+              className="text-[9px] font-black uppercase tracking-[0.25em] text-gray-500 block mb-4 group-hover:text-green-300"
+              style={{ transition: "color 300ms ease" }}
+            >
+              {w.category}
+            </span>
+            <h3
+              className="text-2xl md:text-3xl font-black tracking-tighter text-[#0A0A0A] mb-4 group-hover:text-white"
+              style={{ transition: "color 300ms ease" }}
+            >
+              {w.title}
+            </h3>
+            <p
+              className="text-gray-500 text-sm leading-relaxed font-light mb-8 group-hover:text-gray-300"
+              style={{ transition: "color 300ms ease" }}
+            >
+              {w.desc}
+            </p>
             <div className="flex flex-wrap gap-2">
               {w.tags.map((tag, j) => (
-                <span key={j} className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border border-gray-200 text-gray-500 group-hover:border-gray-700 group-hover:text-gray-400" style={{ transition: 'border-color 300ms ease, color 300ms ease' }}>{tag}</span>
+                <span
+                  key={j}
+                  className="text-[9px] font-black uppercase tracking-widest px-3 py-1.5 border border-gray-200 text-gray-500 group-hover:border-gray-700 group-hover:text-gray-500"
+                  style={{
+                    transition: "border-color 300ms ease, color 300ms ease",
+                  }}
+                >
+                  {tag}
+                </span>
               ))}
             </div>
+            {w.href && (
+              <a
+                href={w.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 pb-0.5 text-[#0A0A0A] border-[#0A0A0A] group-hover:text-[#34D399] group-hover:border-[#34D399]"
+                style={{
+                  transition: "color 300ms ease, border-color 300ms ease",
+                }}
+              >
+                View the live build ↗
+              </a>
+            )}
+            {w.href && (
+              <button
+                onClick={() => setView("work-zihay")}
+                className="inline-flex items-center gap-2 mt-8 ml-8 text-[10px] font-black uppercase tracking-widest border-b-2 pb-0.5 text-gray-500 border-gray-300 group-hover:text-white group-hover:border-white"
+                style={{ transition: "color 300ms ease, border-color 300ms ease" }}
+              >
+                Read the case study →
+              </button>
+            )}
           </div>
         ))}
       </div>
 
       <div className="border-t-2 border-[#0A0A0A] pt-24 text-center mt-24 reveal">
-        <h3 className="text-huge font-black tracking-tighter mb-8">Ready to work together?</h3>
-        <p className="text-xl text-gray-500 max-w-xl mx-auto mb-12 font-light">Every project starts with a conversation. Tell us what you're building.</p>
+        <h3 className="text-huge font-black tracking-tighter mb-8">
+          Ready to work together?
+        </h3>
+        <p className="text-xl text-gray-500 max-w-xl mx-auto mb-12 font-light">
+          Every project starts with a conversation. Tell us what you're
+          building.
+        </p>
         <a
           href="#contact"
           className="btn-lift inline-block text-white px-12 py-6 text-sm font-black uppercase tracking-widest"
-          style={{ background: '#0A0A0A', transition: 'background 250ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)' }}
-          onMouseEnter={e => (e.currentTarget.style.background = '#059669')}
-          onMouseLeave={e => (e.currentTarget.style.background = '#0A0A0A')}
+          style={{
+            background: "#0A0A0A",
+            transition:
+              "background 250ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-brand)")}
+          onMouseLeave={(e) => (e.currentTarget.style.background = "#0A0A0A")}
         >
           Start a Project
         </a>
@@ -1055,30 +2780,69 @@ const ServiceMarketingPage = ({ setView }: { setView: (v: View) => void }) => (
   <div>
     <section className="pt-40 pb-32 px-6 md:px-12 bg-[#0A0A0A] text-white">
       <div className="max-w-[1440px] mx-auto">
-        <button onClick={() => setView('home')} className="text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-[#059669] transition-colors duration-300 mb-16 flex items-center gap-3">
+        <button
+          onClick={() => setView("home")}
+          className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
+        >
           <span>←</span> Back to Home
         </button>
-        <span className="inline-block text-xs font-bold uppercase tracking-[0.3em] mb-8" style={{ color: '#059669' }}>Our Services — 01</span>
+        <span
+          className="inline-block text-xs font-bold uppercase tracking-[0.3em] mb-8"
+          style={{ color: "var(--color-brand)" }}
+        >
+          Our Services — 01
+        </span>
         <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-none mb-10 reveal">
-          Advertising, PR &<br /><span className="text-gray-600">Brand Management</span>
+          Advertising, PR &<br />
+          <span className="text-gray-600">Brand Management</span>
         </h1>
         <p className="max-w-2xl text-xl text-gray-400 font-light leading-relaxed reveal">
-          We build brands that get noticed and create advertising that performs — across every platform, in every format, for every audience.
+          We build brands that get noticed and create advertising that performs
+          — across every platform, in every format, for every audience.
         </p>
       </div>
     </section>
 
     <section className="py-32 px-6 md:px-12 bg-white">
       <div className="max-w-[1440px] mx-auto">
-        <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal" style={{ color: '#059669' }}>What's Included</h2>
+        <h2
+          className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          What's Included
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { num: '01', title: 'Marketing & Brand Consultancy', desc: 'We work closely with you to define your brand\'s positioning, voice, and long-term marketing strategy. Every recommendation is grounded in your market and audience.' },
-            { num: '02', title: 'Advertising Design & Creation', desc: 'From concept to final artwork — advertising that commands attention. Press ads, digital banners, TV spots, outdoor campaigns.' },
-            { num: '03', title: 'Media Placement', desc: 'We place your advertising where it matters most — newspapers, magazines, television, radio, and across the internet.' },
-            { num: '04', title: 'Digital & Online Advertising', desc: 'Website ads, social media campaigns, display networks, and email marketing — managed with precision targeting.' },
-            { num: '05', title: 'PR & Communications', desc: 'We craft and distribute press releases, manage media relationships, and position your brand in front of the right voices.' },
-            { num: '06', title: 'Ad Material Distribution', desc: 'Physical and digital delivery of advertising materials and branded content — to the right people, at the right time.' },
+            {
+              num: "01",
+              title: "Marketing & Brand Consultancy",
+              desc: "We work closely with you to define your brand's positioning, voice, and long-term marketing strategy. Every recommendation is grounded in your market and audience.",
+            },
+            {
+              num: "02",
+              title: "Advertising Design & Creation",
+              desc: "From concept to final artwork — advertising that commands attention. Press ads, digital banners, TV spots, outdoor campaigns.",
+            },
+            {
+              num: "03",
+              title: "Media Placement",
+              desc: "We place your advertising where it matters most — newspapers, magazines, television, radio, and across the internet.",
+            },
+            {
+              num: "04",
+              title: "Digital & Online Advertising",
+              desc: "Website ads, social media campaigns, display networks, and email marketing — managed with precision targeting.",
+            },
+            {
+              num: "05",
+              title: "PR & Communications",
+              desc: "We craft and distribute press releases, manage media relationships, and position your brand in front of the right voices.",
+            },
+            {
+              num: "06",
+              title: "Ad Material Distribution",
+              desc: "Physical and digital delivery of advertising materials and branded content — to the right people, at the right time.",
+            },
           ].map((item, i) => (
             <div key={i} className={`reveal stagger-${(i % 6) + 1}`}>
               <ServiceCard {...item} />
@@ -1090,23 +2854,60 @@ const ServiceMarketingPage = ({ setView }: { setView: (v: View) => void }) => (
 
     <section className="py-32 px-6 md:px-12 bg-gray-50">
       <div className="max-w-[1440px] mx-auto">
-        <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal" style={{ color: '#059669' }}>How We Work</h2>
+        <h2
+          className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          How We Work
+        </h2>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-0 reveal">
           {[
-            { step: '01', title: 'Discovery & Brief', desc: 'We start by understanding your business, audience, competitors, and objectives in depth.' },
-            { step: '02', title: 'Strategy & Concept', desc: 'We develop the campaign strategy and creative direction, presented in a formal review.' },
-            { step: '03', title: 'Production & Placement', desc: 'We produce all materials and execute placement across agreed channels and platforms.' },
-            { step: '04', title: 'Review & Optimize', desc: 'We track performance, report on results, and continuously refine for better outcomes.' },
-          ].map((item, i) => <ProcessStep key={String(i)} step={item.step} title={item.title} desc={item.desc} />)}
+            {
+              step: "01",
+              title: "Discovery & Brief",
+              desc: "We start by understanding your business, audience, competitors, and objectives in depth.",
+            },
+            {
+              step: "02",
+              title: "Strategy & Concept",
+              desc: "We develop the campaign strategy and creative direction, presented in a formal review.",
+            },
+            {
+              step: "03",
+              title: "Production & Placement",
+              desc: "We produce all materials and execute placement across agreed channels and platforms.",
+            },
+            {
+              step: "04",
+              title: "Review & Optimize",
+              desc: "We track performance, report on results, and continuously refine for better outcomes.",
+            },
+          ].map((item, i) => (
+            <ProcessStep
+              key={String(i)}
+              step={item.step}
+              title={item.title}
+              desc={item.desc}
+            />
+          ))}
         </div>
       </div>
     </section>
 
-    <section className="py-32 px-6 md:px-12 text-white" style={{ background: '#059669' }}>
+    <section
+      className="py-32 px-6 md:px-12 text-white"
+      style={{ background: "var(--color-brand)" }}
+    >
       <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-12 reveal">
         <div>
-          <h2 className="text-xs font-black uppercase tracking-[0.3em] text-green-200 mb-6">Ready to start?</h2>
-          <h3 className="text-4xl md:text-6xl font-black tracking-tighter leading-none">Let's build your<br />brand together.</h3>
+          <h2 className="text-xs font-black uppercase tracking-[0.3em] text-green-200 mb-6">
+            Ready to start?
+          </h2>
+          <h3 className="text-4xl md:text-6xl font-black tracking-tighter leading-none">
+            Let's build your
+            <br />
+            brand together.
+          </h3>
         </div>
         <a
           href="#contact"
@@ -1123,30 +2924,71 @@ const ServiceEventsPage = ({ setView }: { setView: (v: View) => void }) => (
   <div>
     <section className="pt-40 pb-32 px-6 md:px-12 bg-[#0A0A0A] text-white">
       <div className="max-w-[1440px] mx-auto">
-        <button onClick={() => setView('home')} className="text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-[#059669] transition-colors duration-300 mb-16 flex items-center gap-3">
+        <button
+          onClick={() => setView("home")}
+          className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
+        >
           <span>←</span> Back to Home
         </button>
-        <span className="inline-block text-xs font-bold uppercase tracking-[0.3em] mb-8" style={{ color: '#059669' }}>Our Services — 02</span>
+        <span
+          className="inline-block text-xs font-bold uppercase tracking-[0.3em] mb-8"
+          style={{ color: "var(--color-brand)" }}
+        >
+          Our Services — 02
+        </span>
         <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-none mb-10 reveal">
-          Event Management<br /><span className="text-gray-600">Services</span>
+          Event Management
+          <br />
+          <span className="text-gray-600">Services</span>
         </h1>
         <p className="max-w-2xl text-xl text-gray-400 font-light leading-relaxed reveal">
-          From planning to execution, we organize events that make an impact — trade shows, conferences, corporate meetings, and everything in between.
+          From planning to execution, we organize events that make an impact —
+          trade shows, conferences, corporate meetings, and everything in
+          between.
         </p>
       </div>
     </section>
 
     <section className="py-32 px-6 md:px-12 bg-white">
       <div className="max-w-[1440px] mx-auto">
-        <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal" style={{ color: '#059669' }}>What's Included</h2>
+        <h2
+          className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          What's Included
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { num: '01', title: 'Event Organization & Management', desc: 'Full-service planning and management — from initial concept through to on-site coordination and post-event wrap-up.' },
-            { num: '02', title: 'Trade Shows & Exhibitions', desc: 'We manage your presence at trade shows, including stand coordination, logistics, staffing, and promotional distribution.' },
-            { num: '03', title: 'Conferences & Corporate Meetings', desc: 'Professional organization of conferences, seminars, roundtables, and corporate meetings — every detail handled.' },
-            { num: '04', title: 'Event Promotion', desc: 'We promote your event through targeted advertising to maximize attendance and awareness among the right audiences.' },
-            { num: '05', title: 'Venue Selection & Permitting', desc: 'We identify and secure the right venues, negotiate terms, and manage all permit applications and regulatory approvals.' },
-            { num: '06', title: 'Budgeting & Timeline Management', desc: 'Detailed budget planning, cost control, and timeline development — keeping your event on track and on budget.' },
+            {
+              num: "01",
+              title: "Event Organization & Management",
+              desc: "Full-service planning and management — from initial concept through to on-site coordination and post-event wrap-up.",
+            },
+            {
+              num: "02",
+              title: "Trade Shows & Exhibitions",
+              desc: "We manage your presence at trade shows, including stand coordination, logistics, staffing, and promotional distribution.",
+            },
+            {
+              num: "03",
+              title: "Conferences & Corporate Meetings",
+              desc: "Professional organization of conferences, seminars, roundtables, and corporate meetings — every detail handled.",
+            },
+            {
+              num: "04",
+              title: "Event Promotion",
+              desc: "We promote your event through targeted advertising to maximize attendance and awareness among the right audiences.",
+            },
+            {
+              num: "05",
+              title: "Venue Selection & Permitting",
+              desc: "We identify and secure the right venues, negotiate terms, and manage all permit applications and regulatory approvals.",
+            },
+            {
+              num: "06",
+              title: "Budgeting & Timeline Management",
+              desc: "Detailed budget planning, cost control, and timeline development — keeping your event on track and on budget.",
+            },
           ].map((item, i) => (
             <div key={i} className={`reveal stagger-${(i % 6) + 1}`}>
               <ServiceCard {...item} />
@@ -1158,23 +3000,60 @@ const ServiceEventsPage = ({ setView }: { setView: (v: View) => void }) => (
 
     <section className="py-32 px-6 md:px-12 bg-gray-50">
       <div className="max-w-[1440px] mx-auto">
-        <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal" style={{ color: '#059669' }}>How We Work</h2>
+        <h2
+          className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          How We Work
+        </h2>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-0 reveal">
           {[
-            { step: '01', title: 'Brief & Scoping', desc: 'We define event objectives, audience, format, scale, and budget in a structured kick-off session.' },
-            { step: '02', title: 'Planning & Coordination', desc: 'We build the full project plan — venue, vendors, permits, timelines, and promotional strategy.' },
-            { step: '03', title: 'Execution & On-Site Management', desc: 'Our team oversees every element on the day, managing staff, suppliers, and the event flow.' },
-            { step: '04', title: 'Post-Event Reporting', desc: 'We provide a full debrief — attendance data, feedback, outcomes, and recommendations.' },
-          ].map((item, i) => <ProcessStep key={String(i)} step={item.step} title={item.title} desc={item.desc} />)}
+            {
+              step: "01",
+              title: "Brief & Scoping",
+              desc: "We define event objectives, audience, format, scale, and budget in a structured kick-off session.",
+            },
+            {
+              step: "02",
+              title: "Planning & Coordination",
+              desc: "We build the full project plan — venue, vendors, permits, timelines, and promotional strategy.",
+            },
+            {
+              step: "03",
+              title: "Execution & On-Site Management",
+              desc: "Our team oversees every element on the day, managing staff, suppliers, and the event flow.",
+            },
+            {
+              step: "04",
+              title: "Post-Event Reporting",
+              desc: "We provide a full debrief — attendance data, feedback, outcomes, and recommendations.",
+            },
+          ].map((item, i) => (
+            <ProcessStep
+              key={String(i)}
+              step={item.step}
+              title={item.title}
+              desc={item.desc}
+            />
+          ))}
         </div>
       </div>
     </section>
 
-    <section className="py-32 px-6 md:px-12 text-white" style={{ background: '#059669' }}>
+    <section
+      className="py-32 px-6 md:px-12 text-white"
+      style={{ background: "var(--color-brand)" }}
+    >
       <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-12 reveal">
         <div>
-          <h2 className="text-xs font-black uppercase tracking-[0.3em] text-green-200 mb-6">Ready to start?</h2>
-          <h3 className="text-4xl md:text-6xl font-black tracking-tighter leading-none">Let's create an<br />event that delivers.</h3>
+          <h2 className="text-xs font-black uppercase tracking-[0.3em] text-green-200 mb-6">
+            Ready to start?
+          </h2>
+          <h3 className="text-4xl md:text-6xl font-black tracking-tighter leading-none">
+            Let's create an
+            <br />
+            event that delivers.
+          </h3>
         </div>
         <a
           href="#contact"
@@ -1190,8 +3069,121 @@ const ServiceEventsPage = ({ setView }: { setView: (v: View) => void }) => (
 /* ─────────────────────────────────────────────
    Privacy & Terms (condensed)
 ───────────────────────────────────────────── */
+
+const WEB_INCLUDED = [
+  { t: "Bilingual by construction", d: "Arabic and English as equals — true RTL layouts, native typography, and content that reads written, not translated. In this market, the toggle is the growth lever." },
+  { t: "Commerce that fits the Gulf", d: "WhatsApp-first ordering, local gateways when you're ready, honest stock states, and Instagram catalog feeds — the rails that match how Qatar actually buys." },
+  { t: "SEO foundations, not afterthoughts", d: "Real URLs, sitemaps, hreflang, structured data, and per-page titles from day one — so search equity compounds from launch." },
+  { t: "App-class without the app store", d: "Installable PWA experiences: home-screen icon, offline resilience, instant loads — most of a native app at a fraction of the cost." },
+  { t: "Measured and verified", d: "Analytics wired before spend, link and API smoke tests on every deploy, and WCAG AA contrast verified by audit — we publish the standard and hold ourselves to it." },
+  { t: "Brand systems, tokenized", d: "Colors and type live in design tokens — a rebrand applies in one line. Your identity stays consistent because the code enforces it." },
+];
+
+const WEB_STEPS = [
+  { n: "01", t: "Discover", d: "Goals, audience, Arabic/English scope, and what winning looks like — captured in a one-page brief you approve." },
+  { n: "02", t: "Build on a live preview", d: "You watch the site grow on a private URL from day one. No big reveals — continuous ones." },
+  { n: "03", t: "Verify", d: "Before launch: link and API smoke tests, accessibility audit, speed pass. You get the evidence, not assurances." },
+  { n: "04", t: "Launch & iterate", d: "Scripted cutover, analytics live, then a 90-day measure-and-improve rhythm." },
+];
+
+const ServiceWebPage = ({ setView }: { setView: (v: View) => void }) => (
+  <div>
+    <section className="pt-40 pb-32 px-6 md:px-12 bg-[#0A0A0A] text-white">
+      <div className="max-w-[1440px] mx-auto">
+        <button
+          onClick={() => setView("home")}
+          className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
+        >
+          <span>←</span> Back to Home
+        </button>
+        <span
+          className="inline-block text-xs font-bold uppercase tracking-[0.3em] mb-8"
+          style={{ color: "var(--color-brand)" }}
+        >
+          Our Services — 03
+        </span>
+        <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-none mb-10 reveal">
+          Websites that sell.<br />
+          <span className="text-gray-600">Systems that scale.</span>
+        </h1>
+        <p className="max-w-2xl text-xl text-gray-400 font-light leading-relaxed reveal">
+          Bilingual, measurable, and engineered for the Qatar market — digital
+          presence built like a product and proven like a case study.
+        </p>
+      </div>
+    </section>
+
+    <section className="py-32 px-6 md:px-12 bg-white">
+      <div className="max-w-[1440px] mx-auto">
+        <h2
+          className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          What's Included
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
+          {WEB_INCLUDED.map((f, i) => (
+            <div key={i} className="bg-white p-10">
+              <h3 className="text-lg font-black tracking-tight text-[#0A0A0A] mb-3">{f.t}</h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">{f.d}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-16 border-2 border-[color:var(--color-brand)] p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <p className="text-lg font-bold text-[#0A0A0A] max-w-xl">
+            The proof isn't a promise — it's live. See the ZIHAY storefront build,
+            then tap عربي on it.
+          </p>
+          <button
+            onClick={() => setView("work-zihay")}
+            className="btn-lift flex-shrink-0 px-10 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-colors duration-300"
+            style={{ background: "var(--color-brand)" }}
+          >
+            Read the case study
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section className="py-32 px-6 md:px-12 bg-gray-50">
+      <div className="max-w-[1440px] mx-auto">
+        <h2
+          className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          How We Work
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-gray-200 border border-gray-200">
+          {WEB_STEPS.map((st) => (
+            <div key={st.n} className="bg-gray-50 p-10">
+              <span
+                className="block text-[10px] font-black tabular-nums mb-4"
+                style={{ color: "var(--color-brand-ink)" }}
+              >
+                {st.n}
+              </span>
+              <h3 className="text-base font-black tracking-tight text-[#0A0A0A] mb-2">{st.t}</h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">{st.d}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-[12px] text-gray-500 font-light mt-10 max-w-2xl">
+          Engagements are scoped per project — launch sites, commerce builds, and
+          partner retainers. Pricing lands on the scoping call, not on a rate card.
+        </p>
+        <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mt-12">
+          Editorial draft — final voice pass pending
+        </p>
+      </div>
+    </section>
+  </div>
+);
+
 const PolicyPage = ({
-  setView, title, subtitle, sections,
+  setView,
+  title,
+  subtitle,
+  sections,
 }: {
   setView: (v: View) => void;
   title: string;
@@ -1200,17 +3192,39 @@ const PolicyPage = ({
 }) => (
   <section className="pt-40 pb-32 px-6 md:px-12 bg-white">
     <div className="max-w-[900px] mx-auto">
-      <button onClick={() => setView('home')} className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[#0A0A0A] transition-colors mb-16 flex items-center gap-3">
+      <button
+        onClick={() => setView("home")}
+        className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-[#0A0A0A] transition-colors mb-16 flex items-center gap-3"
+      >
         <span>←</span> Back to Home
       </button>
-      <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-[#0A0A0A] mb-4">{title}</h1>
-      <p className="text-xs font-bold uppercase tracking-widest mb-20" style={{ color: '#059669' }}>{subtitle}</p>
+      <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-[#0A0A0A] mb-4">
+        {title}
+      </h1>
+      <p
+        className="text-xs font-bold uppercase tracking-widest mb-20"
+        style={{ color: "var(--color-brand-ink)" }}
+      >
+        {subtitle}
+      </p>
       {sections.map((s, i) => (
         <div key={i} className="border-t border-gray-100 py-12">
-          <h2 className="text-xs font-black uppercase tracking-[0.3em] mb-6" style={{ color: '#059669' }}>{s.heading}</h2>
+          <h2
+            className="text-xs font-black uppercase tracking-[0.3em] mb-6"
+            style={{ color: "var(--color-brand-ink)" }}
+          >
+            {s.heading}
+          </h2>
           <div className="text-gray-600 text-base leading-relaxed font-light space-y-3">
-            {s.body.split('\n').map((line, j) => (
-              <p key={j} className={line.startsWith('•') || line.startsWith('  –') ? 'pl-4' : ''}>{line}</p>
+            {s.body.split("\n").map((line, j) => (
+              <p
+                key={j}
+                className={
+                  line.startsWith("•") || line.startsWith("  –") ? "pl-4" : ""
+                }
+              >
+                {line}
+              </p>
             ))}
           </div>
         </div>
@@ -1222,57 +3236,127 @@ const PolicyPage = ({
 /* ─────────────────────────────────────────────
    Contact
 ───────────────────────────────────────────── */
-const Contact = () => {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', comments: '' });
-  const [submitted, setSubmitted] = useState(false);
-  const [charCount, setCharCount] = useState(0);
+const WHATSAPP_NUMBER = "97455954896";
 
-  const handleSubmit = (e: React.FormEvent) => {
+const Contact = () => {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    comments: "",
+  });
+  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [error, setError] = useState<string | null>(null);
+  const [charCount, setCharCount] = useState(0);
+  const [honeypot, setHoneypot] = useState("");
+
+  const whatsappHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    `Hello Outgrow! I'm ${form.name || "…"}.` +
+      (form.comments ? `\n\n${form.comments}` : "") +
+      `\n\nYou can reach me at ${form.email}${form.phone ? ` / ${form.phone}` : ""}.`,
+  )}`;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (status === "sending") return;
+    setStatus("sending");
+    setError(null);
+    try {
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, company: honeypot }),
+      });
+      if (!res.ok) {
+        const data: { error?: string } = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Request failed (${res.status})`);
+      }
+      setStatus("sent");
+    } catch (err) {
+      console.error("lead submit failed:", err);
+      setStatus("idle");
+      setError(
+        "We couldn't send your message right now — tap the WhatsApp button below and it will reach us instantly.",
+      );
+    }
   };
 
   return (
     <section id="contact" className="py-32 md:py-48 px-6 md:px-12 bg-white">
       <div className="max-w-[1440px] mx-auto">
         <div className="text-center mb-20 reveal">
-          <h2 className="text-xs font-bold uppercase tracking-[0.3em] mb-8" style={{ color: '#059669' }}>Contact us</h2>
+          <h2
+            className="text-xs font-bold uppercase tracking-[0.3em] mb-8"
+            style={{ color: "var(--color-brand-ink)" }}
+          >
+            Contact us
+          </h2>
           <h3 className="text-huge font-black tracking-tighter mb-10 text-[#0A0A0A]">
             Ready to <br /> outgrow?
           </h3>
           <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed font-light">
-            Join the brands building for the future. We coordinate your transformation so you can lead your market.
+            Join the brands building for the future. We coordinate your
+            transformation so you can lead your market.
           </p>
         </div>
 
         {/* Info cards */}
         <div className="flex flex-col md:flex-row gap-6 w-full max-w-3xl mx-auto mb-20 reveal">
           {[
-            { label: 'Email us', value: 'info@outgrowagency.com', href: 'mailto:info@outgrowagency.com' },
-            { label: 'Call us', value: '+974 5595 4896', href: 'tel:+97455954896' },
-            { label: 'Location', value: 'Doha, Qatar', href: 'https://maps.google.com/?q=Doha,Qatar' },
+            {
+              label: "Email us",
+              value: "info@outgrowagency.com",
+              href: "mailto:info@outgrowagency.com",
+            },
+            {
+              label: "Call us",
+              value: "+974 5595 4896",
+              href: "tel:+97455954896",
+            },
+            {
+              label: "WhatsApp",
+              value: "+974 5595 4896",
+              href: `https://wa.me/${WHATSAPP_NUMBER}`,
+            },
           ].map((item, i) => (
             <a
               key={i}
               href={item.href}
-              target={item.href.startsWith('http') ? '_blank' : undefined}
+              target={item.href.startsWith("http") ? "_blank" : undefined}
               rel="noopener noreferrer"
               className="btn-lift flex-1 border-2 border-[#0A0A0A] py-10 px-8 group hover:bg-[#0A0A0A] hover:text-white"
-              style={{ transition: 'background 300ms ease, color 300ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)' }}
+              style={{
+                transition:
+                  "background 300ms ease, color 300ms ease, transform 250ms cubic-bezier(0.34,1.56,0.64,1)",
+              }}
             >
-              <span className="block text-[9px] font-black uppercase tracking-widest mb-3 transition-colors duration-300 group-hover:text-gray-400" style={{ color: '#6B7280' }}>{item.label}</span>
-              <span className="block text-lg font-bold text-[#0A0A0A] group-hover:text-white transition-colors duration-300">{item.value}</span>
+              <span
+                className="block text-[9px] font-black uppercase tracking-widest mb-3 transition-colors duration-300 group-hover:text-gray-400"
+                style={{ color: "#6B7280" }}
+              >
+                {item.label}
+              </span>
+              <span className="block text-lg font-bold text-[#0A0A0A] group-hover:text-white transition-colors duration-300">
+                {item.value}
+              </span>
             </a>
           ))}
         </div>
 
         {/* Google Map */}
-        <div className="map-container w-full max-w-3xl mx-auto mb-20 reveal-scale" style={{ height: 280 }}>
+        <div
+          className="map-container w-full max-w-3xl mx-auto mb-20 reveal-scale"
+          style={{ height: 280 }}
+        >
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d462560.68640148944!2d51.20820779999999!3d25.2854473!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45c534ffdce87f%3A0x1cfa88cf812b4032!2sDoha%2C%20Qatar!5e0!3m2!1sen!2s!4v1748000000000!5m2!1sen!2s"
             width="100%"
             height="280"
-            style={{ border: 0, display: 'block', filter: 'grayscale(30%) contrast(1.05)' }}
+            style={{
+              border: 0,
+              display: "block",
+              filter: "grayscale(30%) contrast(1.05)",
+            }}
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
@@ -1282,85 +3366,180 @@ const Contact = () => {
 
         {/* Form */}
         <div className="max-w-3xl mx-auto reveal">
-          <h4 className="text-xs font-black uppercase tracking-[0.3em] mb-12" style={{ color: '#059669' }}>Send us a message</h4>
-          {submitted ? (
-            <div className="border-2 border-[#059669] p-16 text-center">
+          <h4
+            className="text-xs font-black uppercase tracking-[0.3em] mb-4"
+            style={{ color: "var(--color-brand-ink)" }}
+          >
+            Send us a message
+          </h4>
+          <p className="text-sm text-gray-500 font-light mb-12">
+            We reply within one business day — or message us on WhatsApp for an
+            immediate answer.
+          </p>
+          {status === "sent" ? (
+            <div className="border-2 border-[color:var(--color-brand)] p-16 text-center">
               <div
                 className="w-12 h-12 flex items-center justify-center mx-auto mb-6 text-white text-xl font-black"
-                style={{ background: '#059669' }}
+                style={{ background: "var(--color-brand)" }}
               >
                 ✓
               </div>
-              <h5 className="text-2xl font-black tracking-tighter mb-4 text-[#0A0A0A]">Message received.</h5>
-              <p className="text-gray-500 font-light">We'll be in touch shortly at <span className="font-bold text-[#0A0A0A]">{form.email}</span>.</p>
-              <button
-                onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', comments: '' }); setCharCount(0); }}
-                className="mt-10 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[#059669] hover:border-[#059669] transition-colors duration-300"
+              <h5 className="text-2xl font-black tracking-tighter mb-4 text-[#0A0A0A]">
+                Message received.
+              </h5>
+              <p className="text-gray-500 font-light">
+                We'll be in touch shortly at{" "}
+                <span className="font-bold text-[#0A0A0A]">{form.email}</span>.
+              </p>
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-lift inline-block mt-10 px-10 py-5 text-white text-[11px] font-black uppercase tracking-[0.2em]"
+                style={{ background: "var(--color-brand)" }}
               >
-                Send another message
-              </button>
+                Continue on WhatsApp
+              </a>
+              <div>
+                <button
+                  onClick={() => {
+                    setStatus("idle");
+                    setForm({ name: "", email: "", phone: "", comments: "" });
+                    setCharCount(0);
+                  }}
+                  className="mt-8 text-[10px] font-black uppercase tracking-widest border-b-2 border-[#0A0A0A] hover:text-[color:var(--color-brand-ink)] hover:border-[color:var(--color-brand)] transition-colors duration-300"
+                >
+                  Send another message
+                </button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-0">
               <div className="grid grid-cols-1 md:grid-cols-2">
                 {[
-                  { label: 'Full Name *', ph: 'Your full name', type: 'text', key: 'name' as const, required: true },
-                  { label: 'Email Address *', ph: 'your@email.com', type: 'email', key: 'email' as const, required: true },
+                  {
+                    label: "Full Name *",
+                    ph: "Your full name",
+                    type: "text",
+                    key: "name" as const,
+                    required: true,
+                  },
+                  {
+                    label: "Email Address *",
+                    ph: "your@email.com",
+                    type: "email",
+                    key: "email" as const,
+                    required: true,
+                  },
                 ].map((f, i) => (
                   <div
                     key={f.key}
-                    className={`border-2 border-gray-200 p-8 focus-within:border-[#059669] transition-colors duration-300 ${i === 1 ? 'md:border-l-0' : ''}`}
+                    className={`border-2 border-gray-200 p-8 focus-within:border-[color:var(--color-brand)] transition-colors duration-300 ${i === 1 ? "md:border-l-0" : ""}`}
                   >
-                    <label className="block text-[9px] font-black uppercase tracking-widest text-gray-400 mb-3">{f.label}</label>
+                    <label className="block text-[9px] font-black uppercase tracking-widest text-gray-500 mb-3">
+                      {f.label}
+                    </label>
                     <input
                       type={f.type}
                       required={f.required}
                       placeholder={f.ph}
                       value={form[f.key]}
-                      onChange={e => setForm({ ...form, [f.key]: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, [f.key]: e.target.value })
+                      }
                       className="w-full text-lg font-medium text-[#0A0A0A] placeholder-gray-300 focus:outline-none bg-transparent"
                     />
                   </div>
                 ))}
               </div>
-              <div className="border-2 border-t-0 border-gray-200 p-8 focus-within:border-[#059669] transition-colors duration-300">
-                <label className="block text-[9px] font-black uppercase tracking-widest text-gray-400 mb-3">Phone Number</label>
+              <div className="border-2 border-t-0 border-gray-200 p-8 focus-within:border-[color:var(--color-brand)] transition-colors duration-300">
+                <label className="block text-[9px] font-black uppercase tracking-widest text-gray-500 mb-3">
+                  Phone Number
+                </label>
                 <input
                   type="tel"
                   placeholder="+974 XXXX XXXX"
                   value={form.phone}
-                  onChange={e => setForm({ ...form, phone: e.target.value })}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
                   className="w-full text-lg font-medium text-[#0A0A0A] placeholder-gray-300 focus:outline-none bg-transparent"
                 />
               </div>
-              <div className="border-2 border-t-0 border-gray-200 p-8 focus-within:border-[#059669] transition-colors duration-300">
+              <div className="border-2 border-t-0 border-gray-200 p-8 focus-within:border-[color:var(--color-brand)] transition-colors duration-300">
                 <div className="flex justify-between mb-3">
-                  <label className="block text-[9px] font-black uppercase tracking-widest text-gray-400">Comments</label>
-                  <span className="text-[9px] text-gray-300 font-mono tabular-nums">{charCount}/500</span>
+                  <label className="block text-[9px] font-black uppercase tracking-widest text-gray-500">
+                    Comments
+                  </label>
+                  <span className="text-[9px] text-gray-300 font-mono tabular-nums">
+                    {charCount}/500
+                  </span>
                 </div>
                 <textarea
                   rows={4}
                   maxLength={500}
                   placeholder="Tell us about your project or enquiry..."
                   value={form.comments}
-                  onChange={e => { setForm({ ...form, comments: e.target.value }); setCharCount(e.target.value.length); }}
+                  onChange={(e) => {
+                    setForm({ ...form, comments: e.target.value });
+                    setCharCount(e.target.value.length);
+                  }}
                   className="w-full text-lg font-medium text-[#0A0A0A] placeholder-gray-300 focus:outline-none bg-transparent resize-none"
                 />
                 {charCount > 0 && (
                   <div className="mt-3 h-0.5 bg-gray-100 overflow-hidden rounded-full">
-                    <div className="progress-fill rounded-full" style={{ width: `${(charCount / 500) * 100}%` }} />
+                    <div
+                      className="progress-fill rounded-full"
+                      style={{ width: `${(charCount / 500) * 100}%` }}
+                    />
                   </div>
                 )}
               </div>
+              {/* Honeypot — invisible to humans, catches spam bots */}
+              <div
+                className="absolute -left-[9999px] top-auto"
+                aria-hidden="true"
+              >
+                <label>
+                  Company
+                  <input
+                    tabIndex={-1}
+                    autoComplete="off"
+                    type="text"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </label>
+              </div>
               <button
                 type="submit"
-                className="btn-lift w-full py-7 text-white text-[11px] font-black uppercase tracking-[0.25em] transition-colors duration-300"
-                style={{ background: '#0A0A0A' }}
-                onMouseEnter={e => { (e.target as HTMLElement).style.background = '#059669'; }}
-                onMouseLeave={e => { (e.target as HTMLElement).style.background = '#0A0A0A'; }}
+                disabled={status === "sending"}
+                className="btn-lift w-full py-7 text-white text-[11px] font-black uppercase tracking-[0.25em] transition-colors duration-300 disabled:opacity-60"
+                style={{ background: "#0A0A0A" }}
+                onMouseEnter={(e) => {
+                  (e.target as HTMLElement).style.background = "var(--color-brand)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.target as HTMLElement).style.background = "#0A0A0A";
+                }}
               >
-                Send Message
+                {status === "sending" ? "Sending…" : "Send Message"}
               </button>
+              {error && (
+                <div
+                  className="border-2 border-t-0 p-6 text-center"
+                  style={{ borderColor: "#FECACA", background: "#FEF2F2" }}
+                >
+                  <p className="text-red-600 text-xs font-bold mb-4">{error}</p>
+                  <a
+                    href={whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-lift inline-block px-8 py-4 text-white text-[10px] font-black uppercase tracking-[0.2em]"
+                    style={{ background: "var(--color-brand)" }}
+                  >
+                    Send via WhatsApp instead
+                  </a>
+                </div>
+              )}
             </form>
           )}
         </div>
@@ -1377,43 +3556,77 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
     <div className="max-w-[1440px] mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
         <div className="col-span-1 md:col-span-2">
-          <button onClick={() => setView('home')} className="flex items-center space-x-2.5 mb-10 outline-none group">
+          <button
+            onClick={() => setView("home")}
+            className="flex items-center space-x-2.5 mb-10 outline-none group"
+          >
             <div
               className="w-7 h-7 flex items-center justify-center group-hover:scale-110"
-              style={{ background: '#059669', transition: 'transform 250ms cubic-bezier(0.34,1.56,0.64,1)' }}
+              style={{
+                background: "var(--color-brand)",
+                transition: "transform 250ms cubic-bezier(0.34,1.56,0.64,1)",
+              }}
             >
               <span className="text-white font-black text-sm">O</span>
             </div>
-            <span className="text-lg font-black tracking-tighter uppercase">outgrow</span>
+            <span className="text-lg font-black tracking-tighter uppercase">
+              outgrow
+            </span>
           </button>
-          <p className="text-gray-500 max-w-sm text-sm leading-relaxed font-light">
-            A marketing, advertising, and event management company dedicated to building powerful brands and delivering exceptional events in Qatar and beyond.
+          <p className="text-gray-400 max-w-sm text-sm leading-relaxed font-light">
+            A marketing, advertising, and event management company dedicated to
+            building powerful brands and delivering exceptional events in Qatar
+            and beyond.
           </p>
           <div className="flex gap-4 mt-8">
-            {['LinkedIn', 'Instagram'].map(s => (
+            {[
+              { label: "WhatsApp", href: `https://wa.me/${WHATSAPP_NUMBER}` },
+              { label: "Email", href: "mailto:info@outgrowagency.com" },
+            ].map((s) => (
               <a
-                key={s}
-                href="#"
-                className="text-[9px] font-black uppercase tracking-widest border border-gray-800 px-4 py-2.5 text-gray-600 hover:border-[#059669] hover:text-[#059669]"
-                style={{ transition: 'border-color 300ms ease, color 300ms ease' }}
+                key={s.label}
+                href={s.href}
+                target={s.href.startsWith("http") ? "_blank" : undefined}
+                rel="noopener noreferrer"
+                className="text-[9px] font-black uppercase tracking-widest border border-gray-800 px-4 py-2.5 text-gray-400 hover:border-[color:var(--color-brand)] hover:text-[color:var(--color-brand)]"
+                style={{
+                  transition: "border-color 300ms ease, color 300ms ease",
+                }}
               >
-                {s}
+                {s.label}
               </a>
             ))}
           </div>
         </div>
         <div>
-          <h4 className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-8">Navigation</h4>
+          <h4 className="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-8">
+            Navigation
+          </h4>
           <ul className="space-y-4 text-sm font-bold tracking-wide">
             {[
-              { label: 'About', action: () => setView('about') },
-              { label: 'Services', action: () => { setView('home'); setTimeout(() => document.getElementById('capabilities')?.scrollIntoView({ behavior: 'smooth' }), 100); } },
-              { label: 'Works', action: () => setView('works') },
-              { label: 'Privacy Policy', action: () => setView('privacy') },
-              { label: 'Terms & Conditions', action: () => setView('terms') },
+              { label: "About", action: () => setView("about") },
+              {
+                label: "Services",
+                action: () => {
+                  setView("home");
+                  setTimeout(
+                    () =>
+                      document
+                        .getElementById("capabilities")
+                        ?.scrollIntoView({ behavior: "smooth" }),
+                    100,
+                  );
+                },
+              },
+              { label: "Works", action: () => setView("works") },
+              { label: "Privacy Policy", action: () => setView("privacy") },
+              { label: "Terms & Conditions", action: () => setView("terms") },
             ].map((item, i) => (
               <li key={i}>
-                <button onClick={item.action} className="hover:text-[#059669] transition-colors duration-300 text-gray-400">
+                <button
+                  onClick={item.action}
+                  className="hover:text-[color:var(--color-brand)] transition-colors duration-300 text-gray-400"
+                >
                   {item.label}
                 </button>
               </li>
@@ -1421,17 +3634,36 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
           </ul>
         </div>
         <div>
-          <h4 className="text-[9px] font-black uppercase tracking-widest text-gray-700 mb-8">Contact</h4>
-          <ul className="space-y-4 text-sm font-light text-gray-500">
-            <li><a href="mailto:info@outgrowagency.com" className="hover:text-[#059669] transition-colors duration-300">info@outgrowagency.com</a></li>
-            <li><a href="tel:+97455954896" className="hover:text-[#059669] transition-colors duration-300">+974 5595 4896</a></li>
-            <li className="text-gray-600">Doha, Qatar</li>
+          <h4 className="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-8">
+            Contact
+          </h4>
+          <ul className="space-y-4 text-sm font-light text-gray-400">
+            <li>
+              <a
+                href="mailto:info@outgrowagency.com"
+                className="hover:text-[color:var(--color-brand)] transition-colors duration-300"
+              >
+                info@outgrowagency.com
+              </a>
+            </li>
+            <li>
+              <a
+                href="tel:+97455954896"
+                className="hover:text-[color:var(--color-brand)] transition-colors duration-300"
+              >
+                +974 5595 4896
+              </a>
+            </li>
+            <li className="text-gray-400">Doha, Qatar</li>
           </ul>
         </div>
       </div>
-      <div className="pt-12 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center text-[9px] font-black uppercase tracking-widest text-gray-700 gap-4">
-        <p>© {new Date().getFullYear()} Outgrow. Advertising · PR · Brand Management · Event Management</p>
-        <span style={{ color: '#059669' }}>Doha, Qatar</span>
+      <div className="pt-12 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center text-[9px] font-black uppercase tracking-widest text-gray-400 gap-4">
+        <p>
+          © {new Date().getFullYear()} Outgrow. Advertising · PR · Brand
+          Management · Event Management
+        </p>
+        <span style={{ color: "var(--color-brand)" }}>Doha, Qatar</span>
       </div>
     </div>
   </footer>
@@ -1441,50 +3673,390 @@ const Footer = ({ setView }: { setView: (v: View) => void }) => (
    Privacy & Terms data
 ───────────────────────────────────────────── */
 const PRIVACY_SECTIONS = [
-  { heading: 'Overview', body: 'At Outgrow, we value the trust our clients and partners place in us. This Privacy Policy explains how we collect, use, store, and protect your information when you interact with our services.' },
-  { heading: 'Information We Collect', body: 'We collect personal information you provide (name, company, email, phone, project details) and information collected automatically (IP address, browser type, pages visited).' },
-  { heading: 'Cookies & Technologies', body: 'We use essential, performance, and third-party cookies to enhance website performance, personalize user experience, and analyze visitor behavior. You may manage cookies through your browser settings.' },
-  { heading: 'How We Use Your Data', body: 'We use collected data to:\n• Deliver marketing and consultancy services\n• Develop and manage campaigns\n• Improve website performance\n• Communicate with clients and prospects' },
-  { heading: 'Your Rights', body: 'You have the right to access, update, or delete your personal data. Contact us at info@outgrowagency.com to make a request.' },
-  { heading: 'Data Security', body: 'We take appropriate technical and organizational measures to protect your data, including restricted access to authorized personnel and secure data storage systems.' },
-  { heading: 'Changes to This Policy', body: 'Outgrow reserves the right to update this Privacy Policy at any time. Updates will be posted on this page.' },
+  {
+    heading: "Overview",
+    body: "At Outgrow, we value the trust our clients and partners place in us. This Privacy Policy explains how we collect, use, store, and protect your information when you interact with our services.",
+  },
+  {
+    heading: "Information We Collect",
+    body: "We collect personal information you provide (name, company, email, phone, project details) and information collected automatically (IP address, browser type, pages visited).",
+  },
+  {
+    heading: "Cookies & Technologies",
+    body: "We use essential, performance, and third-party cookies to enhance website performance, personalize user experience, and analyze visitor behavior. You may manage cookies through your browser settings.",
+  },
+  {
+    heading: "How We Use Your Data",
+    body: "We use collected data to:\n• Deliver marketing and consultancy services\n• Develop and manage campaigns\n• Improve website performance\n• Communicate with clients and prospects",
+  },
+  {
+    heading: "Your Rights",
+    body: "You have the right to access, update, or delete your personal data. Contact us at info@outgrowagency.com to make a request.",
+  },
+  {
+    heading: "Data Security",
+    body: "We take appropriate technical and organizational measures to protect your data, including restricted access to authorized personnel and secure data storage systems.",
+  },
+  {
+    heading: "Changes to This Policy",
+    body: "Outgrow reserves the right to update this Privacy Policy at any time. Updates will be posted on this page.",
+  },
 ];
 
 const TERMS_SECTIONS = [
-  { heading: '1. Scope of Services', body: 'Outgrow provides services within: (1) Advertising, PR & Brand Management — including marketing consultancy, advertising design, media placement, and PR distribution; (2) Event Management — including trade shows, conferences, venue coordination, and budget management.' },
-  { heading: '2. Payment Terms', body: '• 50% non-refundable deposit required before work commences\n• Remaining 50% due upon project completion prior to final delivery\n• Additional services outside agreed scope will be quoted separately' },
-  { heading: '3. Project Timelines', body: '• Standard design projects completed within 2 weeks from start date\n• Event timelines defined per project agreement\n• Delays in client feedback may affect delivery timelines' },
-  { heading: '4. Revisions', body: '• Design projects include up to 2 revision rounds\n• Additional revisions may incur extra charges\n• One additional concept provided if initial concepts do not meet brief' },
-  { heading: '5. Cancellation Policy', body: '• Down payment is non-refundable once work has commenced\n• Projects paused for more than 30 days without client response may be considered canceled' },
-  { heading: '6. Intellectual Property', body: 'Upon full payment, the client receives rights to final approved deliverables. Outgrow retains the right to showcase completed work in portfolio and marketing materials.' },
-  { heading: '7. Governing Law', body: 'These Terms shall be governed by the laws of the State of Qatar. Any dispute shall be subject to the exclusive jurisdiction of the competent courts of Qatar.' },
-  { heading: '8. Regulatory Compliance', body: 'Outgrow operates in compliance with all applicable Qatari laws including commercial, advertising, event licensing, and data protection regulations.' },
+  {
+    heading: "1. Scope of Services",
+    body: "Outgrow provides services within: (1) Advertising, PR & Brand Management — including marketing consultancy, advertising design, media placement, and PR distribution; (2) Event Management — including trade shows, conferences, venue coordination, and budget management.",
+  },
+  {
+    heading: "2. Payment Terms",
+    body: "• 50% non-refundable deposit required before work commences\n• Remaining 50% due upon project completion prior to final delivery\n• Additional services outside agreed scope will be quoted separately",
+  },
+  {
+    heading: "3. Project Timelines",
+    body: "• Standard design projects completed within 2 weeks from start date\n• Event timelines defined per project agreement\n• Delays in client feedback may affect delivery timelines",
+  },
+  {
+    heading: "4. Revisions",
+    body: "• Design projects include up to 2 revision rounds\n• Additional revisions may incur extra charges\n• One additional concept provided if initial concepts do not meet brief",
+  },
+  {
+    heading: "5. Cancellation Policy",
+    body: "• Down payment is non-refundable once work has commenced\n• Projects paused for more than 30 days without client response may be considered canceled",
+  },
+  {
+    heading: "6. Intellectual Property",
+    body: "Upon full payment, the client receives rights to final approved deliverables. Outgrow retains the right to showcase completed work in portfolio and marketing materials.",
+  },
+  {
+    heading: "7. Governing Law",
+    body: "These Terms shall be governed by the laws of the State of Qatar. Any dispute shall be subject to the exclusive jurisdiction of the competent courts of Qatar.",
+  },
+  {
+    heading: "8. Regulatory Compliance",
+    body: "Outgrow operates in compliance with all applicable Qatari laws including commercial, advertising, event licensing, and data protection regulations.",
+  },
 ];
 
 /* ─────────────────────────────────────────────
    App Root
 ───────────────────────────────────────────── */
+
+/* ─── Insights: editorial drafts for the demand engine (95-5 rule) ─── */
+const INSIGHTS: {
+  view: View;
+  title: string;
+  date: string;
+  minutes: number;
+  excerpt: string;
+  arSummary: string;
+  body: { h: string; paras: string[] }[];
+}[] = [
+  {
+    view: "insight-budget",
+    title: "How much should a Qatar SME budget for marketing in 2026?",
+    date: "July 2026",
+    minutes: 5,
+    excerpt:
+      "Revenue percentages, the 60/40 evidence, and a worked QAR example — what the data says before anyone sells you a package.",
+    arSummary:
+      "كم تخصص الشركات الصغيرة والمتوسطة في قطر للتسويق؟ القاعدة العملية: ٥–١٠٪ من الإيراد للحفاظ على الحضور و١٢–١٥٪ للنمو، مع تقسيم الإنفاق ٦٠/٤٠ بين بناء العلامة والتحفيز المباشر وفق أقوى قاعدة أدلة في القطاع. ابدأ بالقياس قبل الإنفاق، وجرّب محرك الاستراتيجية المجاني أدناه.",
+    body: [
+      {
+        h: "Start from revenue, not vibes",
+        paras: [
+          "The most common failure mode we see in Doha isn't overspending — it's random spending. Industry guidance clusters around 5–10% of revenue to maintain an established presence and 12–15% to grow share. A business doing 200,000 QAR a month that wants growth should be thinking in the 24,000–30,000 QAR range — as a planned system, not a boost button pressed when sales dip.",
+        ],
+      },
+      {
+        h: "The 60/40 rule is the strongest evidence in marketing",
+        paras: [
+          "Binet & Field's analysis of the IPA effectiveness databank — hundreds of real campaigns over decades — found the profit-maximising split is roughly 60% brand-building to 40% sales activation. Brand work compounds; activation converts. Spend only on activation and you harvest demand without ever planting it.",
+          "For B2B, the 95-5 rule sharpens the point: about 95% of your buyers are not in-market this quarter. Content and brand presence are how you win the 95% before your competitors meet them.",
+        ],
+      },
+      {
+        h: "A worked example at 25,000 QAR/month",
+        paras: [
+          "A practical Qatar starting split: ~40% always-on social and content (brand), ~20% search capturing active demand (2026 benchmarks: 3.2–3.8% CTR, 3.8–4.4% conversion on search), ~25% paid social prospecting (Meta CTR benchmarks 1.4–2.2%), ~15% retained for creative production and testing. Then let the numbers move the money — every quarter, budget follows evidence.",
+          "Before a single riyal moves: install measurement (Pixel + GA4). You cannot optimise what you never measured.",
+        ],
+      },
+    ],
+  },
+  {
+    view: "insight-whatsapp",
+    title: "WhatsApp is Qatar's real storefront — is your business ready?",
+    date: "July 2026",
+    minutes: 4,
+    excerpt:
+      "Since November 2024, replying to customers on WhatsApp costs exactly nothing. Most businesses still treat it as an afterthought.",
+    arSummary:
+      "واتساب هو واجهة المتجر الحقيقية في قطر. منذ نوفمبر ٢٠٢٤ أصبح الرد على محادثات العملاء مجانياً بلا حدود، والرسائل المدفوعة تخص الحملات الصادرة فقط. تطبيق الأعمال المجاني يكفي معظم المتاجر: كتالوج، ردود سريعة، تصنيفات. السرعة هي الفارق — العميل الذي ينتظر ساعة يشتري من غيرك.",
+    body: [
+      {
+        h: "The economics changed and almost nobody noticed",
+        paras: [
+          "Meta made customer-initiated conversations free and unlimited in November 2024. Every enquiry, every order, every follow-up inside that 24-hour service window costs zero — even on the API. Paid per-message rates apply only to outbound template campaigns you initiate.",
+          "Translation for a Qatar business: your highest-trust sales channel has no marginal cost. The only real investment is response speed.",
+        ],
+      },
+      {
+        h: "The free Business app covers more than most shops use",
+        paras: [
+          "Catalog, quick replies, labels, greeting and away messages — the free WhatsApp Business app is a complete storefront toolkit for a small operation. The API (with per-message costs and platform fees) earns its keep only when you need automation, multiple agents, or campaign sends at scale.",
+          "We build stores WhatsApp-first for exactly this reason: in the GCC, commerce runs on personal trust. A confirmed order in a chat outperforms an anonymous checkout for a new brand.",
+        ],
+      },
+      {
+        h: "The one metric that matters",
+        paras: [
+          "Response time. A customer who messages a business expects retail speed — the enquiry you answer in two minutes closes; the one you answer tomorrow bought elsewhere. Set a working-hours standard, use quick replies for the five questions you always get, and measure it weekly.",
+        ],
+      },
+    ],
+  },
+  {
+    view: "insight-instagram",
+    title: "Instagram Shopping in Qatar: what actually works in 2026",
+    date: "July 2026",
+    minutes: 4,
+    excerpt:
+      "96% social penetration, product tags that click out to your site, and why link-in-bio is costing you sales.",
+    arSummary:
+      "يصل إنستغرام إلى نحو ثلثي سكان قطر، ونسبة استخدام وسائل التواصل تقارب ٩٦٪. وسوم المنتجات متاحة للأنشطة القطرية وتنقل المتسوّقة مباشرة إلى صفحة المنتج في موقعك — لا إلى رابط عام في البايو. الأساس: كتالوج منتجات في مدير التجارة، موقع يحوّل الزيارة إلى طلب، وإيقاع نشر ثابت.",
+    body: [
+      {
+        h: "The market is already on the platform",
+        paras: [
+          "DataReportal's 2026 Qatar data puts social penetration around 96%, with Instagram reaching roughly two-thirds of the country. For fashion, beauty, food and lifestyle, the discovery moment happens in a feed — the only question is whether your product is taggable when it does.",
+        ],
+      },
+      {
+        h: "Tags click out — so your site does the converting",
+        paras: [
+          "On-Instagram checkout remains US-only. In Qatar, a product tag opens your product page — which means the tag is only as good as the page it lands on. Fast load, clear price, sizes answered, and a low-friction way to order (for many GCC brands, that's WhatsApp) decide whether the tap becomes a sale.",
+          "Setup is a form, not a project: a product catalog in Meta Commerce Manager (a data feed your site can generate automatically), connection to your Instagram professional account, and an approval that typically takes one to three business days.",
+        ],
+      },
+      {
+        h: "Rhythm beats virality",
+        paras: [
+          "The accounts that sell are rarely the ones chasing trends — they publish on a fixed rhythm, tag products in every relevant post and story, and watch saves and DMs rather than likes. Saves signal purchase intent; DMs are purchase intent. Both should route to a response system, not an inbox nobody owns.",
+        ],
+      },
+    ],
+  },
+];
+
+const InsightArticle = ({
+  article,
+  setView,
+}: {
+  article: (typeof INSIGHTS)[number];
+  setView: (v: View) => void;
+}) => (
+  <section className="pt-40 pb-32 px-6 md:px-12 bg-white">
+    <div className="max-w-[820px] mx-auto">
+      <button
+        onClick={() => setView("insights")}
+        className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-[#0A0A0A] transition-colors mb-16 flex items-center gap-3"
+      >
+        <span>←</span> All insights
+      </button>
+      <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: "var(--color-brand-ink)" }}>
+        Insights · {article.date} · {article.minutes} min read
+      </p>
+      <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-[#0A0A0A] mb-10 leading-[1.05]">
+        {article.title}
+      </h1>
+      <div dir="rtl" lang="ar" className="border-2 border-[color:var(--color-brand)] p-6 mb-14 bg-gray-50">
+        <p className="text-[10px] font-black uppercase tracking-widest mb-3" style={{ color: "var(--color-brand-ink)" }}>
+          الخلاصة بالعربية
+        </p>
+        <p className="text-base leading-relaxed text-[#0A0A0A]">{article.arSummary}</p>
+      </div>
+      {article.body.map((sec, i) => (
+        <div key={i} className="mb-12">
+          <h2 className="text-xl font-black tracking-tight text-[#0A0A0A] mb-4">{sec.h}</h2>
+          {sec.paras.map((para, j) => (
+            <p key={j} className="text-base text-gray-600 font-light leading-relaxed mb-4">{para}</p>
+          ))}
+        </div>
+      ))}
+      <div className="border-t-2 border-[#0A0A0A] pt-10 mt-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <p className="text-lg font-bold text-[#0A0A0A] max-w-md">
+          Want this thinking applied to your business — with your numbers?
+        </p>
+        <button
+          onClick={() => { setView("home"); setTimeout(() => document.getElementById("ai-insights")?.scrollIntoView({ behavior: "smooth" }), 150); }}
+          className="btn-lift flex-shrink-0 px-10 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-colors duration-300"
+          style={{ background: "var(--color-brand)" }}
+        >
+          Generate your free strategy
+        </button>
+      </div>
+      <p className="text-[10px] text-gray-500 font-light mt-12 uppercase tracking-widest">
+        Editorial draft — final voice pass pending
+      </p>
+    </div>
+  </section>
+);
+
+const InsightsPage = ({ setView }: { setView: (v: View) => void }) => (
+  <section className="pt-40 pb-32 px-6 md:px-12 bg-white">
+    <div className="max-w-[1100px] mx-auto">
+      <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: "var(--color-brand-ink)" }}>
+        Insights
+      </p>
+      <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-[#0A0A0A] mb-6">
+        Marketing intelligence,<br />Doha context.
+      </h1>
+      <p className="max-w-2xl text-xl text-gray-600 font-light leading-relaxed mb-20">
+        Short, evidence-first reads on growing a business in Qatar — the same thinking that powers our strategy engine.
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
+        {INSIGHTS.map((a) => (
+          <button
+            key={a.view}
+            onClick={() => setView(a.view)}
+            className="bg-white p-10 text-left group hover:bg-gray-50 transition-colors duration-300 flex flex-col"
+          >
+            <span className="text-[10px] font-black uppercase tracking-widest mb-6" style={{ color: "var(--color-brand-ink)" }}>
+              {a.date} · {a.minutes} min
+            </span>
+            <span className="text-xl font-black tracking-tight text-[#0A0A0A] mb-4 group-hover:text-[color:var(--color-brand-ink)] transition-colors duration-300">
+              {a.title}
+            </span>
+            <span className="text-sm text-gray-600 font-light leading-relaxed">{a.excerpt}</span>
+            <span className="mt-auto pt-6 text-[10px] font-black uppercase tracking-widest text-gray-500 group-hover:text-[#0A0A0A] transition-colors">
+              Read →
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+const VIEW_ROUTES: Record<View, string> = {
+  home: "/",
+  about: "/about",
+  works: "/works",
+  "work-zihay": "/works/zihay",
+  "service-marketing": "/services/advertising",
+  "service-events": "/services/events",
+  "service-web": "/services/web",
+  privacy: "/privacy",
+  terms: "/terms",
+  insights: "/insights",
+  "insight-budget": "/insights/marketing-budget-qatar",
+  "insight-whatsapp": "/insights/whatsapp-business-qatar",
+  "insight-instagram": "/insights/instagram-shopping-qatar",
+};
+
+const VIEW_TITLES: Record<View, string> = {
+  home: "Outgrow | Advertising · PR · Brand Management · Event Management",
+  about: "Who We Are — Outgrow",
+  works: "Works — Outgrow",
+  "work-zihay": "ZIHAY Case Study — Outgrow",
+  "service-marketing": "Advertising, PR & Brand Management — Outgrow",
+  "service-events": "Event Management — Outgrow",
+  "service-web": "Web & Digital Development — Outgrow",
+  privacy: "Privacy Policy — Outgrow",
+  terms: "Terms & Conditions — Outgrow",
+  insights: "Insights — Outgrow",
+  "insight-budget": "Qatar SME Marketing Budgets in 2026 — Outgrow",
+  "insight-whatsapp": "WhatsApp Is Qatar's Real Storefront — Outgrow",
+  "insight-instagram": "Instagram Shopping in Qatar — Outgrow",
+};
+
+/* Legacy hash URLs (#/about) → real paths, before first render. */
+if (typeof window !== "undefined" && window.location.hash.startsWith("#/")) {
+  window.history.replaceState(
+    null,
+    "",
+    (window.location.hash.slice(1) || "/") + window.location.search,
+  );
+}
+
+/* Maps a pathname to a view; null for unknown paths (the server 404s those). */
+function viewFromPath(pathname: string): View | null {
+  const clean =
+    pathname !== "/" && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+  if (clean === "" || clean === "/") return "home";
+  const entry = (Object.entries(VIEW_ROUTES) as [View, string][]).find(
+    ([, route]) => route === clean,
+  );
+  return entry ? entry[0] : null;
+}
+
 export default function App() {
-  const [view, setView] = useState<View>('home');
+  const [view, setViewState] = useState<View>(
+    () => viewFromPath(window.location.pathname) ?? "home",
+  );
+
+  const setView = useCallback((v: View) => {
+    if (window.location.pathname !== VIEW_ROUTES[v]) {
+      window.history.pushState(null, "", VIEW_ROUTES[v]);
+    }
+    setViewState(v);
+  }, []);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+    const onPopState = () => {
+      setViewState(viewFromPath(window.location.pathname) ?? "home");
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  useEffect(() => {
+    document.title = VIEW_TITLES[view];
+  }, [view]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, [view]);
 
   return (
     <div className="min-h-screen">
       <Header setView={setView} currentView={view} />
       <main>
-        {view === 'home'               ? <HomePage setView={setView} />
-          : view === 'about'             ? <AboutPage />
-          : view === 'works'             ? <WorksPage setView={setView} />
-          : view === 'service-marketing' ? <ServiceMarketingPage setView={setView} />
-          : view === 'service-events'    ? <ServiceEventsPage setView={setView} />
-          : view === 'privacy'           ? <PolicyPage setView={setView} title="Privacy Policy" subtitle="Outgrow Agency" sections={PRIVACY_SECTIONS} />
-          : <PolicyPage setView={setView} title="Terms & Conditions" subtitle="Outgrow Agency" sections={TERMS_SECTIONS} />}
-        {view !== 'privacy' && view !== 'terms' && view !== 'service-marketing' && view !== 'service-events' && (
-          <Contact />
+        {view === "home" ? (
+          <HomePage setView={setView} />
+        ) : view === "about" ? (
+          <AboutPage />
+        ) : view === "works" ? (
+          <WorksPage setView={setView} />
+        ) : view === "work-zihay" ? (
+          <CaseZihayPage setView={setView} />
+        ) : view === "service-marketing" ? (
+          <ServiceMarketingPage setView={setView} />
+        ) : view === "service-events" ? (
+          <ServiceEventsPage setView={setView} />
+        ) : view === "service-web" ? (
+          <ServiceWebPage setView={setView} />
+        ) : view === "insights" ? (
+          <InsightsPage setView={setView} />
+        ) : view === "insight-budget" || view === "insight-whatsapp" || view === "insight-instagram" ? (
+          <InsightArticle article={INSIGHTS.find((a) => a.view === view)!} setView={setView} />
+        ) : view === "privacy" ? (
+          <PolicyPage
+            setView={setView}
+            title="Privacy Policy"
+            subtitle="Outgrow Agency"
+            sections={PRIVACY_SECTIONS}
+          />
+        ) : (
+          <PolicyPage
+            setView={setView}
+            title="Terms & Conditions"
+            subtitle="Outgrow Agency"
+            sections={TERMS_SECTIONS}
+          />
         )}
+        {view !== "privacy" && view !== "terms" && <Contact />}
       </main>
       <Footer setView={setView} />
     </div>

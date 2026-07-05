@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Brand Direction Board v2 — Outgrow</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23059669'/%3E%3Ctext x='32' y='44' font-family='Inter,Arial,sans-serif' font-size='36' font-weight='900' fill='white' text-anchor='middle'%3EO%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Cairo:wght@700;800&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root { --brand: #059669; --ink-g: #047857; --dark: #0a0a0a; --gray: #4b5563; --line: #e5e7eb; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; color: var(--dark); font-family: Inter, sans-serif; line-height: 1.6; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px 120px; }
+  header { padding: 96px 0 48px; border-bottom: 2px solid var(--dark); }
+  .eyebrow { font-size: 11px; font-weight: 900; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-g); margin: 0 0 16px; }
+  h1 { font-size: clamp(34px, 5.6vw, 58px); font-weight: 900; letter-spacing: -0.03em; margin: 0 0 12px; line-height: 1.04; }
+  .lede { font-size: 17px; color: var(--gray); max-width: 660px; }
+  section { padding: 68px 0; border-bottom: 1px solid var(--line); }
+  .dnum { font-size: 11px; font-weight: 900; letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-g); }
+  h2 { font-size: 30px; font-weight: 900; letter-spacing: -0.02em; margin: 8px 0 6px; }
+  .concept { color: var(--gray); max-width: 660px; margin: 0 0 36px; }
+  .panel { border: 1px solid var(--line); padding: 56px 40px; display: flex; align-items: center; justify-content: center; }
+  .panel + .panel { border-top: 0; }
+  .panel.dark { background: var(--dark); }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+
+  /* ── the wordmark system ── */
+  .wm { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; letter-spacing: -0.03em; color: var(--dark); display: flex; align-items: baseline; line-height: 1; }
+  .wm span { font-size: 1em; }
+  .wm span:nth-child(4) { font-size: 1.07em; }
+  .wm span:nth-child(5) { font-size: 1.16em; }
+  .wm span:nth-child(6) { font-size: 1.26em; }
+  .wm span:nth-child(7) { font-size: 1.37em; color: var(--brand); }
+  .panel.dark .wm { color: #fff; }
+
+  .stairwm { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; letter-spacing: -0.03em; color: var(--dark); display: flex; align-items: baseline; line-height: 1; }
+  .stairwm span { display: inline-block; }
+  .stairwm span:nth-child(2) { transform: translateY(-0.036em); }
+  .stairwm span:nth-child(3) { transform: translateY(-0.072em); }
+  .stairwm span:nth-child(4) { transform: translateY(-0.109em); }
+  .stairwm span:nth-child(5) { transform: translateY(-0.145em); }
+  .stairwm span:nth-child(6) { transform: translateY(-0.181em); }
+  .stairwm span:nth-child(7) { transform: translateY(-0.218em); color: var(--brand); }
+  .panel.dark .stairwm { color: #fff; }
+
+  .arwm { font-family: Cairo, sans-serif; font-weight: 800; color: var(--dark); direction: rtl; line-height: 1.35; }
+  .arwm b { color: var(--brand); font-weight: 800; }
+  .panel.dark .arwm { color: #fff; }
+
+  .tile { width: 96px; height: 96px; border-radius: 22px; background: var(--dark); display: flex; align-items: center; justify-content: center; }
+  .tile.sm { width: 48px; height: 48px; border-radius: 11px; }
+  .tile.xs { width: 24px; height: 24px; border-radius: 6px; }
+  .tile .w { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; color: var(--brand); line-height: 1; }
+  .caption { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #6b7280; margin-top: 10px; text-align: center; }
+
+  .failtable { overflow-x: auto; border: 1px solid var(--line); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; min-width: 640px; }
+  th, td { text-align: left; padding: 11px 14px; border-top: 1px solid var(--line); vertical-align: top; }
+  thead th { border-top: 0; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #6b7280; }
+  td.bad { color: #b91c1c; font-weight: 700; white-space: nowrap; }
+  td.fix { color: var(--ink-g); }
+
+  .whyrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .chip { font-size: 12px; font-weight: 600; border: 1px solid var(--line); border-radius: 999px; padding: 4px 14px; color: var(--gray); }
+  .chip.plus { border-color: var(--brand); color: var(--ink-g); }
+  footer { margin-top: 64px; color: var(--gray); font-size: 13.5px; max-width: 780px; }
+  footer a { color: var(--ink-g); }
+  .draft { font-size: 10px; font-weight: 900; letter-spacing: 0.25em; text-transform: uppercase; color: #6b7280; margin-top: 28px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Brand Direction Board · v2 · wordmark-first</p>
+  <h1>The idea moved<br />into the letters.</h1>
+  <p class="lede">v1 paired abstract symbols with untouched fonts — the opposite of how modern identities are built. v2 does what current practice demands: one intervention, inside the wordmark itself, so the name performs its own meaning. The <a href="/brand.html" style="color:var(--ink-g)">v1 board</a> stays up as the record of why.</p>
+</header>
+
+<section>
+  <p class="dnum">First — the audit</p>
+  <h2>Why v1 didn't deserve to survive</h2>
+  <div class="failtable"><table>
+    <thead><tr><th>v1 mistake</th><th>The modern rule it broke</th><th>v2 correction</th></tr></thead>
+    <tbody>
+      <tr><td class="bad">Symbol-first + stock-font wordmark</td><td>Agency identities today are wordmark-led; an unmodified font beside a mark is a placeholder, not a logo.</td><td class="fix">The wordmark IS the logo — custom behavior cut into the type.</td></tr>
+      <tr><td class="bad">Circle + escaping arrow</td><td>That's UI-icon vocabulary (share / logout / external-link). Zero distinctiveness in a sea of fintech marks.</td><td class="fix">Dropped entirely.</td></tr>
+      <tr><td class="bad">Rising bars + leaf</td><td>The single most exhausted "growth" cliché — logo-mill territory. Descriptive ≠ generic (that's a misuse of the HBR finding).</td><td class="fix">Dropped entirely.</td></tr>
+      <tr><td class="bad">Kufic costume</td><td>Real square Kufic is stroke-grid letterform construction — a ring with a floating rectangle isn't it, and Arabic-literate eyes know.</td><td class="fix">Bilingualism now lives in a matched type gesture, not borrowed geometry.</td></tr>
+      <tr><td class="bad">Mathematically placed, never optically tuned</td><td>Marks are finished by eye — overshoots, weight compensation, kerning at the joins.</td><td class="fix">Every render below was iterated visually; final production = a type designer's vector pass.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ═══════ DIRECTION 1 · GROW ═══════ -->
+<section>
+  <p class="dnum">Direction 01 · the recommendation</p>
+  <h2>Grow — the word outgrows itself</h2>
+  <p class="concept">One intervention: from the "g" onward, the letters swell — and the final w arrives full-size, in brand green. The name performs its meaning the way the FedEx arrow does: you can't unsee it, and no competitor can wear it. Motion-native (the swell animates), bilingual by construction (below), and it reduces to a one-letter favicon.</p>
+
+  <div class="panel"><div class="wm" style="font-size:88px"><span>o</span><span>u</span><span>t</span><span>g</span><span>r</span><span>o</span><span>w</span></div></div>
+  <div class="panel dark"><div class="wm" style="font-size:64px"><span>o</span><span>u</span><span>t</span><span>g</span><span>r</span><span>o</span><span>w</span></div></div>
+  <div class="panel">
+    <div class="row" style="justify-content:center;gap:56px">
+      <div><div class="tile"><span class="w" style="font-size:58px">w</span></div><p class="caption">App icon</p></div>
+      <div><div class="tile sm"><span class="w" style="font-size:29px">w</span></div><p class="caption">Favicon</p></div>
+      <div><div class="tile xs"><span class="w" style="font-size:15px">w</span></div><p class="caption">Tab</p></div>
+      <div><div class="arwm" style="font-size:56px">أوتغر<b>و</b></div><p class="caption">Arabic — same gesture</p></div>
+    </div>
+  </div>
+  <div class="whyrow">
+    <span class="chip plus">+ meaning fused into the letterforms</span>
+    <span class="chip plus">+ unownable by competitors — it's the name itself</span>
+    <span class="chip plus">+ green lands exactly once, at the destination</span>
+    <span class="chip plus">+ AR/EN share one gesture: the final letter arrives in green</span>
+    <span class="chip">− needs a proper vector cut before print (noted below)</span>
+  </div>
+</section>
+
+<!-- ═══════ DIRECTION 2 · CLIMB ═══════ -->
+<section>
+  <p class="dnum">Direction 02 · the alternate</p>
+  <h2>Climb — the word ascends</h2>
+  <p class="concept">Same philosophy, different axis: the letters step upward, the last one in green. Quieter than Grow — the silhouette stays rectangular, so it sits calmer in dense layouts. If Grow feels too loud for stationery, this is the same idea at lower volume.</p>
+  <div class="panel"><div class="stairwm" style="font-size:80px"><span>o</span><span>u</span><span>t</span><span>g</span><span>r</span><span>o</span><span>w</span></div></div>
+  <div class="panel dark"><div class="stairwm" style="font-size:60px"><span>o</span><span>u</span><span>t</span><span>g</span><span>r</span><span>o</span><span>w</span></div></div>
+  <div class="whyrow">
+    <span class="chip plus">+ same one-idea discipline, calmer presence</span>
+    <span class="chip plus">+ excellent in motion (letters rise on load)</span>
+    <span class="chip">− slightly weaker small-size legibility than Grow</span>
+  </div>
+</section>
+
+<section>
+  <p class="dnum">The system</p>
+  <h2>How either direction deploys</h2>
+  <p class="concept">Full wordmark on light and dark · the green terminal letter alone as favicon/app tile · أوتغرو with the green final و for Arabic surfaces · type system stays Bricolage Grotesque (display) + Inter (text), already token-wired, so adoption is a one-pass change across site, og-card, and icons. Production note, honestly: these are behavior-accurate renders; before print or signage, the chosen direction gets a proper vector cut with optical kerning — that's a day of type work, not a redesign.</p>
+</section>
+
+<footer>
+  <strong>Vector masters (outlined paths — no font dependency):</strong>
+  <a href="/brand/v2/grow.svg" download>grow.svg</a> · <a href="/brand/v2/grow-dark.svg" download>grow-dark.svg</a> · <a href="/brand/v2/grow-mono.svg" download>grow-mono.svg (currentColor)</a> · <a href="/brand/v2/climb.svg" download>climb.svg</a> · <a href="/brand/v2/ar.svg" download>ar.svg (أوتغرو)</a> · <a href="/brand/v2/tile.svg" download>tile.svg</a><br />
+  <strong>PNG proofs:</strong> <a href="/brand/v2/grow-light.png" download>grow-light.png</a> · <a href="/brand/v2/grow-dark.png" download>grow-dark.png</a> · <a href="/brand/v2/climb-light.png" download>climb-light.png</a> · <a href="/brand/v2/tile-512.png" download>tile-512.png</a> &nbsp;|&nbsp; v1 record: <a href="/brand.html">brand.html</a>
+  <p class="draft">v2 directions · react &amp; refine · nothing applied to the live site until the founder picks</p>
+</footer>
+
+</div>
+</body>
+</html>
