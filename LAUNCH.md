@@ -83,3 +83,6 @@ Discovery: **https://outgrow.qa is Yousef's live Vercel project building `master
 **Merge the PR → his Vercel builds → live on outgrow.qa automatically.**
 Merge-day list: run `scripts/cutover.sh` on the branch first (swaps preview URLs in metas), add the three env keys to HIS Vercel project, set outgrowagency.com as a redirect to outgrow.qa. Lead-API CORS is already forward-ready for zihay.store/zihaywear.com.
 Also added this session: /insights section (3 evidence-based editorial DRAFTS with Arabic summaries — flagged in-page pending Yousef's voice pass), scripts/verify.sh (deploy smoke), scripts/aa-scan.js (the contrast auditor), docs/emails/ (nurture sequences EN/AR, dormant until Resend).
+
+## Path routing (2026-07-05): the SEO unlock
+Hash routes (#/about) are invisible to crawlers — only the homepage could index. Migrated to real paths (History API + popstate) with: explicit per-route Vercel rewrites (unknown paths still hit the branded 404 — no soft-404s), a legacy shim that 301-equivalents any old #/… link to its path, per-route document titles, and public/sitemap.xml on the outgrow.qa base (robots.txt points to it). Adding a route now = View union + VIEW_ROUTES + VIEW_TITLES + one vercel.json line.

@@ -1,0 +1,16 @@
+{
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/about", "destination": "/index.html" },
+    { "source": "/works", "destination": "/index.html" },
+    { "source": "/works/zihay", "destination": "/index.html" },
+    { "source": "/services/advertising", "destination": "/index.html" },
+    { "source": "/services/events", "destination": "/index.html" },
+    { "source": "/privacy", "destination": "/index.html" },
+    { "source": "/terms", "destination": "/index.html" },
+    { "source": "/insights", "destination": "/index.html" },
+    { "source": "/insights/marketing-budget-qatar", "destination": "/index.html" },
+    { "source": "/insights/whatsapp-business-qatar", "destination": "/index.html" },
+    { "source": "/insights/instagram-shopping-qatar", "destination": "/index.html" }
+  ]
+}

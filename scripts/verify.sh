@@ -13,6 +13,8 @@ check "/og.png" 200
 check "/robots.txt" 200
 check "/case/zihay-en.png" 200
 check "/case/zihay-ar.png" 200
+for p in /about /works /works/zihay /insights /insights/marketing-budget-qatar; do check "$p" 200; done
+check "/sitemap.xml" 200
 check "/no-such-page-verify" 404
 api=$(curl -s -m 30 -X POST "$BASE/api/strategy" -H "Content-Type: application/json" -d '{"businessName":"Verify Co","industry":"Retail & E-commerce","budget":"5,000-15,000 QAR","goal":"More online sales"}')
 echo "$api" | grep -q '"funnel"' || { echo "FAIL /api/strategy shape"; fail=1; }

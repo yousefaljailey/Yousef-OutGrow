@@ -3800,50 +3800,78 @@ const InsightsPage = ({ setView }: { setView: (v: View) => void }) => (
 );
 
 const VIEW_ROUTES: Record<View, string> = {
-  home: "#/",
-  about: "#/about",
-  works: "#/works",
-  "work-zihay": "#/works/zihay",
-  "service-marketing": "#/services/advertising",
-  "service-events": "#/services/events",
-  privacy: "#/privacy",
-  terms: "#/terms",
-  insights: "#/insights",
-  "insight-budget": "#/insights/marketing-budget-qatar",
-  "insight-whatsapp": "#/insights/whatsapp-business-qatar",
-  "insight-instagram": "#/insights/instagram-shopping-qatar",
+  home: "/",
+  about: "/about",
+  works: "/works",
+  "work-zihay": "/works/zihay",
+  "service-marketing": "/services/advertising",
+  "service-events": "/services/events",
+  privacy: "/privacy",
+  terms: "/terms",
+  insights: "/insights",
+  "insight-budget": "/insights/marketing-budget-qatar",
+  "insight-whatsapp": "/insights/whatsapp-business-qatar",
+  "insight-instagram": "/insights/instagram-shopping-qatar",
 };
 
-/* Maps a location hash to a view; returns null for in-page anchors like #contact. */
-function viewFromHash(hash: string): View | null {
-  if (hash === "" || hash === "#" || hash === "#/") return "home";
+const VIEW_TITLES: Record<View, string> = {
+  home: "Outgrow | Advertising · PR · Brand Management · Event Management",
+  about: "Who We Are — Outgrow",
+  works: "Works — Outgrow",
+  "work-zihay": "ZIHAY Case Study — Outgrow",
+  "service-marketing": "Advertising, PR & Brand Management — Outgrow",
+  "service-events": "Event Management — Outgrow",
+  privacy: "Privacy Policy — Outgrow",
+  terms: "Terms & Conditions — Outgrow",
+  insights: "Insights — Outgrow",
+  "insight-budget": "Qatar SME Marketing Budgets in 2026 — Outgrow",
+  "insight-whatsapp": "WhatsApp Is Qatar's Real Storefront — Outgrow",
+  "insight-instagram": "Instagram Shopping in Qatar — Outgrow",
+};
+
+/* Legacy hash URLs (#/about) → real paths, before first render. */
+if (typeof window !== "undefined" && window.location.hash.startsWith("#/")) {
+  window.history.replaceState(
+    null,
+    "",
+    (window.location.hash.slice(1) || "/") + window.location.search,
+  );
+}
+
+/* Maps a pathname to a view; null for unknown paths (the server 404s those). */
+function viewFromPath(pathname: string): View | null {
+  const clean =
+    pathname !== "/" && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+  if (clean === "" || clean === "/") return "home";
   const entry = (Object.entries(VIEW_ROUTES) as [View, string][]).find(
-    ([, h]) => h === hash,
+    ([, route]) => route === clean,
   );
   return entry ? entry[0] : null;
 }
 
 export default function App() {
   const [view, setViewState] = useState<View>(
-    () => viewFromHash(window.location.hash) ?? "home",
+    () => viewFromPath(window.location.pathname) ?? "home",
   );
 
   const setView = useCallback((v: View) => {
-    if (window.location.hash !== VIEW_ROUTES[v]) {
-      window.location.hash = VIEW_ROUTES[v];
-    } else {
-      setViewState(v);
+    if (window.location.pathname !== VIEW_ROUTES[v]) {
+      window.history.pushState(null, "", VIEW_ROUTES[v]);
     }
+    setViewState(v);
   }, []);
 
   useEffect(() => {
-    const onHashChange = () => {
-      const v = viewFromHash(window.location.hash);
-      if (v !== null) setViewState(v);
+    const onPopState = () => {
+      setViewState(viewFromPath(window.location.pathname) ?? "home");
     };
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
   }, []);
+
+  useEffect(() => {
+    document.title = VIEW_TITLES[view];
+  }, [view]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
