@@ -10,6 +10,7 @@ type View =
   | "terms"
   | "service-marketing"
   | "service-events"
+  | "service-web"
   | "works"
   | "work-zihay"
   | "insights"
@@ -667,6 +668,35 @@ const Header = ({
                 </span>
                 <span className="block text-[11px] text-gray-500 normal-case tracking-normal font-normal">
                   Trade shows, conferences & corporate events
+                </span>
+              </button>
+              <button
+                onClick={() => setView("service-web")}
+                role="menuitem"
+                className="w-full text-left px-6 py-5"
+                style={{
+                  transition: "background 300ms ease, color 300ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "#0A0A0A";
+                  (e.currentTarget as HTMLElement).style.color = "white";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "";
+                  (e.currentTarget as HTMLElement).style.color = "";
+                }}
+              >
+                <span
+                  className="block text-[9px] font-black uppercase tracking-widest mb-1.5"
+                  style={{ color: "var(--color-brand-ink)" }}
+                >
+                  03
+                </span>
+                <span className="block text-[13px] font-bold normal-case tracking-normal mb-1">
+                  Web & Digital Development
+                </span>
+                <span className="block text-[11px] text-gray-500 normal-case tracking-normal font-normal">
+                  Bilingual sites, e-commerce & measurable digital
                 </span>
               </button>
             </div>
@@ -3039,6 +3069,116 @@ const ServiceEventsPage = ({ setView }: { setView: (v: View) => void }) => (
 /* ─────────────────────────────────────────────
    Privacy & Terms (condensed)
 ───────────────────────────────────────────── */
+
+const WEB_INCLUDED = [
+  { t: "Bilingual by construction", d: "Arabic and English as equals — true RTL layouts, native typography, and content that reads written, not translated. In this market, the toggle is the growth lever." },
+  { t: "Commerce that fits the Gulf", d: "WhatsApp-first ordering, local gateways when you're ready, honest stock states, and Instagram catalog feeds — the rails that match how Qatar actually buys." },
+  { t: "SEO foundations, not afterthoughts", d: "Real URLs, sitemaps, hreflang, structured data, and per-page titles from day one — so search equity compounds from launch." },
+  { t: "App-class without the app store", d: "Installable PWA experiences: home-screen icon, offline resilience, instant loads — most of a native app at a fraction of the cost." },
+  { t: "Measured and verified", d: "Analytics wired before spend, link and API smoke tests on every deploy, and WCAG AA contrast verified by audit — we publish the standard and hold ourselves to it." },
+  { t: "Brand systems, tokenized", d: "Colors and type live in design tokens — a rebrand applies in one line. Your identity stays consistent because the code enforces it." },
+];
+
+const WEB_STEPS = [
+  { n: "01", t: "Discover", d: "Goals, audience, Arabic/English scope, and what winning looks like — captured in a one-page brief you approve." },
+  { n: "02", t: "Build on a live preview", d: "You watch the site grow on a private URL from day one. No big reveals — continuous ones." },
+  { n: "03", t: "Verify", d: "Before launch: link and API smoke tests, accessibility audit, speed pass. You get the evidence, not assurances." },
+  { n: "04", t: "Launch & iterate", d: "Scripted cutover, analytics live, then a 90-day measure-and-improve rhythm." },
+];
+
+const ServiceWebPage = ({ setView }: { setView: (v: View) => void }) => (
+  <div>
+    <section className="pt-40 pb-32 px-6 md:px-12 bg-[#0A0A0A] text-white">
+      <div className="max-w-[1440px] mx-auto">
+        <button
+          onClick={() => setView("home")}
+          className="text-[10px] font-bold uppercase tracking-widest text-gray-400 hover:text-[color:var(--color-brand)] transition-colors duration-300 mb-16 flex items-center gap-3"
+        >
+          <span>←</span> Back to Home
+        </button>
+        <span
+          className="inline-block text-xs font-bold uppercase tracking-[0.3em] mb-8"
+          style={{ color: "var(--color-brand)" }}
+        >
+          Our Services — 03
+        </span>
+        <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-none mb-10 reveal">
+          Websites that sell.<br />
+          <span className="text-gray-600">Systems that scale.</span>
+        </h1>
+        <p className="max-w-2xl text-xl text-gray-400 font-light leading-relaxed reveal">
+          Bilingual, measurable, and engineered for the Qatar market — digital
+          presence built like a product and proven like a case study.
+        </p>
+      </div>
+    </section>
+
+    <section className="py-32 px-6 md:px-12 bg-white">
+      <div className="max-w-[1440px] mx-auto">
+        <h2
+          className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          What's Included
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
+          {WEB_INCLUDED.map((f, i) => (
+            <div key={i} className="bg-white p-10">
+              <h3 className="text-lg font-black tracking-tight text-[#0A0A0A] mb-3">{f.t}</h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">{f.d}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-16 border-2 border-[color:var(--color-brand)] p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <p className="text-lg font-bold text-[#0A0A0A] max-w-xl">
+            The proof isn't a promise — it's live. See the ZIHAY storefront build,
+            then tap عربي on it.
+          </p>
+          <button
+            onClick={() => setView("work-zihay")}
+            className="btn-lift flex-shrink-0 px-10 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-colors duration-300"
+            style={{ background: "var(--color-brand)" }}
+          >
+            Read the case study
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section className="py-32 px-6 md:px-12 bg-gray-50">
+      <div className="max-w-[1440px] mx-auto">
+        <h2
+          className="text-xs font-black uppercase tracking-[0.3em] mb-16 reveal"
+          style={{ color: "var(--color-brand-ink)" }}
+        >
+          How We Work
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-gray-200 border border-gray-200">
+          {WEB_STEPS.map((st) => (
+            <div key={st.n} className="bg-gray-50 p-10">
+              <span
+                className="block text-[10px] font-black tabular-nums mb-4"
+                style={{ color: "var(--color-brand-ink)" }}
+              >
+                {st.n}
+              </span>
+              <h3 className="text-base font-black tracking-tight text-[#0A0A0A] mb-2">{st.t}</h3>
+              <p className="text-sm text-gray-600 font-light leading-relaxed">{st.d}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-[12px] text-gray-500 font-light mt-10 max-w-2xl">
+          Engagements are scoped per project — launch sites, commerce builds, and
+          partner retainers. Pricing lands on the scoping call, not on a rate card.
+        </p>
+        <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mt-12">
+          Editorial draft — final voice pass pending
+        </p>
+      </div>
+    </section>
+  </div>
+);
+
 const PolicyPage = ({
   setView,
   title,
@@ -3806,6 +3946,7 @@ const VIEW_ROUTES: Record<View, string> = {
   "work-zihay": "/works/zihay",
   "service-marketing": "/services/advertising",
   "service-events": "/services/events",
+  "service-web": "/services/web",
   privacy: "/privacy",
   terms: "/terms",
   insights: "/insights",
@@ -3821,6 +3962,7 @@ const VIEW_TITLES: Record<View, string> = {
   "work-zihay": "ZIHAY Case Study — Outgrow",
   "service-marketing": "Advertising, PR & Brand Management — Outgrow",
   "service-events": "Event Management — Outgrow",
+  "service-web": "Web & Digital Development — Outgrow",
   privacy: "Privacy Policy — Outgrow",
   terms: "Terms & Conditions — Outgrow",
   insights: "Insights — Outgrow",
@@ -3893,6 +4035,8 @@ export default function App() {
           <ServiceMarketingPage setView={setView} />
         ) : view === "service-events" ? (
           <ServiceEventsPage setView={setView} />
+        ) : view === "service-web" ? (
+          <ServiceWebPage setView={setView} />
         ) : view === "insights" ? (
           <InsightsPage setView={setView} />
         ) : view === "insight-budget" || view === "insight-whatsapp" || view === "insight-instagram" ? (
