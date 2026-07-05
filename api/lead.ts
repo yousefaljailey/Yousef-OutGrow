@@ -26,6 +26,10 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const ALLOWED_ORIGINS = new Set([
   "https://zihay-preview.vercel.app",
   "https://zihay.vercel.app",
+  "https://zihay.store",
+  "https://www.zihay.store",
+  "https://zihaywear.com",
+  "https://www.zihaywear.com",
   "http://localhost:3000",
   "http://localhost:4173",
 ]);

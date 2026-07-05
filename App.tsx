@@ -11,7 +11,11 @@ type View =
   | "service-marketing"
   | "service-events"
   | "works"
-  | "work-zihay";
+  | "work-zihay"
+  | "insights"
+  | "insight-budget"
+  | "insight-whatsapp"
+  | "insight-instagram";
 
 /* ─────────────────────────────────────────────
    Utility hooks
@@ -674,6 +678,14 @@ const Header = ({
             className={`transition-colors duration-200 ${currentView === "works" ? "text-[#0A0A0A]" : "hover:text-[#0A0A0A]"}`}
           >
             Works
+          </button>
+
+          <button
+            onClick={() => setView("insights")}
+            aria-current={currentView === "insights" ? "page" : undefined}
+            className={`transition-colors duration-200 ${currentView === "insights" ? "text-[#0A0A0A]" : "hover:text-[#0A0A0A]"}`}
+          >
+            Insights
           </button>
 
           {currentView !== "home" && (
@@ -3589,6 +3601,204 @@ const TERMS_SECTIONS = [
 /* ─────────────────────────────────────────────
    App Root
 ───────────────────────────────────────────── */
+
+/* ─── Insights: editorial drafts for the demand engine (95-5 rule) ─── */
+const INSIGHTS: {
+  view: View;
+  title: string;
+  date: string;
+  minutes: number;
+  excerpt: string;
+  arSummary: string;
+  body: { h: string; paras: string[] }[];
+}[] = [
+  {
+    view: "insight-budget",
+    title: "How much should a Qatar SME budget for marketing in 2026?",
+    date: "July 2026",
+    minutes: 5,
+    excerpt:
+      "Revenue percentages, the 60/40 evidence, and a worked QAR example — what the data says before anyone sells you a package.",
+    arSummary:
+      "كم تخصص الشركات الصغيرة والمتوسطة في قطر للتسويق؟ القاعدة العملية: ٥–١٠٪ من الإيراد للحفاظ على الحضور و١٢–١٥٪ للنمو، مع تقسيم الإنفاق ٦٠/٤٠ بين بناء العلامة والتحفيز المباشر وفق أقوى قاعدة أدلة في القطاع. ابدأ بالقياس قبل الإنفاق، وجرّب محرك الاستراتيجية المجاني أدناه.",
+    body: [
+      {
+        h: "Start from revenue, not vibes",
+        paras: [
+          "The most common failure mode we see in Doha isn't overspending — it's random spending. Industry guidance clusters around 5–10% of revenue to maintain an established presence and 12–15% to grow share. A business doing 200,000 QAR a month that wants growth should be thinking in the 24,000–30,000 QAR range — as a planned system, not a boost button pressed when sales dip.",
+        ],
+      },
+      {
+        h: "The 60/40 rule is the strongest evidence in marketing",
+        paras: [
+          "Binet & Field's analysis of the IPA effectiveness databank — hundreds of real campaigns over decades — found the profit-maximising split is roughly 60% brand-building to 40% sales activation. Brand work compounds; activation converts. Spend only on activation and you harvest demand without ever planting it.",
+          "For B2B, the 95-5 rule sharpens the point: about 95% of your buyers are not in-market this quarter. Content and brand presence are how you win the 95% before your competitors meet them.",
+        ],
+      },
+      {
+        h: "A worked example at 25,000 QAR/month",
+        paras: [
+          "A practical Qatar starting split: ~40% always-on social and content (brand), ~20% search capturing active demand (2026 benchmarks: 3.2–3.8% CTR, 3.8–4.4% conversion on search), ~25% paid social prospecting (Meta CTR benchmarks 1.4–2.2%), ~15% retained for creative production and testing. Then let the numbers move the money — every quarter, budget follows evidence.",
+          "Before a single riyal moves: install measurement (Pixel + GA4). You cannot optimise what you never measured.",
+        ],
+      },
+    ],
+  },
+  {
+    view: "insight-whatsapp",
+    title: "WhatsApp is Qatar's real storefront — is your business ready?",
+    date: "July 2026",
+    minutes: 4,
+    excerpt:
+      "Since November 2024, replying to customers on WhatsApp costs exactly nothing. Most businesses still treat it as an afterthought.",
+    arSummary:
+      "واتساب هو واجهة المتجر الحقيقية في قطر. منذ نوفمبر ٢٠٢٤ أصبح الرد على محادثات العملاء مجانياً بلا حدود، والرسائل المدفوعة تخص الحملات الصادرة فقط. تطبيق الأعمال المجاني يكفي معظم المتاجر: كتالوج، ردود سريعة، تصنيفات. السرعة هي الفارق — العميل الذي ينتظر ساعة يشتري من غيرك.",
+    body: [
+      {
+        h: "The economics changed and almost nobody noticed",
+        paras: [
+          "Meta made customer-initiated conversations free and unlimited in November 2024. Every enquiry, every order, every follow-up inside that 24-hour service window costs zero — even on the API. Paid per-message rates apply only to outbound template campaigns you initiate.",
+          "Translation for a Qatar business: your highest-trust sales channel has no marginal cost. The only real investment is response speed.",
+        ],
+      },
+      {
+        h: "The free Business app covers more than most shops use",
+        paras: [
+          "Catalog, quick replies, labels, greeting and away messages — the free WhatsApp Business app is a complete storefront toolkit for a small operation. The API (with per-message costs and platform fees) earns its keep only when you need automation, multiple agents, or campaign sends at scale.",
+          "We build stores WhatsApp-first for exactly this reason: in the GCC, commerce runs on personal trust. A confirmed order in a chat outperforms an anonymous checkout for a new brand.",
+        ],
+      },
+      {
+        h: "The one metric that matters",
+        paras: [
+          "Response time. A customer who messages a business expects retail speed — the enquiry you answer in two minutes closes; the one you answer tomorrow bought elsewhere. Set a working-hours standard, use quick replies for the five questions you always get, and measure it weekly.",
+        ],
+      },
+    ],
+  },
+  {
+    view: "insight-instagram",
+    title: "Instagram Shopping in Qatar: what actually works in 2026",
+    date: "July 2026",
+    minutes: 4,
+    excerpt:
+      "96% social penetration, product tags that click out to your site, and why link-in-bio is costing you sales.",
+    arSummary:
+      "يصل إنستغرام إلى نحو ثلثي سكان قطر، ونسبة استخدام وسائل التواصل تقارب ٩٦٪. وسوم المنتجات متاحة للأنشطة القطرية وتنقل المتسوّقة مباشرة إلى صفحة المنتج في موقعك — لا إلى رابط عام في البايو. الأساس: كتالوج منتجات في مدير التجارة، موقع يحوّل الزيارة إلى طلب، وإيقاع نشر ثابت.",
+    body: [
+      {
+        h: "The market is already on the platform",
+        paras: [
+          "DataReportal's 2026 Qatar data puts social penetration around 96%, with Instagram reaching roughly two-thirds of the country. For fashion, beauty, food and lifestyle, the discovery moment happens in a feed — the only question is whether your product is taggable when it does.",
+        ],
+      },
+      {
+        h: "Tags click out — so your site does the converting",
+        paras: [
+          "On-Instagram checkout remains US-only. In Qatar, a product tag opens your product page — which means the tag is only as good as the page it lands on. Fast load, clear price, sizes answered, and a low-friction way to order (for many GCC brands, that's WhatsApp) decide whether the tap becomes a sale.",
+          "Setup is a form, not a project: a product catalog in Meta Commerce Manager (a data feed your site can generate automatically), connection to your Instagram professional account, and an approval that typically takes one to three business days.",
+        ],
+      },
+      {
+        h: "Rhythm beats virality",
+        paras: [
+          "The accounts that sell are rarely the ones chasing trends — they publish on a fixed rhythm, tag products in every relevant post and story, and watch saves and DMs rather than likes. Saves signal purchase intent; DMs are purchase intent. Both should route to a response system, not an inbox nobody owns.",
+        ],
+      },
+    ],
+  },
+];
+
+const InsightArticle = ({
+  article,
+  setView,
+}: {
+  article: (typeof INSIGHTS)[number];
+  setView: (v: View) => void;
+}) => (
+  <section className="pt-40 pb-32 px-6 md:px-12 bg-white">
+    <div className="max-w-[820px] mx-auto">
+      <button
+        onClick={() => setView("insights")}
+        className="text-[10px] font-bold uppercase tracking-widest text-gray-500 hover:text-[#0A0A0A] transition-colors mb-16 flex items-center gap-3"
+      >
+        <span>←</span> All insights
+      </button>
+      <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: "var(--color-brand-ink)" }}>
+        Insights · {article.date} · {article.minutes} min read
+      </p>
+      <h1 className="text-4xl md:text-6xl font-black tracking-tighter text-[#0A0A0A] mb-10 leading-[1.05]">
+        {article.title}
+      </h1>
+      <div dir="rtl" lang="ar" className="border-2 border-[color:var(--color-brand)] p-6 mb-14 bg-gray-50">
+        <p className="text-[10px] font-black uppercase tracking-widest mb-3" style={{ color: "var(--color-brand-ink)" }}>
+          الخلاصة بالعربية
+        </p>
+        <p className="text-base leading-relaxed text-[#0A0A0A]">{article.arSummary}</p>
+      </div>
+      {article.body.map((sec, i) => (
+        <div key={i} className="mb-12">
+          <h2 className="text-xl font-black tracking-tight text-[#0A0A0A] mb-4">{sec.h}</h2>
+          {sec.paras.map((para, j) => (
+            <p key={j} className="text-base text-gray-600 font-light leading-relaxed mb-4">{para}</p>
+          ))}
+        </div>
+      ))}
+      <div className="border-t-2 border-[#0A0A0A] pt-10 mt-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <p className="text-lg font-bold text-[#0A0A0A] max-w-md">
+          Want this thinking applied to your business — with your numbers?
+        </p>
+        <button
+          onClick={() => { setView("home"); setTimeout(() => document.getElementById("ai-insights")?.scrollIntoView({ behavior: "smooth" }), 150); }}
+          className="btn-lift flex-shrink-0 px-10 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-colors duration-300"
+          style={{ background: "var(--color-brand)" }}
+        >
+          Generate your free strategy
+        </button>
+      </div>
+      <p className="text-[10px] text-gray-500 font-light mt-12 uppercase tracking-widest">
+        Editorial draft — final voice pass pending
+      </p>
+    </div>
+  </section>
+);
+
+const InsightsPage = ({ setView }: { setView: (v: View) => void }) => (
+  <section className="pt-40 pb-32 px-6 md:px-12 bg-white">
+    <div className="max-w-[1100px] mx-auto">
+      <p className="text-xs font-bold uppercase tracking-widest mb-6" style={{ color: "var(--color-brand-ink)" }}>
+        Insights
+      </p>
+      <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-[#0A0A0A] mb-6">
+        Marketing intelligence,<br />Doha context.
+      </h1>
+      <p className="max-w-2xl text-xl text-gray-600 font-light leading-relaxed mb-20">
+        Short, evidence-first reads on growing a business in Qatar — the same thinking that powers our strategy engine.
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-200 border border-gray-200">
+        {INSIGHTS.map((a) => (
+          <button
+            key={a.view}
+            onClick={() => setView(a.view)}
+            className="bg-white p-10 text-left group hover:bg-gray-50 transition-colors duration-300 flex flex-col"
+          >
+            <span className="text-[10px] font-black uppercase tracking-widest mb-6" style={{ color: "var(--color-brand-ink)" }}>
+              {a.date} · {a.minutes} min
+            </span>
+            <span className="text-xl font-black tracking-tight text-[#0A0A0A] mb-4 group-hover:text-[color:var(--color-brand-ink)] transition-colors duration-300">
+              {a.title}
+            </span>
+            <span className="text-sm text-gray-600 font-light leading-relaxed">{a.excerpt}</span>
+            <span className="mt-auto pt-6 text-[10px] font-black uppercase tracking-widest text-gray-500 group-hover:text-[#0A0A0A] transition-colors">
+              Read →
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
 const VIEW_ROUTES: Record<View, string> = {
   home: "#/",
   about: "#/about",
@@ -3598,6 +3808,10 @@ const VIEW_ROUTES: Record<View, string> = {
   "service-events": "#/services/events",
   privacy: "#/privacy",
   terms: "#/terms",
+  insights: "#/insights",
+  "insight-budget": "#/insights/marketing-budget-qatar",
+  "insight-whatsapp": "#/insights/whatsapp-business-qatar",
+  "insight-instagram": "#/insights/instagram-shopping-qatar",
 };
 
 /* Maps a location hash to a view; returns null for in-page anchors like #contact. */
@@ -3651,6 +3865,10 @@ export default function App() {
           <ServiceMarketingPage setView={setView} />
         ) : view === "service-events" ? (
           <ServiceEventsPage setView={setView} />
+        ) : view === "insights" ? (
+          <InsightsPage setView={setView} />
+        ) : view === "insight-budget" || view === "insight-whatsapp" || view === "insight-instagram" ? (
+          <InsightArticle article={INSIGHTS.find((a) => a.view === view)!} setView={setView} />
         ) : view === "privacy" ? (
           <PolicyPage
             setView={setView}
